@@ -18,7 +18,7 @@
                         x-on:keydown.enter="search()"
                         x-model="value"
                         type="search"
-                        placeholder="Search..."
+                        placeholder="(RegEx) Search..."
                         class="w-full bg-gray-100 text-sm text-gray-800 transition border focus:outline-none focus:border-purple-500 rounded py-1 px-2 pl-10 appearance-none leading-normal"
                     >
 
@@ -99,7 +99,13 @@
 
                 if (this.value.trim().length) {
                     $models.hide();
-                    $(`.model[data-model*=${this.value.toLowerCase()}]`).show();
+
+                    let search = this.value.toLowerCase(),
+                        $found = $('.model').filter(function() {
+                            return $(this).data('model').match(new RegExp(search));
+                    });
+
+                    $found.show();
                 }
 
                 $('#model-count').text($('.model:visible').length);

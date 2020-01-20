@@ -51,9 +51,9 @@
             );
             modal.setContent(
                 `-><b class="text-purple-900">${relation.method.name}():</b>
-                    <b class="text-black">${relation.type}('</b>
-                        <i class="text-gray-800">${relation.relation}</i>
-                    <b>')</b>;
+                    <b class="text-black">${relation.type}(</b>
+                        <i class="text-gray-800">'${relation.relation}'</i>
+                    <b>)</b>;
                 <br>`
             );
             modal.setAction('Open in IDE', function () {
