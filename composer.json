@@ -1,0 +1,54 @@
+{
+    "name": "mtolhuys/laravel-schematics",
+    "description": "A interface to help you build your models",
+    "keywords": [
+        "mtolhuys",
+        "laravel-schematics"
+    ],
+    "homepage": "https://github.com/mtolhuys/laravel-schematics",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Maarten Tolhuijs",
+            "email": "mtolhuys@hotmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^3.5",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mtolhuys\\LaravelSchematics\\": "src"
+        },
+
+        "files": ["src/helpers.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mtolhuys\\LaravelSchematics\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mtolhuys\\LaravelSchematics\\LaravelSchematicsServiceProvider"
+            ],
+            "aliases": {
+                "LaravelEnvScanner": "Mtolhuys\\LaravelSchematics\\LaravelSchematicsFacade"
+            }
+        }
+    }
+}
