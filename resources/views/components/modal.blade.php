@@ -6,8 +6,7 @@
         <div class="py-4 text-left px-6">
             <div class="flex justify-between items-center pb-3">
                 <p class="modal-title text-2xl font-bold"></p>
-                <div
-                    class="modal-close cursor-pointer z-50">
+                <div class="modal-close cursor-pointer z-50">
                     <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                          viewBox="0 0 18 18">
                         <path

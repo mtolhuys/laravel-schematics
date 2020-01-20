@@ -40,6 +40,8 @@
         padding:0;
         width:100%;
         height:100%;
+        min-width:3840px;
+        min-height:2160px;
         overflow: auto;
     }
 
@@ -57,6 +59,9 @@
     }
 
     .model {
+        font-size: 0.9em;
+        padding: 15px;
+        margin: 5px;
         z-index: 100;
     }
 

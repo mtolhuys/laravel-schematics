@@ -18,7 +18,7 @@
                         x-on:keydown.enter="search()"
                         x-model="value"
                         type="search"
-                        placeholder="Search {{ config('schematics.project', basename(base_path())) }}"
+                        placeholder="Search..."
                         class="w-full bg-gray-100 text-sm text-gray-800 transition border focus:outline-none focus:border-purple-500 rounded py-1 px-2 pl-10 appearance-none leading-normal"
                     >
 
@@ -39,26 +39,32 @@
                     </a>
                 </li>
             </ul>
-
         </div>
-        <div class="flex justify-end pr-5">
+
+        <div class="flex justify-end pr-5 text-purple-300 text-lg">
+            <div
+                @click="showModels()"
+                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                <i class="fas fa-eye"></i>
+            </div>
+
             <div
                 @click="zoomOut()"
-                class="inline-block button rounded-full px-4 py-2 text-xl">
-                <i class="fas icon fa-search-minus"></i>
+                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                <i class="fas fa-search-minus"></i>
             </div>
 
             <div
                 @click="zoomReset()"
-                class="inline-block button rounded-full px-4 py-2 text-xl">
-                <i class="fas icon fa-undo"></i>
+                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                <i class="fas fa-search"></i>
             </div>
 
 
             <div
                 @click="zoomIn()"
-                class="inline-block button rounded-full px-4 py-2 text-xl">
-                <i class="fas icon fa-search-plus"></i>
+                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                <i class="fas fa-search-plus"></i>
             </div>
         </div>
     </div>
@@ -123,6 +129,12 @@
                 localStorage.setItem('schematics-zoom', '' + this.currentZoom);
 
                 $('#schema').animate({'zoom': this.currentZoom}, 'slow');
+            },
+
+            showModels: function() {
+                $('.hidden-model').show();
+                $('#model-count').text($('.model:visible').length);
+                plumb();
             }
         }
     }

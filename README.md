@@ -3,9 +3,9 @@
 This package will map your Eloquent models and methods calling first level relations.
 You can see a flowchart of the results visiting /schematics 
 
-Example result:
 
-coming...
+Example result: 
+![Example result](resources/images/example.png)
 
 ### Testing
 

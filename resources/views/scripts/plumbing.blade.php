@@ -1,5 +1,7 @@
 <script>
     window.plumb = function () {
+        loading(true);
+
         jsPlumb.deleteEveryEndpoint();
 
         Object.keys(relations).forEach(function (table) {
@@ -11,20 +13,21 @@
                     jsPlumb.connect({
                         endpoint: 'Blank',
                         anchors: [
-                            ['AutoDefault', {paintStyle: {fill: "red"}}],
-                            ['AutoDefault', {paintStyle: {fill: "red"}}]
+                            ['AutoDefault'],
+                            ['AutoDefault']
                         ],
                         connector: ['Straight', {
-                            stub: 70,
+                            curviness: 0,
+                            stub: 20,
                         }],
                         source: $source,
                         target: $target,
                         overlays: [
-                            ['Arrow', {location: 0.15, width: 10, length: 10}],
+                            ['Arrow', {location: 0.12, width: 10, length: 10}],
                             ['Label', {
                                 cssClass: `relation rel-${table}-${index}`,
                                 label: `<i class='fas icon fa-link'></i> <b>${relation.method.name}():</b> ${relation.type}`,
-                                location: 0.4
+                                location: 0.33
                             }]
                         ],
                     });
@@ -44,13 +47,13 @@
             relation.type = relation.type.charAt(0).toLowerCase() + relation.type.slice(1);
 
             modal.setTitle(
-                 `${relation.model}.php(<span class="text-orange-400 text-lg">${relation.method.line}</span>)`
+                 `${relation.model}.php(<span class="text-purple-400 text-lg">${relation.method.line}</span>)`
             );
             modal.setContent(
-                `-><b class="text-indigo-600">${relation.method.name}():</b>
-                    <b class="text-black">${relation.type}</b>(
-                        '<i class="text-green-400">${relation.relation}</i>
-                    ');
+                `-><b class="text-purple-900">${relation.method.name}():</b>
+                    <b class="text-black">${relation.type}('</b>
+                        <i class="text-gray-800">${relation.relation}</i>
+                    <b>')</b>;
                 <br>`
             );
             modal.setAction('Open in IDE', function () {
@@ -98,8 +101,8 @@
 
 <style>
     .jtk-overlay {
-        padding: 5px;
-        font-size: 1em;
+        padding: 3px;
+        font-size: 0.75em;
         z-index: 99;
         background-color: #FFF;
         color: #4A5568;
@@ -107,6 +110,9 @@
         border-radius: 5px;
     }
 
+    .relation:hover {
+        background-color: #f3f3f3;
+    }
     .relation {
         cursor: pointer;
     }
