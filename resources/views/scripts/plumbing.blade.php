@@ -74,7 +74,7 @@
             },
 
             stop: function (event) {
-                let $models = $('.model');
+                let $models = $('.model:visible');
 
                 $models.removeClass('selected');
 

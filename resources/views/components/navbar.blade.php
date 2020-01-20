@@ -43,6 +43,12 @@
 
         <div class="flex justify-end pr-5 text-purple-300 text-lg">
             <div
+                @click="hideModels()"
+                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                <i class="fas fa-eye-slash"></i>
+            </div>
+
+            <div
                 @click="showModels()"
                 class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
                 <i class="fas fa-eye"></i>
@@ -131,8 +137,18 @@
                 $('#schema').animate({'zoom': this.currentZoom}, 'slow');
             },
 
+            selectedModels: function() {
+                return !! $('.selected').length;
+            },
+
             showModels: function() {
                 $('.hidden-model').show();
+                $('#model-count').text($('.model:visible').length);
+                plumb();
+            },
+
+            hideModels: function() {
+                $('.selected').addClass('hidden-model').hide();
                 $('#model-count').text($('.model:visible').length);
                 plumb();
             }
