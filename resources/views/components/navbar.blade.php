@@ -44,32 +44,32 @@
         <div class="flex justify-end pr-5 text-purple-300 text-lg">
             <div
                 @click="hideModels()"
-                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
                 <i class="fas fa-eye-slash"></i>
             </div>
 
             <div
                 @click="showModels()"
-                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
                 <i class="fas fa-eye"></i>
             </div>
 
             <div
                 @click="zoomOut()"
-                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
                 <i class="fas fa-search-minus"></i>
             </div>
 
             <div
                 @click="zoomReset()"
-                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
                 <i class="fas fa-search"></i>
             </div>
 
 
             <div
                 @click="zoomIn()"
-                class="inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
                 <i class="fas fa-search-plus"></i>
             </div>
         </div>
@@ -89,26 +89,36 @@
             },
 
             search: function () {
-                let $models = $('.model');
+                let $models = $('.model:visible');
 
                 loading(true);
-
-                $models.show();
 
                 localStorage.setItem('schematics-search', this.value);
 
                 if (this.value.trim().length) {
+                    let search = this.value.toLowerCase();
+
                     $models.hide();
 
-                    let search = this.value.toLowerCase(),
-                        $found = $('.model').filter(function() {
+                    try {
+                        new RegExp(search);
+                    } catch(e) {
+                        console.error(`Invalid RegEx format: ${search}`);
+                        $('.model').show();
+                        _.defer(plumb);
+                        return;
+                    }
+
+                    const $found = $models.filter(function() {
                             return $(this).data('model').match(new RegExp(search));
                     });
 
                     $found.show();
+                } else {
+                    $('.model').show();
                 }
 
-                $('#model-count').text($('.model:visible').length);
+                $('#model-count').text($models.length);
 
                 _.defer(plumb);
             },

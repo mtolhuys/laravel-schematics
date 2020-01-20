@@ -76,8 +76,6 @@
             stop: function (event) {
                 let $models = $('.model:visible');
 
-                $models.removeClass('selected');
-
                 $models.each(function (i, el) {
                     let $el = $(el);
 
@@ -86,6 +84,8 @@
                         JSON.stringify($el.position())
                     );
                 });
+
+                $models.removeClass('selected');
 
                 $(event.el).css({'z-index': 100});
 
