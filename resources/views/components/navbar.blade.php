@@ -120,7 +120,7 @@
 
                 $('#model-count').text($('.model:visible').length);
 
-                _.defer(plumb);
+                setTimeout(plumb, 1);
             },
 
             setZoom: function () {

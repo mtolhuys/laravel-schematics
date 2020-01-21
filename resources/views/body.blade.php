@@ -1,24 +1,8 @@
 <body class="bg-gray-200">
 
-<div class="w-full h-full fixed block top-0 left-0 bg-white opacity-75 loading">
-  <span class="text-purple-500 opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0" style="
-    top: 50%;
-">
-    <i class="fas fa-circle-notch fa-spin fa-5x"></i>
-  </span>
-</div>
-
-<script>
-    window.models = {!! json_encode($models) !!};
-    window.relations = {!! json_encode($relations) !!};
-    window.loading = function (loading = false) {
-        $('.loading').toggle(loading);
-    };
-</script>
-
-
 @include('schematics::components.navbar')
 @include('schematics::components.modal')
+@include('schematics::components.globals')
 
 <div class="schema" id="schema">
     @foreach($models as $model)
@@ -28,42 +12,12 @@
     @endforeach
 </div>
 
-@include('schematics::scripts.positioning')
-@include('schematics::scripts.selector')
-@include('schematics::scripts.plumbing', [
+@include('schematics::components.positioning')
+@include('schematics::components.selector')
+@include('schematics::components.plumbing', [
     'relations' => $relations,
 ])
-
-<script>
-    let
-        $model = $(".model"),
-        $modal = $(".modal-container"),
-        $action = $(".action");
-
-    $(document).on('keydown', function (e) {
-        if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
-            $('.model').each(function (i, el) {
-                jsPlumb.addToDragSelection($(el));
-                $(el).addClass('selected');
-            });
-        }
-    });
-
-    $(document).mousedown(function (e) {
-        let notClicked = function ($el) {
-            return !$el.is(e.target) && $el.has(e.target).length === 0
-        };
-
-        if (notClicked($model) && notClicked($action)) {
-            jsPlumb.clearDragSelection();
-            $(".model").removeClass('selected');
-        }
-
-        if (notClicked($modal)) {
-            modal.close();
-        }
-    });
-</script>
+@include('schematics::components.listeners')
 
 <style>
     html, body, .schema {

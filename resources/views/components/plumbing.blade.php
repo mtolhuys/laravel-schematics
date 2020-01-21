@@ -66,8 +66,8 @@
     };
 
     jsPlumb.addGroup({
-        el: models,
-        Container: models,
+        el: $models(),
+        Container: $models(),
         dragOptions: {
             start: function (event) {
                 $(event.el).addClass('selected').css({'z-index': 101});
