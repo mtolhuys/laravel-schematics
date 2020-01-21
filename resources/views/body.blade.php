@@ -11,7 +11,7 @@
 <script>
     window.models = {!! json_encode($models) !!};
     window.relations = {!! json_encode($relations) !!};
-    window.loading = function(loading = false) {
+    window.loading = function (loading = false) {
         $('.loading').toggle(loading);
     };
 </script>
@@ -42,16 +42,15 @@
 
     $(document).on('keydown', function (e) {
         if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
-            $('.model').each(function(i, el) {
+            $('.model').each(function (i, el) {
                 jsPlumb.addToDragSelection($(el));
                 $(el).addClass('selected');
             });
         }
     });
 
-    $(document).mousedown(function(e)
-    {
-        let notClicked = function($el) {
+    $(document).mousedown(function (e) {
+        let notClicked = function ($el) {
             return !$el.is(e.target) && $el.has(e.target).length === 0
         };
 
@@ -69,12 +68,12 @@
 <style>
     html, body, .schema {
         position: relative;
-        margin:0;
-        padding:0;
-        width:100%;
-        height:100%;
-        min-width:3840px;
-        min-height:2160px;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        min-width: 3840px;
+        min-height: 2160px;
         overflow: auto;
     }
 

@@ -89,7 +89,7 @@
             },
 
             search: function () {
-                let $models = $('.model:visible');
+                let $models = $('.model');
 
                 loading(true);
 
@@ -104,7 +104,7 @@
                         new RegExp(search);
                     } catch(e) {
                         console.error(`Invalid RegEx format: ${search}`);
-                        $('.model').show();
+                        $models.show();
                         _.defer(plumb);
                         return;
                     }
@@ -115,10 +115,10 @@
 
                     $found.show();
                 } else {
-                    $('.model').show();
+                    $models.show();
                 }
 
-                $('#model-count').text($models.length);
+                $('#model-count').text($('.model:visible').length);
 
                 _.defer(plumb);
             },

@@ -85,11 +85,7 @@
                     );
                 });
 
-                $models.removeClass('selected');
-
                 $(event.el).css({'z-index': 100});
-
-                jsPlumb.clearDragSelection();
             }
         }
     });

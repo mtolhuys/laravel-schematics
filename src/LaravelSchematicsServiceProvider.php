@@ -13,7 +13,7 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(): void
+    public function boot()
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -38,7 +38,7 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register(): void
+    public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/schematics.php', 'schematics');
     }
@@ -46,7 +46,7 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
     /**
      * Loading helpers file
      */
-    public function loadHelpers(): void
+    public function loadHelpers()
     {
         require_once __DIR__ . '/helpers.php';
     }
