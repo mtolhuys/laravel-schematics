@@ -44,16 +44,16 @@ class SchematicsController extends Controller
      */
     private function modelsWithRelations(array $models): array
     {
-        if (Cache::has('schematics')) {
-            return Cache::get('schematics');
-        }
+//        if (Cache::has('schematics')) {
+//            return Cache::get('schematics');
+//        }
 
         $data = [
             'models' => $models,
             'relations' => relations($models),
         ];
 
-        Cache::put('schematics', $data, 1440);
+//        Cache::put('schematics', $data, 1440);
 
         return $data;
     }
