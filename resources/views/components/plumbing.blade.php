@@ -80,7 +80,7 @@
                     let $el = $(el);
 
                     localStorage.setItem(
-                        `${$el.data('model').toLowerCase()}-position`,
+                        `schematics-settings-${$el.data('model').toLowerCase()}-position`,
                         JSON.stringify($el.position())
                     );
                 });

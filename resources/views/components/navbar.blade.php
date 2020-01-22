@@ -43,6 +43,12 @@
 
         <div class="flex justify-end pr-5 text-purple-300 text-lg">
             <div
+                @click="exportSettings()"
+                class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+                <i class="far fa-save"></i>
+            </div>
+
+            <div
                 @click="hideModels()"
                 class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
                 <i class="fas fa-eye-slash"></i>
@@ -61,13 +67,6 @@
             </div>
 
             <div
-                @click="zoomReset()"
-                class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
-                <i class="fas fa-search"></i>
-            </div>
-
-
-            <div
                 @click="zoomIn()"
                 class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
                 <i class="fas fa-search-plus"></i>
@@ -79,13 +78,29 @@
 <script>
     function navbar() {
         return {
-            value: localStorage.getItem('schematics-search') || '',
+            value: localStorage.getItem('schematics-settings-search') || '',
 
             currentZoom: 1.0,
 
-            init: function() {
+            init: function () {
                 this.setZoom();
                 this.search();
+            },
+
+            exportSettings: function () {
+                let download = document.createElement('a'),
+                    content = '';
+
+                for (let key in localStorage) {
+                    content += `localStorage.setItem('${JSON.stringify(key)}', '${localStorage.getItem(key)}');\n`
+                }
+
+                download.setAttribute("href", "data:text/javascript;charset=utf-8," + content);
+                download.setAttribute("download", "schematics-settings.js");
+
+                document.body.appendChild(download);
+
+                download.click().remove();
             },
 
             search: function () {
@@ -93,7 +108,7 @@
 
                 loading(true);
 
-                localStorage.setItem('schematics-search', this.value);
+                localStorage.setItem('schematics-settings-search', this.value);
 
                 if (this.value.trim().length) {
                     let search = this.value.toLowerCase();
@@ -102,15 +117,15 @@
 
                     try {
                         new RegExp(search);
-                    } catch(e) {
+                    } catch (e) {
                         console.error(`Invalid RegEx format: ${search}`);
                         $models.show();
                         _.defer(plumb);
                         return;
                     }
 
-                    const $found = $models.filter(function() {
-                            return $(this).data('model').match(new RegExp(search));
+                    const $found = $models.filter(function () {
+                        return $(this).data('model').match(new RegExp(search));
                     });
 
                     $found.show();
@@ -132,7 +147,7 @@
             zoomIn: function () {
                 this.currentZoom += .1;
 
-                localStorage.setItem('schematics-zoom', '' + this.currentZoom);
+                localStorage.setItem('schematics-settings-zoom', '' + this.currentZoom);
 
                 $('#schema').animate({'zoom': this.currentZoom}, 'slow');
             },
@@ -140,7 +155,7 @@
             zoomOut: function () {
                 this.currentZoom -= .1;
 
-                localStorage.setItem('schematics-zoom', '' + this.currentZoom);
+                localStorage.setItem('schematics-settings-zoom', '' + this.currentZoom);
 
                 $('#schema').animate({'zoom': this.currentZoom}, 'slow');
             },
@@ -148,22 +163,22 @@
             zoomReset: function () {
                 this.currentZoom = 1;
 
-                localStorage.setItem('schematics-zoom', '' + this.currentZoom);
+                localStorage.setItem('schematics-settings-zoom', '' + this.currentZoom);
 
                 $('#schema').animate({'zoom': this.currentZoom}, 'slow');
             },
 
-            selectedModels: function() {
-                return !! $('.selected').length;
+            selectedModels: function () {
+                return !!$('.selected').length;
             },
 
-            showModels: function() {
+            showModels: function () {
                 $('.hidden-model').show();
                 $('#model-count').text($('.model:visible').length);
                 plumb();
             },
 
-            hideModels: function() {
+            hideModels: function () {
                 $('.selected').addClass('hidden-model').hide();
                 $('#model-count').text($('.model:visible').length);
                 plumb();

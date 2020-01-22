@@ -8,7 +8,7 @@
         },
 
         getPosition = function (model) {
-            return JSON.parse(localStorage.getItem(`${model}-position`));
+            return JSON.parse(localStorage.getItem(`schematics-settings-${model}-position`));
         },
 
         safePosition = function (position) {
@@ -29,7 +29,7 @@
 
                 $model.css(currentPosition);
 
-                localStorage.setItem(`${model}-position`, JSON.stringify(currentPosition));
+                localStorage.setItem(`schematics-settings-${model}-position`, JSON.stringify(currentPosition));
 
                 if (currentPosition.left + (posX * 1.5) >= $(window).width()) {
                     currentPosition.left = 10;
