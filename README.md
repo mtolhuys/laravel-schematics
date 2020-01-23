@@ -1,17 +1,16 @@
-# Laravel Schematics (WIP)
+# Laravel Schematics
 
-This package will map your Eloquent models and methods calling first level relations.
-You can see a flowchart of the results visiting /schematics 
-
+This package will map your Eloquent models and methods calling their relations.
+You can see a flowchart of the results visiting `{your-app}/schematics`
 
 Example result: 
-![Example result](resources/images/example.png)
+![](resources/images/schematics.gif)
 
-### Testing
+This package is still in BETA stage. More features coming soon:
 
-``` bash
-composer test
-```
+    - Migration and model creation
+    - Drag and drop relations
+    - Migrate and rollback buttons
 
 ### Changelog
 

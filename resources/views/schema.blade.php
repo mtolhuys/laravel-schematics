@@ -38,8 +38,11 @@
         $(document).on('keydown', function (e) {
             if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
                 Schematics.$models().each(function (i, el) {
-                    jsPlumb.addToDragSelection($(el));
-                    $(el).addClass('selected');
+                    const $el = $(el).not('.hidden-model, .filtered');
+
+                    jsPlumb.addToDragSelection($el);
+
+                    $el.addClass('selected');
                 });
             }
         });
@@ -50,8 +53,7 @@
             };
 
             if (notClicked(Schematics.$models()) && notClicked(Schematics.$actions())) {
-                jsPlumb.clearDragSelection();
-                $(".model").removeClass('selected');
+                Schematics.clearSelection();
             }
 
             if (notClicked($(".modal-container"))) {

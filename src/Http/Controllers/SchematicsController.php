@@ -5,6 +5,8 @@ namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Routing\Controller;
 use Illuminate\View\View;
+use Mtolhuys\LaravelSchematics\Services\ModelMapper;
+use Mtolhuys\LaravelSchematics\Services\RelationMapper;
 use ReflectionException;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,7 +18,9 @@ class SchematicsController extends Controller
      */
     public function index()
     {
-        return view('schematics::index', $this->modelsWithRelations(models()));
+        return view('schematics::index', $this->modelsWithRelations(
+            ModelMapper::map()
+        ));
     }
 
     /**
@@ -26,7 +30,7 @@ class SchematicsController extends Controller
      */
     public function show($model): array
     {
-        $models = models();
+        $models = ModelMapper::map();
 
         if (isset($models[$model])) {
             return $this->modelsWithRelations([
@@ -44,17 +48,9 @@ class SchematicsController extends Controller
      */
     private function modelsWithRelations(array $models): array
     {
-//        if (Cache::has('schematics')) {
-//            return Cache::get('schematics');
-//        }
-
-        $data = [
+        return [
             'models' => $models,
-            'relations' => relations($models),
+            'relations' => RelationMapper::map($models),
         ];
-
-//        Cache::put('schematics', $data, 1440);
-
-        return $data;
     }
 }

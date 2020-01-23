@@ -55,16 +55,17 @@
             },
 
             search: function () {
-                let $models = $('.model');
+                let $models = $('.model:not(.hidden-model)');
 
                 Schematics.loading(true);
+                Schematics.clearSelection();
 
                 localStorage.setItem('schematics-settings-search', this.value);
 
                 if (this.value.trim().length) {
                     let search = this.value.toLowerCase();
 
-                    $models.hide();
+                    $models.addClass('filtered').hide();
 
                     try {
                         new RegExp(search);
@@ -79,9 +80,9 @@
                         return $(this).data('model').match(new RegExp(search));
                     });
 
-                    $found.show();
+                    $found.removeClass('filtered').show();
                 } else {
-                    $models.show();
+                    $models.removeClass('filtered').show();
                 }
 
                 $('#model-count').text($('.model:visible').length);

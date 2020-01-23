@@ -211,8 +211,11 @@
             }).on('start', ({inst, selected, oe}) => {
                 if (!oe.ctrlKey && !oe.metaKey) {
                     for (const el of selected) {
-                        $(el).removeClass('selected');
-                        inst.removeFromSelection(el);
+                        const $el = $(el).not('.hidden-model, .filtered');
+
+                        $el.removeClass('selected');
+
+                        inst.removeFromSelection($el);
                     }
 
                     jsPlumb.clearDragSelection();
@@ -220,16 +223,24 @@
                 }
             }).on('move', ({changed: {removed, added}}) => {
                 for (const el of added) {
-                    jsPlumb.addToDragSelection($(el));
-                    $(el).addClass('selected');
+                    const $el = $(el).not('.hidden-model, .filtered');
+
+                    $el.addClass('selected');
+
+                    jsPlumb.addToDragSelection($el);
                 }
 
                 for (const el of removed) {
-                    $(el).removeClass('selected');
+                    $(el).not('.hidden-model, .filtered').removeClass('selected');
                 }
             }).on('stop', ({inst}) => {
                 inst.keepSelection();
             });
+        },
+
+        clearSelection: function() {
+            this.$models().removeClass('selected');
+            jsPlumb.clearDragSelection();
         }
     };
 </script>

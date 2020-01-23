@@ -1,7 +1,7 @@
 <div
     x-data="actions()"
     x-init="init()"
-    class="flex justify-end mr-10 pr-5 text-purple-300 text-lg"
+    class="flex justify-end mr-10 text-purple-300 text-lg"
 >
     <div
         @click="zoom(-.1)"
@@ -92,7 +92,7 @@
             },
 
             search: function () {
-                let $models = $('.model');
+                let $models = $('.model:not(.hidden-model)');
 
                 Schematics.loading(true);
 
@@ -149,7 +149,7 @@
             },
 
             showModels: function () {
-                $('.hidden-model').show();
+                $('.hidden-model').removeClass('hidden-model').show();
                 $('#model-count').text($('.model:visible').length);
                 Schematics.plumb();
             },
@@ -162,7 +162,7 @@
 
             reset() {
                 Schematics.loading(true);
-                $('.hidden-model').show();
+                $('.hidden-model').removeClass('hidden-model filtered').show();
                 $('#model-count').text($('.model:visible').length);
                 localStorage.clear();
                 location.reload();

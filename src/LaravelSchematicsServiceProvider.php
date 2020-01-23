@@ -22,8 +22,6 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
             ]);
         }
 
-        $this->loadHelpers();
-
         $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'schematics');
@@ -41,13 +39,5 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/schematics.php', 'schematics');
-    }
-
-    /**
-     * Loading helpers file
-     */
-    public function loadHelpers()
-    {
-        require_once __DIR__ . '/helpers.php';
     }
 }
