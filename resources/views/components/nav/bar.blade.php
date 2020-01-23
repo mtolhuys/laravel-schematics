@@ -1,6 +1,6 @@
 <nav
     id="header"
-    x-data="nav()"
+    x-data="bar()"
     x-init="init()"
     class="fixed w-full z-20 top-0 bg-white border-b border-gray-400"
 >
@@ -32,8 +32,8 @@
                 </div>
             </div>
 
-            <ul class="flex">
-                <li class="text-center font-bold flex-1">
+            <ul class="flex justify-center">
+                <li class="text-center font-bold flex-2">
                     <a class="block py-2 px-4 text-gray-800">
                         <span id="model-count">{{ count($models) }}</span> Model(s)
                     </a>
@@ -46,7 +46,7 @@
 </nav>
 
 <script>
-    function nav() {
+    function bar() {
         return {
             value: localStorage.getItem('schematics-settings-search') || '',
 

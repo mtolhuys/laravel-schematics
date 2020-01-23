@@ -34,7 +34,7 @@
             hide: function() {
                 $(this.$el).parent().addClass('hidden-model').hide();
                 $('#model-count').text($('.model:visible').length);
-                plumb();
+                Schematics.plumb();
             }
         }
     }

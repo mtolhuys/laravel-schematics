@@ -1,63 +1,69 @@
 <div
     x-data="actions()"
     x-init="init()"
-    class="flex justify-end pr-5 text-purple-300 text-lg"
+    class="flex justify-end mr-10 pr-5 text-purple-300 text-lg"
 >
-    <div class="dropdown inline-block relative bg-transparent pt-2">
-        <button class="text-black inline-flex items-center">
-            <span class="mr-1">Chart Style</span>
-            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
-        </button>
-
-        <ul class="dropdown-menu absolute hidden text-gray-700 pt-1">
-            <li class=""><a class="rounded-t hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">One</a></li>
-            <li class=""><a class="hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Two</a></li>
-            <li class=""><a class="rounded-b hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Three is the magic number</a></li>
-        </ul>
-    </div>
-
     <div
-        @click="exportSettings()"
-        class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
-        <i class="fas fa-file-import"></i>
-    </div>
-
-    <div
-        @click="hideModels()"
-        class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
-        <i class="fas fa-eye-slash"></i>
-    </div>
-
-    <div
-        @click="showModels()"
-        class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
-        <i class="fas fa-eye"></i>
-    </div>
-
-    <div
-        @click="zoomOut()"
-        class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+        @click="zoom(-.1)"
+        class="action inline-block button rounded-full px-5 pt-2 hover:text-purple-500">
         <i class="fas fa-search-minus"></i>
     </div>
 
     <div
-        @click="zoomIn()"
-        class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
+        @click="zoom()"
+        class="action inline-block button rounded-full px-5 pt-2 hover:text-purple-500">
         <i class="fas fa-search-plus"></i>
     </div>
 
-    <div
-        @click="reset()"
-        class="action inline-block button rounded-full px-4 py-2 hover:text-purple-500">
-        <i class="fas fa-recycle"></i>
+    @include('schematics::components.nav.style')
+
+    <div class="dropdown inline-block relative bg-transparent pt-2 pl-5">
+        <button class="text-black inline-flex items-center">
+            <span class="mr-1"><i class="fas icon fa-cog"></i></span>
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+            </svg>
+        </button>
+
+        <ul class="dropdown-menu absolute left-10 pt-5 hidden">
+            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <div
+                    @click="exportSettings()"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fas fa-file-import mr-2"></i> Export Settings (localStorage)
+                </div>
+            </li>
+
+            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <div
+                    @click="hideModels()"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fas fa-eye-slash mr-2"></i> Hide Selected Models
+                </div>
+            </li>
+
+            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <div
+                    @click="showModels()"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fas fa-eye mr-2"></i> Show Hidden Models
+                </div>
+            </li>
+
+            <li class="rounded-b hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <div
+                    @click="reset()"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fas fa-redo-alt mr-2"></i> Reset Diagram
+                </div>
+            </li>
+        </ul>
     </div>
 </div>
 
 <script>
     function actions() {
         return {
-            currentZoom: 1.0,
-
             init: function () {
                 this.setZoom();
             },
@@ -66,7 +72,9 @@
                 let download = document.createElement('a'),
                     content = '';
 
-                Object.keys(localStorage).filter(function(key) {
+                Schematics.loading(true);
+
+                Object.keys(localStorage).filter(function (key) {
                     return key.indexOf('schematics-settings') === 0;
                 }).forEach(function (key) {
                     content += `localStorage.setItem(${JSON.stringify(key)}, '${localStorage.getItem(key)}');\n`
@@ -79,6 +87,8 @@
 
                 download.click();
                 download.remove();
+
+                Schematics.loading(false);
             },
 
             search: function () {
@@ -117,33 +127,25 @@
             },
 
             setZoom: function () {
-                this.currentZoom = parseFloat(localStorage.getItem('schematics-zoom')) || 1.0;
+                Schematics.zoom = parseFloat(localStorage.getItem('schematics-zoom')) || 1.0;
 
-                $('#schema').animate({'zoom': this.currentZoom}, 'slow');
+                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
             },
 
-            zoomIn: function () {
-                this.currentZoom += .1;
+            zoom: function (zoom = .1) {
+                Schematics.zoom += zoom;
 
-                localStorage.setItem('schematics-settings-zoom', '' + this.currentZoom);
+                localStorage.setItem('schematics-settings-zoom', '' + Schematics.zoom);
 
-                $('#schema').animate({'zoom': this.currentZoom}, 'slow');
-            },
-
-            zoomOut: function () {
-                this.currentZoom -= .1;
-
-                localStorage.setItem('schematics-settings-zoom', '' + this.currentZoom);
-
-                $('#schema').animate({'zoom': this.currentZoom}, 'slow');
+                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
             },
 
             zoomReset: function () {
-                this.currentZoom = 1;
+                Schematics.zoom = 1;
 
-                localStorage.setItem('schematics-settings-zoom', '' + this.currentZoom);
+                localStorage.setItem('schematics-settings-zoom', '' + Schematics.zoom);
 
-                $('#schema').animate({'zoom': this.currentZoom}, 'slow');
+                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
             },
 
             showModels: function () {
@@ -172,5 +174,9 @@
 <style>
     .dropdown:hover .dropdown-menu {
         display: block;
+    }
+
+    .dropdown-menu {
+        right: -60px;
     }
 </style>

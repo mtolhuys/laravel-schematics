@@ -10,13 +10,46 @@
 
         relations: {!! json_encode($relations) !!},
 
+        zoom: 1.0,
+
         minDistanceX: 250,
 
         minDistanceY: 200,
 
-        currentPosition: {
+        position: {
             top: 80,
             left: 10
+        },
+
+        style: localStorage.getItem('schematics-settings-style') || 'Flowchart',
+
+        getStyleSettings: function (style) {
+            return {
+                'bezier': {
+                    curviness: 100,
+                },
+                'straight': {
+                    stub: 20,
+                },
+                'flowchart': {
+                    alwaysRespectStubs: true,
+                    midpoint: 0.6,
+                    cornerRadius: 3,
+                    stub: 10,
+                },
+                'statemachine': {
+                    margin: -5,
+                    curviness: 10,
+                    proximityLimit: 100,
+                },
+            }[style]
+        },
+
+        styleSettings: {
+            alwaysRespectStubs: true,
+            midpoint: 0.6,
+            cornerRadius: 3,
+            stub: 10,
         },
 
         loading: function (loading = false) {
@@ -50,18 +83,18 @@
                     const posX = ($model.width() + Schematics.minDistanceX),
                         posY = ($model.height() + Schematics.minDistanceY);
 
-                    $model.css(Schematics.currentPosition);
+                    $model.css(Schematics.position);
 
                     localStorage.setItem(
                         `schematics-settings-${model}-position`,
-                        JSON.stringify(Schematics.currentPosition)
+                        JSON.stringify(Schematics.position)
                     );
 
-                    if (Schematics.currentPosition.left + (posX * 1.5) >= $(window).width()) {
-                        Schematics.currentPosition.left = 10;
-                        Schematics.currentPosition.top += posY;
+                    if (Schematics.position.left + (posX * 1.5) >= $(window).width()) {
+                        Schematics.position.left = 10;
+                        Schematics.position.top += posY;
                     } else {
-                        Schematics.currentPosition.left += posX;
+                        Schematics.position.left += posX;
                     }
                 }
             });
@@ -79,19 +112,14 @@
 
                     if ($source.length && $target.length) {
                         jsPlumb.connect({
+                            source: $source,
+                            target: $target,
                             endpoint: 'Blank',
                             anchors: [
                                 ['AutoDefault'],
                                 ['AutoDefault']
                             ],
-                            connector: ['Flowchart', {
-                                alwaysRespectStubs: true,
-                                midpoint: 0.6,
-                                cornerRadius: 3,
-                                stub: 10,
-                            }],
-                            source: $source,
-                            target: $target,
+                            connector: [Schematics.style, Schematics.getStyleSettings(Schematics.style.toLowerCase())],
                             overlays: [
                                 ['Arrow', {location: 0.2, width: 10, length: 10}],
                                 ['Label', {
