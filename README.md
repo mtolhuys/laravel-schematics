@@ -13,9 +13,10 @@ Example result:
 
 This package is still in BETA stage. More features coming soon:
 
-    - Migration and model creation
+    - Form requests, migrations and models creation
     - Drag and drop relations
     - Migrate and rollback buttons
+    - Model inspection
     
 ## Installation
 
