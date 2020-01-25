@@ -12,7 +12,7 @@
         </button>
 
         <ul class="dropdown-menu absolute left-10 pt-5 hidden">
-            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="setStyle('Bezier')"
                     class="action inline-block button rounded-full px-4 py-2">
@@ -20,7 +20,7 @@
                 </div>
             </li>
 
-            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="setStyle('Straight')"
                     class="action inline-block button rounded-full px-4 py-2">
@@ -28,7 +28,7 @@
                 </div>
             </li>
 
-            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="setStyle('Flowchart')"
                     class="action inline-block button rounded-full px-4 py-2">
@@ -36,7 +36,7 @@
                 </div>
             </li>
 
-            <li class="rounded-b hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="rounded-b hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="setStyle('StateMachine')"
                     class="action inline-block button rounded-full px-4 py-2">

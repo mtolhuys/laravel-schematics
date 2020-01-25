@@ -1,3 +1,6 @@
 <?php
 
-Route::resource('/schematics', Mtolhuys\LaravelSchematics\Http\Controllers\SchematicsController::class);
+Route::group(["namespace" => "Mtolhuys\LaravelSchematics\Http\Controllers"],function() {
+    Route::get('/schematics', 'SchematicsController@index');
+    Route::get('/schematics/clear-cache', 'SchematicsController@clearCache');
+});

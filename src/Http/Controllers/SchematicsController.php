@@ -23,22 +23,11 @@ class SchematicsController extends Controller
         ));
     }
 
-    /**
-     * @param $model
-     * @return array
-     * @throws ReflectionException
-     */
-    public function show($model): array
+    public function clearCache()
     {
-        $models = ModelMapper::map();
+        Cache::forget('schematics');
 
-        if (isset($models[$model])) {
-            return $this->modelsWithRelations([
-                $models[$model]
-            ]);
-        }
-
-        return [];
+        return response('cache cleared', 200);
     }
 
     /**
@@ -48,9 +37,17 @@ class SchematicsController extends Controller
      */
     private function modelsWithRelations(array $models): array
     {
-        return [
+        if (Cache::has('schematics')) {
+            return Cache::get('schematics');
+        }
+
+        $data = [
             'models' => $models,
             'relations' => RelationMapper::map($models),
         ];
+
+        Cache::put('schematics', $data, 1440);
+
+        return $data;
     }
 }

@@ -10,6 +10,8 @@
 
         relations: {!! json_encode($relations) !!},
 
+        exceptions: [],
+
         zoom: 1.0,
 
         minDistanceX: 250,
@@ -75,7 +77,7 @@
                     }
 
                     Schematics.relations[relationTable].forEach(function(relation) {
-                        if (relation.table === table) {
+                        if (relation.relation.table === table) {
                             noRelations = false;
                         }
                     });
@@ -97,7 +99,7 @@
         positionModel: function (element) {
             let $model = $(element),
                 model = $model.data('model').toLowerCase(),
-                position = Schematics.getModelPosition($model);
+                position = Schematics.getModelPosition(model);
 
             if (position) {
                 position.top = position.top >= 80 ? position.top : 80;
@@ -125,11 +127,13 @@
         },
 
         positionModels: function () {
+            let $withoutRelations = Schematics.$withoutRelations();
+
             Schematics.$withRelations().each(function (i, element) {
                 Schematics.positionModel(element);
             });
 
-            Schematics.$withoutRelations().forEach(function (element) {
+            $withoutRelations.forEach(function (element) {
                 Schematics.positionModel(element);
             });
         },
@@ -142,7 +146,7 @@
             Object.keys(Schematics.relations).forEach(function (table) {
                 Schematics.relations[table].forEach(function (relation, index) {
                     let $source = $(`#${table}:visible`),
-                        $target = $(`#${relation.table}:visible`);
+                        $target = $(`#${relation.relation.table}:visible`);
 
                     if ($source.length && $target.length) {
                         jsPlumb.connect({
@@ -188,7 +192,7 @@
                 modal.setContent(
                     `-><b class="text-purple-900">${relation.method.name}():</b>
                         <b class="text-black">${relation.type}(</b>
-                            <i class="text-gray-800">'${relation.relation}'</i>
+                            <i class="text-gray-800">'${relation.relation.model}'</i>
                         <b>)</b>;
                     <br>`
                 );

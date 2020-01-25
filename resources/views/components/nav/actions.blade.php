@@ -15,6 +15,8 @@
         <i class="fas fa-search-plus"></i>
     </div>
 
+    @include('schematics::components.nav.warnings')
+
     @include('schematics::components.nav.style')
 
     <div class="dropdown inline-block relative bg-transparent pt-2 pl-5">
@@ -26,7 +28,7 @@
         </button>
 
         <ul class="dropdown-menu absolute left-10 pt-5 hidden">
-            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="exportSettings()"
                     class="action inline-block button rounded-full px-4 py-2">
@@ -34,7 +36,7 @@
                 </div>
             </li>
 
-            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="hideModels()"
                     class="action inline-block button rounded-full px-4 py-2">
@@ -42,7 +44,7 @@
                 </div>
             </li>
 
-            <li class="hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="showModels()"
                     class="action inline-block button rounded-full px-4 py-2">
@@ -50,7 +52,15 @@
                 </div>
             </li>
 
-            <li class="rounded-b hover:bg-purple-400 py-2 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <div
+                    @click="clearCache()"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fas fa-broom mr-2"></i> Clear Cache
+                </div>
+            </li>
+
+            <li class="rounded-b hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="reset()"
                     class="action inline-block button rounded-full px-4 py-2">
@@ -91,39 +101,12 @@
                 Schematics.loading(false);
             },
 
-            search: function () {
-                let $models = $('.model:not(.hidden-model)');
-
+            clearCache: function () {
                 Schematics.loading(true);
 
-                localStorage.setItem('schematics-settings-search', this.value);
-
-                if (this.value.trim().length) {
-                    let search = this.value.toLowerCase();
-
-                    $models.hide();
-
-                    try {
-                        new RegExp(search);
-                    } catch (e) {
-                        console.error(`Invalid RegEx format: ${search}`);
-                        $models.show();
-                        setTimeout(Schematics.plumb, 1);
-                        return;
-                    }
-
-                    const $found = $models.filter(function () {
-                        return $(this).data('model').match(new RegExp(search));
-                    });
-
-                    $found.show();
-                } else {
-                    $models.show();
-                }
-
-                $('#model-count').text($('.model:visible').length);
-
-                setTimeout(Schematics.plumb, 1);
+                $.get('schematics/clear-cache', function() {
+                    location.reload();
+                });
             },
 
             setZoom: function () {
@@ -165,7 +148,10 @@
                 $('.hidden-model').removeClass('hidden-model filtered').show();
                 $('#model-count').text($('.model:visible').length);
                 localStorage.clear();
-                location.reload();
+
+                $.get('schematics/clear-cache', function() {
+                    location.reload();
+                });
             }
         }
     }
