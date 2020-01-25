@@ -46,19 +46,19 @@ class RelationMapper
      * @return Collection
      * @throws ReflectionException
      */
-    public static function getMethods(string $model)
+    public static function getMethods(string $model): Collection
     {
         $class = new ReflectionClass($model);
 
         return Collection::make($class->getMethods(ReflectionMethod::IS_PUBLIC))
             ->merge(Collection::make($class->getTraits())
-                ->map(function (ReflectionClass $trait) {
+                ->map(static function (ReflectionClass $trait) {
                     return Collection::make(
                         $trait->getMethods(ReflectionMethod::IS_PUBLIC)
                     );
                 })->flatten()
             )
-            ->reject(function (ReflectionMethod $method) use ($model) {
+            ->reject(static function (ReflectionMethod $method) use ($model) {
                 return $method->class !== $model || $method->getNumberOfParameters() > 0;
             });
     }

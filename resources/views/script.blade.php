@@ -197,7 +197,7 @@
                     <br>`
                 );
 
-                modal.setAction('Open in IDE', function () {
+                modal.setAction('Open in PhpStorm', function () {
                     window.location.href = `jetbrains://php-storm/navigate/reference?project={{
                         config('schematics.project', basename(base_path()))
                     }}&path=${relation.method.file}:${relation.method.line}`;

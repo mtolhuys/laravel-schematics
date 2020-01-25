@@ -32,7 +32,21 @@
                 <div
                     @click="exportSettings()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-file-import mr-2"></i> Export Settings (localStorage)
+                    <i class="fas fa-file-export mr-2"></i> Export Settings
+                </div>
+            </li>
+
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <input
+                    type="file"
+                    id="import-settings"
+                    class="hidden"
+                    name="settings"
+                />
+                <div
+                    @click="importSettings()"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fas fa-file-import mr-2"></i> Import Settings
                 </div>
             </li>
 
@@ -76,6 +90,31 @@
         return {
             init: function () {
                 this.setZoom();
+            },
+
+            importSettings: function () {
+                $('#import-settings').click();
+
+                $("#import-settings:file").change(function (){
+                    let fileReader = new FileReader();
+
+                    fileReader.onload = function () {
+                        let value = fileReader.result;
+
+                        Schematics.loading(true);
+                        localStorage.clear();
+
+                        try {
+                            value.split('\n').forEach(eval);
+                        } catch (e) {
+                            console.error(e.message);
+                        }
+
+                        location.reload();
+                    };
+
+                    fileReader.readAsText($(this).prop('files')[0]);
+                });
             },
 
             exportSettings: function () {
