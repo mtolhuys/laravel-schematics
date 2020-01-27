@@ -4,6 +4,7 @@
 
 @include('schematics::components.nav.bar')
 @include('schematics::components.modal')
+@include('schematics::components.alert')
 @include('schematics::schema')
 
 </body>

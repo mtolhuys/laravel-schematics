@@ -32,6 +32,7 @@
 
     jsPlumb.ready(function () {
         Schematics.positionModels();
+        Schematics.toggleModels();
         Schematics.selector();
         Schematics.plumb();
 
@@ -70,8 +71,8 @@
         padding: 0;
         width: 100%;
         height: 100%;
-        min-width: 3840px;
-        min-height: 2160px;
+        min-width: 100vw;
+        min-height: 100vh;
         overflow: auto;
     }
 
@@ -136,5 +137,20 @@
 
     .relation {
         cursor: pointer;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #9F7AEA;
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #9F7AEA;
     }
 </style>

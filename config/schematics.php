@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'project-name' => null
+    'project-name' => null,
+    'middleware' => null,
 ];

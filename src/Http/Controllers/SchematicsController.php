@@ -4,6 +4,8 @@ namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 use Mtolhuys\LaravelSchematics\Services\ModelMapper;
 use Mtolhuys\LaravelSchematics\Services\RelationMapper;
@@ -28,6 +30,13 @@ class SchematicsController extends Controller
         Cache::forget('schematics');
 
         return response('cache cleared', 200);
+    }
+
+    public function details($table)
+    {
+         $exists = Schema::hasTable($table);
+
+         return $exists ? DB::select(DB::raw("SHOW COLUMNS FROM {$table}")) : [];
     }
 
     /**

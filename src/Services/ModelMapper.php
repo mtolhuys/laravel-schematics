@@ -2,6 +2,8 @@
 
 namespace Mtolhuys\LaravelSchematics\Services;
 
+use SplFileInfo;
+use PhpParser\Node;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use PhpParser\Node\Stmt\Class_;
@@ -9,6 +11,7 @@ use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ModelMapper
 {
@@ -19,7 +22,6 @@ class ModelMapper
      * found in app_path()
      *
      * @return array
-     * @throws \ReflectionException
      */
     public static function map(): array
     {
@@ -31,7 +33,7 @@ class ModelMapper
             if (self::readablePhp($file)) {
                 $class = self::getClassName($file);
 
-                if (is_subclass_of($class, 'Illuminate\Database\Eloquent\Model')) {
+                if (is_subclass_of($class, Model::class)) {
                     self::$models[] = $class;
                 }
             }
@@ -41,10 +43,10 @@ class ModelMapper
     }
 
     /**
-     * @param $file
+     * @param SplFileInfo $file
      * @return bool
      */
-    private static function readablePhp($file): bool
+    private static function readablePhp(SplFileInfo $file): bool
     {
         return
             $file->isReadable()
@@ -62,7 +64,7 @@ class ModelMapper
         $traverser->addVisitor(new NameResolver());
 
         $root = collect(self::getStatements($path, $traverser))
-            ->first(function ($statement) {
+            ->first(static function ($statement) {
                 return $statement instanceof Namespace_;
             });
 
@@ -76,7 +78,7 @@ class ModelMapper
     /**
      * @param string $path
      * @param NodeTraverser $traverser
-     * @return array|\PhpParser\Node[]|\PhpParser\Node\Stmt[]|null
+     * @return Node[]|null
      */
     protected static function getStatements(string $path, NodeTraverser $traverser)
     {
@@ -97,7 +99,7 @@ class ModelMapper
     {
         return collect($root->stmts)->filter(function ($statement) {
                 return $statement instanceof Class_;
-            })->map(function (Class_ $statement) {
+            })->map(static function (Class_ $statement) {
                 return $statement->namespacedName->toString();
             })->first() ?? '';
     }

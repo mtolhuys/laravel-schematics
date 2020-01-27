@@ -2,7 +2,8 @@
     class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
     <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
 
-    <div class="modal-container bg-white w-full md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+    <div class="modal-container bg-white w-full md:max-w-md mx-auto rounded shadow-lg z-50
+                overflow-visible overflow-y-scroll">
         <div class="py-4 text-left px-6">
             <div class="flex justify-between items-center pb-3">
                 <p class="modal-title text-2xl font-bold"></p>
@@ -44,10 +45,14 @@
             $content.html(content);
         },
 
-        setAction: function (label, action) {
+        setAction: function (label, action = null) {
             let $action = $('.modal-action');
 
-            $action.unbind().text(label).click(action);
+            $action.html(label);
+
+            if (action) {
+                $action.unbind().click(action);
+            }
         },
 
         open: function () {
@@ -69,5 +74,22 @@
 
     .modal-container {
         min-width: 600px;
+        max-height: 90%;
+    }
+
+    .modal-container::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+    .modal-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .modal-container::-webkit-scrollbar-thumb {
+        background: #9F7AEA;
+        border-radius: 10px;
+    }
+    .modal-container::-webkit-scrollbar-thumb:hover {
+        background: #745ab4;
     }
 </style>

@@ -5,12 +5,14 @@
 >
     <div
         @click="zoom(-.1)"
+        title="Zoom Out"
         class="action inline-block button rounded-full px-5 pt-2 hover:text-purple-500">
         <i class="fas fa-search-minus"></i>
     </div>
 
     <div
         @click="zoom()"
+        title="Zoom In"
         class="action inline-block button rounded-full px-5 pt-2 hover:text-purple-500">
         <i class="fas fa-search-plus"></i>
     </div>
@@ -95,25 +97,30 @@
             importSettings: function () {
                 $('#import-settings').click();
 
-                $("#import-settings:file").change(function (){
+                $("#import-settings:file").change(function () {
                     let fileReader = new FileReader();
+
+                    fileReader.readAsText($(this).prop('files')[0]);
 
                     fileReader.onload = function () {
                         let value = fileReader.result;
 
-                        Schematics.loading(true);
-                        localStorage.clear();
-
                         try {
+                            localStorage.clear();
+
                             value.split('\n').forEach(eval);
+
+                            Schematics.alert('Settings successfully imported!<br>Loading...', 'success');
+                            Schematics.$models().hide();
+                            Schematics.plumb();
+                            Schematics.loading(true);
+
+                            location.reload();
                         } catch (e) {
                             console.error(e.message);
+                            Schematics.alert('Invalid import file!', 'error');
                         }
-
-                        location.reload();
                     };
-
-                    fileReader.readAsText($(this).prop('files')[0]);
                 });
             },
 
@@ -143,7 +150,7 @@
             clearCache: function () {
                 Schematics.loading(true);
 
-                $.get('schematics/clear-cache', function() {
+                $.get('schematics/clear-cache', function () {
                     location.reload();
                 });
             },
@@ -171,24 +178,38 @@
             },
 
             showModels: function () {
-                $('.hidden-model').removeClass('hidden-model').show();
-                $('#model-count').text($('.model:visible').length);
+                let $hidden = $('.hidden-model');
+
+                $hidden.removeClass('hidden-model').show();
+                $hidden.each(function (i, el) {
+                    localStorage.setItem(`schematics-settings-${$(el).data('model')}-hidden`, 'false');
+                });
+
+                Schematics.setModelCount();
+
                 Schematics.plumb();
             },
 
             hideModels: function () {
-                $('.selected').addClass('hidden-model').hide();
-                $('#model-count').text($('.model:visible').length);
+                let $selected = $('.selected');
+
+                $selected.addClass('hidden-model').hide();
+                $selected.each(function (i, el) {
+                    localStorage.setItem(`schematics-settings-${$(el).data('model')}-hidden`, 'true');
+                });
+
+                Schematics.setModelCount();
+
                 Schematics.plumb();
             },
 
             reset() {
                 Schematics.loading(true);
                 $('.hidden-model').removeClass('hidden-model filtered').show();
-                $('#model-count').text($('.model:visible').length);
+                Schematics.setModelCount();
                 localStorage.clear();
 
-                $.get('schematics/clear-cache', function() {
+                $.get('schematics/clear-cache', function () {
                     location.reload();
                 });
             }

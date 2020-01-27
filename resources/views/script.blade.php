@@ -1,5 +1,6 @@
+<!--Loader-->
 <div class="w-full h-full fixed block top-0 left-0 bg-white opacity-75 loading">
-  <span class="text-purple-500 opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0">
+  <span class="text-purple-800 opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0">
     <i class="fas fa-circle-notch fa-spin fa-5x"></i>
   </span>
 </div>
@@ -63,10 +64,10 @@
             return $(".model:not(.no-relations)");
         },
 
-        $withoutRelations: function() {
+        $withoutRelations: function () {
             let $withoutRelations = [];
 
-            Schematics.$models().each(function(i, el) {
+            Schematics.$models().each(function (i, el) {
                 let $model = $(el),
                     noRelations = true,
                     table = $model.data('table').toLowerCase();
@@ -76,7 +77,7 @@
                         noRelations = false;
                     }
 
-                    Schematics.relations[relationTable].forEach(function(relation) {
+                    Schematics.relations[relationTable].forEach(function (relation) {
                         if (relation.relation.table === table) {
                             noRelations = false;
                         }
@@ -93,7 +94,7 @@
         },
 
         getModelPosition: function (model) {
-            return JSON.parse(localStorage.getItem(`schematics-settings-${model}-position`));
+            return JSON.parse(localStorage.getItem(`schematics-settings-${model.toLowerCase()}-position`));
         },
 
         positionModel: function (element) {
@@ -136,6 +137,33 @@
             $withoutRelations.forEach(function (element) {
                 Schematics.positionModel(element);
             });
+        },
+
+        setModelCount: function () {
+            $('#model-count').text($('.model:visible').length);
+        },
+
+        toggleModel: function ($model, hidden = false) {
+            $model.toggleClass('hidden-model', hidden).toggle(! hidden);
+
+            localStorage.setItem(`schematics-settings-${$model.data('model')}-hidden`, `${hidden}`);
+
+            Schematics.setModelCount();
+            Schematics.plumb();
+        },
+
+        toggleModels: function () {
+            $(".model:not(.filtered)").each(function (i, el) {
+                const $el = $(el),
+                    hidden = JSON.parse(
+                    localStorage.getItem(`schematics-settings-${$(el).data('model').toLowerCase()}-hidden`)
+                );
+
+                $el.toggleClass('hidden-model', hidden);
+                $el.toggle(! hidden);
+            });
+
+            this.setModelCount();
         },
 
         plumb: function () {
@@ -197,17 +225,13 @@
                     <br>`
                 );
 
-                modal.setAction('Open in PhpStorm', function () {
-                    window.location.href = `jetbrains://php-storm/navigate/reference?project={{
-                        config('schematics.project', basename(base_path()))
-                    }}&path=${relation.method.file}:${relation.method.line}`;
-                });
+                modal.setAction(`<a href='file:///${relation.method.file}'>Open</a>`);
 
                 modal.open();
             });
         },
 
-        selector: function() {
+        selector: function () {
             Selection.create({
                 class: 'selection',
                 selectables: ['.model'],
@@ -242,10 +266,31 @@
             });
         },
 
-        clearSelection: function() {
+        clearSelection: function () {
             this.$models().removeClass('selected');
             jsPlumb.clearDragSelection();
-        }
+        },
+
+        alert: function (msg, type = 'success') {
+            let background = {
+                    'success': 'bg-green-500',
+                    'warn': 'bg-purple-500',
+                    'error': 'bg-red-500'
+                }[type],
+                $alert = $('.alert');
+
+            $alert.find('.content')
+                .removeClass('bg-green-500 bg-purple-500 bg-red-500')
+                .addClass(background);
+            $alert.find('.alert-text').html(msg);
+            $alert.show();
+
+            clearTimeout(window.Alert || 0);
+
+            window.Alert = setTimeout(function () {
+                $alert.hide();
+            }, 3000)
+        },
     };
 </script>
 
@@ -258,5 +303,9 @@
 
     .selected {
         border: 2px double rgba(255, 71, 58, 0.81);
+    }
+
+    .alert {
+        z-index: 1200;
     }
 </style>
