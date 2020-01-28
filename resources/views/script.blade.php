@@ -159,7 +159,7 @@
                     localStorage.getItem(`schematics-settings-${$(el).data('model').toLowerCase()}-hidden`)
                 );
 
-                $el.toggleClass('hidden-model', hidden);
+                $el.toggleClass('hidden-model', !! hidden);
                 $el.toggle(! hidden);
             });
 
