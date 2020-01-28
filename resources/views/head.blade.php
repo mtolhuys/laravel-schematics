@@ -13,16 +13,6 @@
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" crossorigin="anonymous"></script>
 
-    <link href="https://unpkg.com/tailwindcss@next/dist/tailwind.min.css" rel="stylesheet" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/proxy-polyfill@0.3.0/proxy.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.8.0/dist/alpine.js" defer></script>
-
-    <link
-        rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.12.8/css/jsplumbtoolkit-defaults.css"
-        integrity="sha256-eFB5OKZPYgNuZVnVHdpzzLshBLhrGBikCXph13FeJhA="
-        crossorigin="anonymous" />
-
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.12.8/js/jsplumb.js"
         integrity="sha256-f9BpQngvHT3SFvrrXx5nCBEgIit5kRNapjY9BWNPDmw="
@@ -30,6 +20,17 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/selection-js/dist/selection.min.js"></script>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+
+    <link href="https://unpkg.com/tailwindcss@next/dist/tailwind.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <link
+        rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.12.8/css/jsplumbtoolkit-defaults.css"
+        integrity="sha256-eFB5OKZPYgNuZVnVHdpzzLshBLhrGBikCXph13FeJhA="
+        crossorigin="anonymous"
+    />
 
     <style>
         @import url('https://fonts.googleapis.com/css?family=Lato');

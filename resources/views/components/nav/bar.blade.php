@@ -46,51 +46,7 @@
 </nav>
 
 <script>
-    function bar() {
-        return {
-            value: localStorage.getItem('schematics-settings-search') || '',
 
-            init: function () {
-                this.search();
-            },
-
-            search: function () {
-                let $models = $('.model:not(.hidden-model)');
-
-                Schematics.loading(true);
-                Schematics.clearSelection();
-
-                localStorage.setItem('schematics-settings-search', this.value);
-
-                if (this.value.trim().length) {
-                    let search = this.value.toLowerCase();
-
-                    $models.addClass('filtered').hide();
-
-                    try {
-                        new RegExp(search);
-                    } catch (e) {
-                        console.error(`Invalid format: ${search}`);
-                        $models.show();
-                        setTimeout(Schematics.plumb, 1);
-                        return;
-                    }
-
-                    const $found = $models.filter(function () {
-                        return $(this).data('model').match(new RegExp(search));
-                    });
-
-                    $found.removeClass('filtered').show();
-                } else {
-                    $models.removeClass('filtered').show();
-                }
-
-                $('#model-count').text($('.model:visible').length);
-
-                setTimeout(Schematics.plumb, 1);
-            }
-        }
-    }
 </script>
 
 <style>

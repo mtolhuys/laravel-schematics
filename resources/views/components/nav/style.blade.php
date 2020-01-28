@@ -53,14 +53,6 @@
             init: function () {
 
             },
-
-            setStyle: function(style = 'Flowchart') {
-                Schematics.style = style;
-
-                localStorage.setItem('schematics-settings-style', Schematics.style);
-
-                Schematics.plumb();
-            }
         }
     }
 </script>

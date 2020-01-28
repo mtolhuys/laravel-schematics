@@ -29,6 +29,10 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/schematics.php' => config_path('schematics.php'),
         ]);
+
+        $this->publishes([
+            __DIR__.'/../resources/assets' => public_path('vendor/schematics'),
+        ], 'public');
     }
 
     /**

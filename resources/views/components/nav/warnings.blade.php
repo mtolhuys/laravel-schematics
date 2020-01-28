@@ -18,41 +18,7 @@
 </div>
 
 <script>
-    function warnings() {
-        return {
-            init: function () {
-                $('.warnings').toggle(!! Object.keys(Schematics.exceptions).length);
-
-                for (let model in Schematics.exceptions) {
-                    $('.exceptions').append(`
-                        <li data-model=${model} data-exception="${Schematics.exceptions[model]}"
-                            class="exception hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-red-700 hover:text-white">
-                            <div class="action inline-block button rounded-full px-4 py-2">
-                                <i class="fas fa-exclamation mr-2"></i> ${model}
-                            </div>
-                        </li>
-                    `)
-                }
-
-                this.bindClicks();
-            },
-
-            bindClicks: function() {
-                $('.exception').unbind().click(function () {
-                    let model = $(this).data('model'),
-                        exception = $(this).data('exception');
-
-                    modal.setTitle(model);
-
-                    modal.setContent(`Exception: <b class="text-red-700">${exception}</b>`);
-
-                    modal.setAction();
-
-                    modal.open();
-                });
-            }
-        }
-    }
+    
 </script>
 
 <style>
