@@ -2,7 +2,7 @@
     <div class="flex text-purple-300 text-lg">
         <div class="dropdown inline-block relative bg-transparent pt-2 pl-5">
             <button class="text-black inline-flex items-center">
-                <span class="mr-1"><i class="fas icon fa-palette"></i></span>
+                <span class="mr-1"><i class="fas icon fa-palette"/></span>
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -13,7 +13,7 @@
                     <div
                         @click="setStyle('Bezier')"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-bezier-curve mr-2"></i> Bezier
+                        <i class="fas fa-bezier-curve mr-2"/> Bezier
                     </div>
                 </li>
 
@@ -21,7 +21,7 @@
                     <div
                         @click="setStyle('Straight')"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-draw-polygon mr-2"></i> Straight
+                        <i class="fas fa-draw-polygon mr-2"/> Straight
                     </div>
                 </li>
 
@@ -29,7 +29,7 @@
                     <div
                         @click="setStyle('Flowchart')"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-sitemap mr-2"></i> Flowchart
+                        <i class="fas fa-sitemap mr-2"/> Flowchart
                     </div>
                 </li>
 
@@ -37,7 +37,7 @@
                     <div
                         @click="setStyle('StateMachine')"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-project-diagram mr-2"></i> State Machine
+                        <i class="fas fa-project-diagram mr-2"/> State Machine
                     </div>
                 </li>
             </ul>
@@ -46,19 +46,16 @@
 </template>
 
 <script>
-    module.exports = {
+    export default {
         name: "chart-style",
 
         methods: {
             setStyle(style = 'Flowchart') {
                 localStorage.setItem('schematics-settings-style', style);
 
+                EventBus.$emit('chart-style', style);
                 EventBus.$emit('plumb');
             }
         }
     }
 </script>
-
-<style scoped>
-
-</style>

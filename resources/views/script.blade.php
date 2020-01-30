@@ -300,12 +300,4 @@
         border-radius: 0.1em;
         border: 2px solid rgba(98, 155, 255, 0.81);
     }
-
-    .selected {
-        border: 2px double rgba(255, 71, 58, 0.81);
-    }
-
-    .alert {
-        z-index: 1200;
-    }
 </style>

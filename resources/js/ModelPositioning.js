@@ -1,22 +1,36 @@
-const ModelPositioning = {
+export default {
+    data() {
+        return {
+            minDistanceX: 250,
+
+            minDistanceY: 200,
+
+            position: {
+                top: 100,
+                left: 10
+            },
+        }
+    },
+
     methods: {
-        positionModels: function () {
-            let $withoutRelations = this.$withoutRelations();
+        positionModels() {
+            const self = this,
+                $withoutRelations = this.$withoutRelations();
 
             this.$withRelations().each(function (i, element) {
-                this.setModelPosition(element);
+                self.setModelPosition(element);
             });
 
-            $withoutRelations.forEach(function (element) {
-                this.setModelPosition(element);
-            });
+            $withoutRelations.forEach(this.setModelPosition);
+
+            EventBus.$emit('plumb');
         },
 
-        getModelPosition: function (model) {
+        getModelPosition(model) {
             return JSON.parse(localStorage.getItem(`schematics-settings-${model.toLowerCase()}-position`));
         },
 
-        setModelPosition: function (element) {
+        setModelPosition(element) {
             let $model = $(element),
                 model = $model.data('model').toLowerCase(),
                 position = this.getModelPosition(model);
@@ -27,36 +41,36 @@ const ModelPositioning = {
 
                 $model.css(position);
             } else {
-                const posX = ($model.width() + Schematics.minDistanceX),
-                    posY = ($model.height() + Schematics.minDistanceY);
+                const posX = ($model.width() + this.minDistanceX),
+                    posY = ($model.height() + this.minDistanceY);
 
-                $model.css(Schematics.position);
+                $model.css(this.position);
 
                 localStorage.setItem(
                     `schematics-settings-${model}-position`,
-                    JSON.stringify(Schematics.position)
+                    JSON.stringify(this.position)
                 );
 
-                if (Schematics.position.left + (posX * 1.5) >= $(window).width()) {
-                    Schematics.position.left = 10;
-                    Schematics.position.top += posY;
+                if (this.position.left + (posX * 1.5) >= $(window).width()) {
+                    this.position.left = 10;
+                    this.position.top += posY;
                 } else {
-                    Schematics.position.left += posX;
+                    this.position.left += posX;
                 }
             }
         },
 
-        $withRelations: function () {
+        $withRelations() {
             return $(".model:not(.no-relations)");
         },
 
-        $withoutRelations: function () {
+        $withoutRelations() {
             let $withoutRelations = [];
 
             $('.model').each(function (i, el) {
                 let $model = $(el),
                     noRelations = true,
-                    table = $model.data('table').toLowerCase();
+                    table = $model.data('table');
 
                 for (const relationTable in Schematics.relations) {
                     if (relationTable === table) {

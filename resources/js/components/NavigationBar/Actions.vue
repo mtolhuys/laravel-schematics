@@ -1,24 +1,10 @@
 <template>
     <div class="flex justify-end mr-10 text-purple-300 text-lg">
-        <div
-            @click="zoom(-.1)"
-            title="Zoom Out"
-            class="action inline-block button rounded-full px-5 pt-2 hover:text-purple-500">
-            <i class="fas fa-search-minus"></i>
-        </div>
-
-        <div
-            @click="zoom()"
-            title="Zoom In"
-            class="action inline-block button rounded-full px-5 pt-2 hover:text-purple-500">
-            <i class="fas fa-search-plus"></i>
-        </div>
-
-        <chart-style></chart-style>
+        <chart-style/>
 
         <div class="dropdown inline-block relative bg-transparent pt-2 pl-5">
             <button class="text-black inline-flex items-center">
-                <span class="mr-1"><i class="fas icon fa-cog"></i></span>
+                <span class="mr-1"><i class="fas icon fa-cog"/></span>
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                 </svg>
@@ -29,7 +15,7 @@
                     <div
                         @click="exportSettings()"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-file-export mr-2"></i> Export Settings
+                        <i class="fas fa-file-export mr-2"/> Export Settings
                     </div>
                 </li>
 
@@ -43,7 +29,7 @@
                     <div
                         @click="importSettings()"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-file-import mr-2"></i> Import Settings
+                        <i class="fas fa-file-import mr-2"/> Import Settings
                     </div>
                 </li>
 
@@ -51,7 +37,7 @@
                     <div
                         @click="hideModels()"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-eye-slash mr-2"></i> Hide Selected Models
+                        <i class="fas fa-eye-slash mr-2"/> Hide Selected Models
                     </div>
                 </li>
 
@@ -59,7 +45,7 @@
                     <div
                         @click="showModels()"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-eye mr-2"></i> Show Hidden Models
+                        <i class="fas fa-eye mr-2"/> Show Hidden Models
                     </div>
                 </li>
 
@@ -67,7 +53,7 @@
                     <div
                         @click="clearCache()"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-broom mr-2"></i> Clear Cache
+                        <i class="fas fa-broom mr-2"/> Clear Cache
                     </div>
                 </li>
 
@@ -75,7 +61,7 @@
                     <div
                         @click="reset()"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-redo-alt mr-2"></i> Reset Diagram
+                        <i class="fas fa-redo-alt mr-2"/> Reset Diagram
                     </div>
                 </li>
             </ul>
@@ -84,20 +70,17 @@
 </template>
 
 <script>
-    module.exports = {
+    import ChartStyle from './ChartStyle.vue';
+
+    export default {
         name: "actions",
 
-
         components: {
-            'chart-style': httpVueLoader(`${Schematics.components}/NavigationBar/ChartStyle.vue`),
+            'chart-style': ChartStyle,
         },
 
         methods: {
-            init: function () {
-                this.setZoom();
-            },
-
-            importSettings: function () {
+            importSettings() {
                 $('#import-settings').click();
 
                 $("#import-settings:file").change(function () {
@@ -127,11 +110,11 @@
                 });
             },
 
-            exportSettings: function () {
+            exportSettings() {
                 let download = document.createElement('a'),
                     content = '';
 
-                Schematics.loading(true);
+                EventBus.$emit('loading', true);
 
                 Object.keys(localStorage).filter(function (key) {
                     return key.indexOf('schematics-settings') === 0;
@@ -147,37 +130,15 @@
                 download.click();
                 download.remove();
 
-                Schematics.loading(false);
+                EventBus.$emit('loading', false);
             },
 
-            clearCache: function () {
-                Schematics.loading(true);
+            clearCache() {
+                EventBus.$emit('loading', true);
 
                 $.get('schematics/clear-cache', function () {
                     location.reload();
                 });
-            },
-
-            setZoom: function () {
-                Schematics.zoom = parseFloat(localStorage.getItem('schematics-zoom')) || 1.0;
-
-                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
-            },
-
-            zoom: function (zoom = .1) {
-                Schematics.zoom += zoom;
-
-                localStorage.setItem('schematics-settings-zoom', '' + Schematics.zoom);
-
-                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
-            },
-
-            zoomReset() {
-                Schematics.zoom = 1;
-
-                localStorage.setItem('schematics-settings-zoom', '' + Schematics.zoom);
-
-                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
             },
 
             showModels() {
@@ -207,7 +168,8 @@
             },
 
             reset() {
-                Schematics.loading(true);
+                EventBus.$emit('loading', true);
+
                 $('.hidden-model').removeClass('hidden-model filtered').show();
                 Schematics.setModelCount();
                 localStorage.clear();
@@ -220,7 +182,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     .dropdown:hover .dropdown-menu {
         display: block;
     }

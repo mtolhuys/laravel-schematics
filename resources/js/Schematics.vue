@@ -1,24 +1,57 @@
 <template>
     <div class="schematics">
-        <nav-bar></nav-bar>
-        <schema></schema>
+        <nav-bar/>
+        <loading/>
+        <schema/>
+        <modal/>
     </div>
 </template>
 
 <script>
-    const ModelPositioning = httpVueLoader(`${Schematics.components}/../ModelPositioning.js`);
+    import NavigationBar from './components/NavigationBar.vue';
+    import Loading from './components/Loading.vue';
+    import Schema from './components/Schema.vue';
+    import Modal from './components/Modal.vue';
 
-    console.info('ModelPositioning', ModelPositioning);
-
-    module.exports = {
-        mixins: [
-            ModelPositioning
-        ],
+    export default {
+        name: 'schematics',
 
         components: {
-            'nav-bar': httpVueLoader(`${Schematics.components}/NavigationBar.vue`),
-            'schema': httpVueLoader(`${Schematics.components}/Schema.vue`),
+            'modal': Modal,
+            'nav-bar': NavigationBar,
+            'loading': Loading,
+            'schema': Schema,
         },
+
+        mounted() {
+            $(document).on('keydown', function (e) {
+                if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
+                    $(".model").each(function (i, el) {
+                        const $el = $(el).not('.hidden-model, .filtered');
+
+                        jsPlumb.addToDragSelection($el);
+
+                        $el.addClass('selected');
+                    });
+                }
+            });
+
+            $(document).mousedown(function (e) {
+                let $model = $(".model"),
+                    notClicked = function ($el) {
+                    return !$el.is(e.target) && $el.has(e.target).length === 0
+                };
+
+                if (notClicked($model) && notClicked($(".action"))) {
+                    $model.removeClass('selected');
+                    jsPlumb.clearDragSelection();
+                }
+
+                if (notClicked($(".modal-container"))) {
+                    EventBus.$emit('modal-close');
+                }
+            });
+        }
     }
 </script>
 
@@ -45,10 +78,6 @@
 
     .loading span {
         top: 50%;
-    }
-
-    .schema {
-        zoom: 75%;
     }
 
     .model {

@@ -21,9 +21,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/selection-js/dist/selection.min.js"></script>
 
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://unpkg.com/http-vue-loader"></script>
-
     <link href="https://unpkg.com/tailwindcss@next/dist/tailwind.min.css" rel="stylesheet" crossorigin="anonymous">
 
     <link

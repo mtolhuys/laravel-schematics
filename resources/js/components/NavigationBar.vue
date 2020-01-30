@@ -7,8 +7,8 @@
             class="w-full flex flex-wrap justify-between mt-0 py-4"
         >
             <div class="pl-4 flex items-center">
-                <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl" href="#">
-                    <i class="fas fa-sitemap icon"></i> Laravel Schematics
+                <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl">
+                    <i class="fas fa-sitemap icon"/> Laravel Schematics
                 </a>
 
                 <div class="flex-1 w-full mx-auto max-w-sm content-center py-4 lg:py-0">
@@ -39,17 +39,19 @@
                 </ul>
             </div>
 
-            <actions></actions>
+            <actions/>
         </div>
     </nav>
 </template>
 
 <script>
-    module.exports = {
+    import Actions from './NavigationBar/Actions.vue';
+
+    export default {
         name: "nav-bar",
 
         components: {
-            'actions': httpVueLoader(`${Schematics.components}/NavigationBar/Actions.vue`),
+            'actions': Actions,
         },
 
         data() {
@@ -59,18 +61,51 @@
             }
         },
 
-        created() {
+        mounted() {
             this.search();
         },
 
         methods: {
             search() {
-                console.info('searchFor', this.searchFor);
+                let $models = $('.model:not(.hidden-model)');
+
+                EventBus.$emit('loading', true);
+
+                localStorage.setItem('schematics-settings-search', this.searchFor);
+
+                if (this.searchFor.trim().length) {
+                    let search = this.searchFor.toLowerCase();
+
+                    $models.addClass('filtered').hide();
+
+                    try {
+                        new RegExp(search);
+                    } catch (e) {
+                        console.error(`Invalid format: ${search}`);
+                        $models.show();
+                        EventBus.$emit('plumb');
+                        return;
+                    }
+
+                    const $found = $models.filter(function () {
+                        return $(this).data('model').match(new RegExp(search));
+                    });
+
+                    $found.removeClass('filtered').show();
+                } else {
+                    $models.removeClass('filtered').show();
+                }
+
+                $('#model-count').text($('.model:visible').length);
+
+                EventBus.$emit('plumb');
             }
         },
     }
 </script>
 
-<style scoped>
-
+<style>
+    #header {
+        z-index: 1000;
+    }
 </style>

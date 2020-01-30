@@ -22,7 +22,7 @@
         relations: {!! json_encode($relations) !!},
         tables: {!! json_encode($tables) !!},
         exceptions: {!! json_encode($exceptions) !!},
-        components: '{!! asset('vendor/schematics') !!}/js/components',
+        exceptions: {!! json_encode($exceptions) !!},
     };
 </script>
 
@@ -30,6 +30,6 @@
     <schematics/>
 </div>
 
-<script type="module" src="{{ asset('vendor/schematics/js/app.js') }}"></script>
+<script type="module" src="{{ asset('vendor/schematics/app.js') }}"></script>
 
 </body>
