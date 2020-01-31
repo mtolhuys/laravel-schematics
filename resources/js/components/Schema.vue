@@ -8,8 +8,8 @@
 
 <script>
     import DragSelect from 'dragselect';
-    import ModelPositioning from '../ModelPositioning';
-    import Plumbing from "../Plumbing";
+    import ModelPositioning from '../lib/ModelPositioning';
+    import Plumbing from "../lib/Plumbing";
     import Model from './Model.vue';
 
     export default {
@@ -32,13 +32,14 @@
         },
 
         mounted() {
-            this.positionModels();
+            EventBus.$emit('loading', true);
+
+            this.setModelsPosition();
 
             new DragSelect({
-                selectables: $('.model'),
+                selectables: this.$models().all(),
                 multiSelectKeys: ['altKey', 'shiftKey'],
                 onElementSelect: this.select,
-                onElementUnselect: this.unSelect,
             });
         },
 
@@ -49,14 +50,6 @@
                 $model.addClass('selected');
 
                 jsPlumb.addToDragSelection($model);
-            },
-
-            unSelect(model) {
-                const $model = $(model).not('.hidden-model, .filtered');
-
-                $model.removeClass('selected');
-
-                jsPlumb.removeFromDragSelection($model);
             },
         }
     }

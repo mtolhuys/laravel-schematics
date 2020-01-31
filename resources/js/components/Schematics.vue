@@ -4,27 +4,30 @@
         <loading/>
         <schema/>
         <modal/>
+        <alert/>
     </div>
 </template>
 
 <script>
-    import NavigationBar from './components/NavigationBar.vue';
-    import Loading from './components/Loading.vue';
-    import Schema from './components/Schema.vue';
-    import Modal from './components/Modal.vue';
+    import NavigationBar from './NavigationBar.vue';
+    import Loading from './Loading.vue';
+    import Schema from './Schema.vue';
+    import Modal from './Modal.vue';
+    import Alert from './Alert.vue';
 
     export default {
         name: 'schematics',
 
         components: {
-            'modal': Modal,
             'nav-bar': NavigationBar,
             'loading': Loading,
             'schema': Schema,
+            'modal': Modal,
+            'alert': Alert,
         },
 
         mounted() {
-            $(document).on('keydown', function (e) {
+            $(document).on('keydown', (e) => {
                 if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
                     $(".model").each(function (i, el) {
                         const $el = $(el).not('.hidden-model, .filtered');
@@ -36,7 +39,7 @@
                 }
             });
 
-            $(document).mousedown(function (e) {
+            $(document).mousedown((e) => {
                 let $model = $(".model"),
                     notClicked = function ($el) {
                     return !$el.is(e.target) && $el.has(e.target).length === 0

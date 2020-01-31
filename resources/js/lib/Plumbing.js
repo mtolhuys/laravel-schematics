@@ -41,7 +41,7 @@ export default {
                         });
 
                         setTimeout(() => {
-                            $(event.el).removeClass('selected').css({'z-index': 100});
+                            $(".model").removeClass('selected').css({'z-index': 100});
                             jsPlumb.clearDragSelection();
                         }, 1);
                     }
@@ -81,6 +81,23 @@ export default {
                             });
                         }
                     });
+                });
+
+                $('.relation').unbind().click(function () {
+                    let relation = $.grep(this.className.split(' '), (c) => {
+                        return c.indexOf('rel-') === 0;
+                    }).join().replace('rel-', '').split('-');
+
+                    relation = Schematics.relations[relation[0]][relation[1]];
+                    relation.model = `${relation.model}`.split('\\').slice(-1)[0];
+                    relation.type = relation.type.charAt(0).toLowerCase() + relation.type.slice(1);
+
+                    EventBus.$emit(
+                        'modal-open',
+                        `${relation.model}.php(<span class="text-purple-400 text-lg">${relation.method.line}</span>)`,
+                        'relation',
+                        relation
+                    );
                 });
 
                 EventBus.$emit('loading', false);

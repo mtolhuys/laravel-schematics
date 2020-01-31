@@ -19,7 +19,7 @@
             </span>
 
             <span
-                @click="edit()"
+                @click="edit(model, table)"
                 class="cursor-pointer edit">
                 <i class="fas fa-search text-gray-400 hover:text-purple-700"/>
             </span>
@@ -48,11 +48,29 @@
 
         methods: {
             hide() {
+                const $model = $(this.$el);
 
+                $model.addClass('hidden-model', true).hide();
+
+                localStorage.setItem(`schematics-settings-${$model.data('model')}-hidden`, 'true');
+
+                this.$models().count().text(this.$models().visible().length);
+
+                EventBus.$emit('plumb');
             },
 
-            edit() {
+            edit(model, table) {
+                EventBus.$emit('loading', true);
 
+                $.get(`schematics/details/${table}`, function (fields) {
+                    EventBus.$emit('modal-open', model, 'model-fields', fields);
+
+                    EventBus.$emit('loading', false);
+                }).fail(function (e) {
+                    console.error(e);
+                    EventBus.$emit('alert', e.statusText, 'error');
+                    EventBus.$emit('loading', false);
+                });
             }
         },
     }

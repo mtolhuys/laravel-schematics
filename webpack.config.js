@@ -50,6 +50,8 @@ if (process.env.NODE_ENV === 'production') {
             }
         })
     );
+
+    config.output.filename = 'dist/[name].js';
 }
 
 module.exports = config;

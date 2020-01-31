@@ -27,7 +27,7 @@ composer require mtolhuys/laravel-schematics
 ```
 
 ## Usage
-Run `php artisan vendor:publish` and visit `{your-app}/schematics`
+Run `php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"` and visit `{your-app}/schematics`
 
 ### Changelog
 

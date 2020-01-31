@@ -39,19 +39,19 @@
                 </ul>
             </div>
 
-            <actions/>
+            <dropdowns/>
         </div>
     </nav>
 </template>
 
 <script>
-    import Actions from './NavigationBar/Actions.vue';
+    import DropDowns from './NavigationBar/DropDowns.vue';
 
     export default {
         name: "nav-bar",
 
         components: {
-            'actions': Actions,
+            'dropdowns': DropDowns,
         },
 
         data() {
@@ -67,7 +67,7 @@
 
         methods: {
             search() {
-                let $models = $('.model:not(.hidden-model)');
+                let $models = this.$models().unhidden();
 
                 EventBus.$emit('loading', true);
 
@@ -88,7 +88,9 @@
                     }
 
                     const $found = $models.filter(function () {
-                        return $(this).data('model').match(new RegExp(search));
+                        return $(this).data('model')
+                            .toLowerCase()
+                            .match(new RegExp(search));
                     });
 
                     $found.removeClass('filtered').show();
@@ -96,7 +98,7 @@
                     $models.removeClass('filtered').show();
                 }
 
-                $('#model-count').text($('.model:visible').length);
+                this.$models().count().text(this.$models().visible().length);
 
                 EventBus.$emit('plumb');
             }

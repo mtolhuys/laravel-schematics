@@ -1,29 +1,7 @@
-<div
-    x-data="actions()"
-    x-init="init()"
-    class="flex justify-end mr-10 text-purple-300 text-lg"
->
-    <div
-        @click="zoom(-.1)"
-        title="Zoom Out"
-        class="action inline-block button rounded-full px-5 pt-2 hover:text-purple-500">
-        <i class="fas fa-search-minus"></i>
-    </div>
-
-    <div
-        @click="zoom()"
-        title="Zoom In"
-        class="action inline-block button rounded-full px-5 pt-2 hover:text-purple-500">
-        <i class="fas fa-search-plus"></i>
-    </div>
-
-    @include('schematics::components.nav.warnings')
-
-    @include('schematics::components.nav.style')
-
+<template>
     <div class="dropdown inline-block relative bg-transparent pt-2 pl-5">
         <button class="text-black inline-flex items-center">
-            <span class="mr-1"><i class="fas icon fa-cog"></i></span>
+            <span class="mr-1"><i class="fas icon fa-cog"/></span>
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
             </svg>
@@ -34,7 +12,7 @@
                 <div
                     @click="exportSettings()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-file-export mr-2"></i> Export Settings
+                    <i class="fas fa-file-export mr-2"/> Export Settings
                 </div>
             </li>
 
@@ -48,23 +26,23 @@
                 <div
                     @click="importSettings()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-file-import mr-2"></i> Import Settings
+                    <i class="fas fa-file-import mr-2"/> Import Settings
                 </div>
             </li>
 
-            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="action hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="hideModels()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-eye-slash mr-2"></i> Hide Selected Models
+                    <i class="fas fa-eye-slash mr-2"/> Hide Selected Models
                 </div>
             </li>
 
-            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+            <li class="action hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="showModels()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-eye mr-2"></i> Show Hidden Models
+                    <i class="fas fa-eye mr-2"/> Show Hidden Models
                 </div>
             </li>
 
@@ -72,7 +50,7 @@
                 <div
                     @click="clearCache()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-broom mr-2"></i> Clear Cache
+                    <i class="fas fa-broom mr-2"/> Clear Cache
                 </div>
             </li>
 
@@ -80,57 +58,55 @@
                 <div
                     @click="reset()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-redo-alt mr-2"></i> Reset Diagram
+                    <i class="fas fa-redo-alt mr-2"/> Reset Diagram
                 </div>
             </li>
         </ul>
     </div>
-</div>
+</template>
 
 <script>
-    function actions() {
-        return {
-            init: function () {
-                this.setZoom();
-            },
+    export default {
+        name: "settings",
 
-            importSettings: function () {
+        methods: {
+            importSettings() {
+                let $models = this.$models().all();
+
                 $('#import-settings').click();
 
-                $("#import-settings:file").change(function () {
-                    let fileReader = new FileReader();
+                $("#import-settings:file").change(function() {
+                    const fileReader = new FileReader();
 
                     fileReader.readAsText($(this).prop('files')[0]);
 
-                    fileReader.onload = function () {
+                    fileReader.onload = () => {
                         let value = fileReader.result;
 
                         try {
+                            EventBus.$emit('loading', true);
                             localStorage.clear();
-
                             value.split('\n').forEach(eval);
-
-                            Schematics.alert('Settings successfully imported!<br>Loading...', 'success');
-                            Schematics.$models().hide();
-                            Schematics.plumb();
-                            Schematics.loading(true);
-
+                            EventBus.$emit('alert', 'Settings successfully imported!<br>Loading...', 'success');
+                            jsPlumb.deleteEveryConnection();
+                            $models.hide();
                             location.reload();
                         } catch (e) {
                             console.error(e.message);
-                            Schematics.alert('Invalid import file!', 'error');
+                            EventBus.$emit('loading', false);
+                            EventBus.$emit('alert', 'Invalid import file!', 'error');
                         }
                     };
                 });
             },
 
-            exportSettings: function () {
+            exportSettings() {
                 let download = document.createElement('a'),
                     content = '';
 
-                Schematics.loading(true);
+                EventBus.$emit('loading', true);
 
-                Object.keys(localStorage).filter(function (key) {
+                Object.keys(localStorage).filter((key) => {
                     return key.indexOf('schematics-settings') === 0;
                 }).forEach(function (key) {
                     content += `localStorage.setItem(${JSON.stringify(key)}, '${localStorage.getItem(key)}');\n`
@@ -144,85 +120,55 @@
                 download.click();
                 download.remove();
 
-                Schematics.loading(false);
+                EventBus.$emit('loading', false);
             },
 
-            clearCache: function () {
-                Schematics.loading(true);
+            clearCache() {
+                EventBus.$emit('loading', true);
 
-                $.get('schematics/clear-cache', function () {
+                $.get('schematics/clear-cache', () => {
                     location.reload();
                 });
             },
 
-            setZoom: function () {
-                Schematics.zoom = parseFloat(localStorage.getItem('schematics-zoom')) || 1.0;
-
-                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
-            },
-
-            zoom: function (zoom = .1) {
-                Schematics.zoom += zoom;
-
-                localStorage.setItem('schematics-settings-zoom', '' + Schematics.zoom);
-
-                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
-            },
-
-            zoomReset: function () {
-                Schematics.zoom = 1;
-
-                localStorage.setItem('schematics-settings-zoom', '' + Schematics.zoom);
-
-                $('#schema').animate({'zoom': Schematics.zoom}, 'slow');
-            },
-
-            showModels: function () {
-                let $hidden = $('.hidden-model');
+            showModels() {
+                let $hidden = this.$models().hidden();
 
                 $hidden.removeClass('hidden-model').show();
-                $hidden.each(function (i, el) {
+                $hidden.each((i, el) => {
                     localStorage.setItem(`schematics-settings-${$(el).data('model')}-hidden`, 'false');
                 });
 
-                Schematics.setModelCount();
+                this.$models().count().text(this.$models().visible().length);
 
-                Schematics.plumb();
+                EventBus.$emit('plumb');
             },
 
-            hideModels: function () {
-                let $selected = $('.selected');
+            hideModels() {
+                let $selected = this.$selected();
 
                 $selected.addClass('hidden-model').hide();
-                $selected.each(function (i, el) {
+                $selected.each((i, el) => {
                     localStorage.setItem(`schematics-settings-${$(el).data('model')}-hidden`, 'true');
                 });
 
-                Schematics.setModelCount();
+                this.$models().count().text(this.$models().visible().length);
 
-                Schematics.plumb();
+                EventBus.$emit('plumb');
             },
 
             reset() {
-                Schematics.loading(true);
-                $('.hidden-model').removeClass('hidden-model filtered').show();
-                Schematics.setModelCount();
+                EventBus.$emit('loading', true);
+
+                this.$models().hidden().removeClass('hidden-model filtered').show();
+                this.$models().count().text(this.$models().visible().length);
+
                 localStorage.clear();
 
-                $.get('schematics/clear-cache', function () {
+                $.get('schematics/clear-cache', () => {
                     location.reload();
                 });
             }
         }
     }
 </script>
-
-<style>
-    .dropdown:hover .dropdown-menu {
-        display: block;
-    }
-
-    .dropdown-menu {
-        right: -60px;
-    }
-</style>

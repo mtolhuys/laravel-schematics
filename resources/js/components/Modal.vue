@@ -1,18 +1,16 @@
 <template>
-    <div
-        class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center"
+    <div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center"
         :class="{ 'opacity-0 pointer-events-none' : closed }"
     >
         <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
 
-        <div class="modal-container bg-white w-full md:max-w-md mx-auto rounded shadow-lg z-50
-                overflow-visible overflow-y-scroll">
-            <div class="py-4 text-left px-6">
-                <div class="flex justify-between items-center pb-3">
-                    <p class="modal-title text-2xl font-bold">
-                        {{ title }}
-                    </p>
-                    <div class="modal-close cursor-pointer z-50">
+        <div class="modal-container flex bg-white w-auto inline-block mx-auto rounded shadow-lg overflow-y-scroll z-50">
+            <div class="py-4 text-left px-6 w-full">
+                <div class="flex justify-between items-center w-full pb-3">
+                    <p class="modal-title text-2xl font-bold" v-html="title"/>
+
+                    <div @click="closed = true"
+                        class="modal-close cursor-pointer z-50">
                         <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                              viewBox="0 0 18 18">
                             <path
@@ -20,38 +18,46 @@
                         </svg>
                     </div>
                 </div>
-
-
-                <div class="modal-content w-auto">
-                    <p>...</p>
+                <div class="flex w-full">
+                    <span v-if="type === 'html'" v-html="content" />
+                    <relation v-if="type === 'relation'" :relation="content" />
+                    <model-fields v-if="type === 'model-fields'" :fields="content" />
                 </div>
-
-                <div class="flex justify-end pt-2">
-                    <button
-                        class="modal-action px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2"
-                    />
-                </div>
-
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import ModelFields from './Modal/ModelFields.vue';
+    import Relation from './Modal/Relation.vue';
+
     export default {
         name: "modal",
+
+        components: {
+            'model-fields': ModelFields,
+            'relation': Relation
+        },
 
         data() {
             return {
                 closed: true,
                 title: '',
+                type: '',
+                content: [],
             }
         },
 
         created() {
-            EventBus.$on('modal-open', (...args) => {
-                console.info('args', args);
+            EventBus.$on('modal-open', (title, type, content) => {
+                this.title = title;
+                this.type = type;
+                this.content = content;
+                this.closed = false;
             });
+
+            EventBus.$on('modal-close', () => { this.closed = true; });
         },
 
         destroyed() {
@@ -60,13 +66,7 @@
         },
 
         methods: {
-            hide() {
 
-            },
-
-            edit() {
-
-            }
         },
     }
 </script>
