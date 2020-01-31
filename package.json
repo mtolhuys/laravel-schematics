@@ -1,6 +1,6 @@
 {
     "name": "laravel-schematics",
-    "version": "0.1.4",
+    "version": "0.2.1",
     "description": "A package to help you build your models",
     "main": "webpack.config.js",
     "scripts": {
@@ -50,8 +50,10 @@
     },
     "homepage": "https://github.com/mtolhuys/laravel-schematics#readme",
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.12.0",
         "dragselect": "^1.13.1",
-        "tailwindcss": "^1.1.4"
+        "lodash.template": ">=4.5.0",
+        "mem": ">=4.0.0",
+        "braces": ">=2.3.1",
+        "tunnel-agent": ">=0.6.0"
     }
 }
