@@ -76,7 +76,11 @@ export default {
             EventBus.$emit('loading', true);
 
             setTimeout(() => {
-                jsPlumb.deleteEveryEndpoint();
+                try {
+                    jsPlumb.deleteEveryEndpoint();
+                } catch (e) {
+                    console.error(e);
+                }
 
                 Object.keys(Schematics.relations).forEach((table) => {
                     Schematics.relations[table].forEach((relation, index) => {

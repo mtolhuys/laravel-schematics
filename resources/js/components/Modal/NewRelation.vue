@@ -158,7 +158,7 @@
                 this.relation.target = models.target;
                 this.relation.keys = '';
                 this.relation.method = {
-                    name: 'methodName',
+                    name: '',
                     foreignKey: '',
                     localKey: '',
                 };
