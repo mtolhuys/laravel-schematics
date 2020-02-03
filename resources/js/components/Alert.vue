@@ -1,14 +1,29 @@
 <template>
-    <div class="alert hidden fixed flex bottom-0 right-0 m-8 w-5/6 shadow-lg md:w-full max-w-sm">
+    <div
+        class="alert hidden fixed flex bottom-0 right-0 m-8 w-5/6 shadow-lg md:w-full max-w-sm rounded"
+        :class="{
+            'bg-white' : type === 'info',
+            'bg-red-500' : type === 'error',
+        }"
+    >
         <label
-            class="content flex items-start justify-between w-full p-2 h-24 rounded shadow-lg text-white"
+            class="content flex items-start justify-between w-full p-2 h-24 rounded shadow-lg"
+            :class="{
+                'text-purple-600' : type === 'info',
+                'text-white' : type === 'error',
+            }"
         >
-
-            <span class="px-6 py-3 flex font-bold alert-text"/>
+            <span
+                class="px-6 py-3 flex font-bold alert-text"
+                :class="{
+                    'text-black' : type === 'info',
+                    'text-white' : type === 'error',
+                }"
+            />
 
             <svg
                 @click="close()"
-                class="fill-current text-white cursor-pointer "
+                class="fill-current cursor-pointer "
                 xmlns="http://www.w3.org/2000/svg"
                 width="18" height="18"
                 viewBox="0 0 18 18"
@@ -23,7 +38,13 @@
 
 <script>
     export default {
-        name: "Alert",
+        name: "alert",
+
+        data() {
+            return {
+                type: 'info'
+            }
+        },
 
         created() {
             EventBus.$on('alert', this.alert);
@@ -41,13 +62,8 @@
             alert(msg, type = 'success', time = 3000) {
                 let $alert = this.$alert();
 
-                $alert.find('.content')
-                    .removeClass('bg-green-500 bg-purple-500 bg-red-500')
-                    .addClass({
-                        'success': 'bg-green-500',
-                        'warn': 'bg-purple-500',
-                        'error': 'bg-red-500'
-                    }[type]);
+                this.type = type;
+
                 $alert.find('.alert-text').html(msg);
                 $alert.show();
 

@@ -21,7 +21,7 @@
 
 <script>
     export default {
-        name: "ModelFields",
+        name: "model-fields",
 
         props: {
             fields: {

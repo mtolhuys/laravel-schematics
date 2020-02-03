@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-end mr-10 text-purple-300 text-lg">
-        <warnings/>
+        <warnings v-if="exceptions"/>
         <chart-style/>
         <settings/>
     </div>
@@ -13,6 +13,12 @@
 
     export default {
         name: "dropdowns",
+
+        data() {
+          return {
+              exceptions: Object.keys(Schematics.exceptions).length
+          }
+        },
 
         components: {
             'warnings': Warnings,

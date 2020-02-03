@@ -27,26 +27,14 @@
         },
 
         mounted() {
-            $(document).on('keydown', (e) => {
-                if ((e.metaKey || e.ctrlKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
-                    $(".model").each(function (i, el) {
-                        const $el = $(el).not('.hidden-model, .filtered');
-
-                        jsPlumb.addToDragSelection($el);
-
-                        $el.addClass('selected');
-                    });
-                }
-            });
-
             $(document).mousedown((e) => {
-                let $model = $(".model"),
+                let $models = this.$models().all(),
                     notClicked = function ($el) {
                     return !$el.is(e.target) && $el.has(e.target).length === 0
                 };
 
-                if (notClicked($model) && notClicked($(".action"))) {
-                    $model.removeClass('selected');
+                if (notClicked($models) && notClicked($(".action"))) {
+                    $models.removeClass('selected');
                     jsPlumb.clearDragSelection();
                 }
 
@@ -145,6 +133,7 @@
 
     ::-webkit-scrollbar-thumb:hover {
         background: #9F7AEA;
+        border-radius: 50%;
     }
 
 </style>

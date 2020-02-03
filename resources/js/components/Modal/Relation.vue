@@ -32,7 +32,7 @@
             copy(link) {
                 navigator.clipboard.writeText(link);
 
-                EventBus.$emit('alert', 'Link copied!', 'success');
+                EventBus.$emit('alert', 'Link copied!', 'info');
             }
         }
     }

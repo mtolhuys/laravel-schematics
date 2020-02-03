@@ -85,14 +85,21 @@
 
                         try {
                             EventBus.$emit('loading', true);
+
                             localStorage.clear();
+
                             value.split('\n').forEach(eval);
-                            EventBus.$emit('alert', 'Settings successfully imported!<br>Loading...', 'success');
+
+                            EventBus.$emit('alert', 'Settings successfully imported!<br>Loading...', 'info');
+
                             jsPlumb.deleteEveryConnection();
+
                             $models.hide();
+
                             location.reload();
                         } catch (e) {
                             console.error(e.message);
+
                             EventBus.$emit('loading', false);
                             EventBus.$emit('alert', 'Invalid import file!', 'error');
                         }

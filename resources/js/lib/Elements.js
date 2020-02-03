@@ -16,6 +16,10 @@ export default {
             return $('.alert');
         },
 
+        $endpoints() {
+            return $('.plumb-arrow');
+        },
+
         $models() {
             return {
                 all() {

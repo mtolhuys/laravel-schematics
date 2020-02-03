@@ -14,7 +14,7 @@
                 <div class="flex-1 w-full mx-auto max-w-sm content-center py-4 lg:py-0">
                     <div class="relative pull-right pl-4 pr-4 md:pr-0">
                         <input
-                            v-on:keydown.enter="search()"
+                            @keydown.enter="search()"
                             v-model="searchFor"
                             type="search"
                             placeholder="(RegEx) Search..."
@@ -82,6 +82,8 @@
                         new RegExp(search);
                     } catch (e) {
                         console.error(`Invalid format: ${search}`);
+                        EventBus.$emit('alert', `Invalid search format: ${search}`, 'error');
+
                         $models.show();
                         EventBus.$emit('plumb');
                         return;

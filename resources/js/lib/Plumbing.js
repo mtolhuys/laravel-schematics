@@ -1,12 +1,17 @@
 export default {
     data() {
         return {
-            style: localStorage.getItem('schematics-settings-style') || 'Flowchart',
+            style: localStorage.getItem('schematics-settings-style') || 'Bezier',
         }
     },
 
     created() {
-        EventBus.$on('chart-style', style => this.style = style);
+        EventBus.$on('chart-style', style => {
+            this.style = Schematics.style = style;
+            jsPlumb.deleteEveryEndpoint();
+            this.plumb();
+        });
+
         EventBus.$on('plumb', this.plumb);
     },
 
@@ -17,20 +22,38 @@ export default {
 
     mounted() {
         jsPlumb.ready(() => {
+            Schematics.style = this.style;
+
             this.group();
+
+            jsPlumb.bind("beforeDrop", function (info) {
+                if (info.sourceId === info.targetId) return;
+
+                const $source = $(`#${info.sourceId}`),
+                    source = $source.data('model'),
+                    target = $(`#${info.targetId}`).data('model'),
+                    data = {
+                        table: $source.data('table'),
+                        source: source,
+                        target: target,
+                    };
+
+                EventBus.$emit('modal-open', source, 'new-relation', data);
+                EventBus.$emit('new-relation', data);
+            });
         });
     },
 
     methods: {
         group() {
             jsPlumb.addGroup({
-                el: $(".model"),
+                el: this.$models().all(),
                 dragOptions: {
                     start(event) {
                         $(event.el).addClass('selected').css({'z-index': 101});
                     },
 
-                    stop(event) {
+                    stop() {
                         $('.model:visible').each(function (i, el) {
                             let $el = $(el);
 
@@ -64,6 +87,7 @@ export default {
                             jsPlumb.connect({
                                 source: $source,
                                 target: $target,
+                                newConnection: false,
                                 endpoint: 'Blank',
                                 anchors: [
                                     ['AutoDefault'],
@@ -83,28 +107,36 @@ export default {
                     });
                 });
 
-                $('.relation').unbind().click(function () {
-                    let relation = $.grep(this.className.split(' '), (c) => {
-                        return c.indexOf('rel-') === 0;
-                    }).join().replace('rel-', '').split('-');
+                this.bindRelationClicks();
 
-                    relation = Schematics.relations[relation[0]][relation[1]];
-                    relation.model = `${relation.model}`.split('\\').slice(-1)[0];
-                    relation.type = relation.type.charAt(0).toLowerCase() + relation.type.slice(1);
+                this.$nextTick(() => {
+                    EventBus.$emit('loading', false);
 
-                    EventBus.$emit(
-                        'modal-open',
-                        `${relation.model}.php(<span class="text-purple-400 text-lg">${relation.method.line}</span>)`,
-                        'relation',
-                        relation
-                    );
-                });
-
-                EventBus.$emit('loading', false);
+                    setTimeout(jsPlumb.repaintEverything, 1);
+                })
             }, 1);
         },
 
-        getStyleSettings: function (style) {
+        bindRelationClicks() {
+            $('.relation').unbind().click(function () {
+                let relation = $.grep(this.className.split(' '), c => {
+                    return c.indexOf('rel-') === 0
+                }).join().replace('rel-', '').split('-');
+
+                relation = Schematics.relations[relation[0]][relation[1]];
+                relation.model = `${relation.model}`.split('\\').slice(-1)[0];
+                relation.type = relation.type.charAt(0).toLowerCase() + relation.type.slice(1);
+
+                EventBus.$emit(
+                    'modal-open',
+                    `${relation.model}.php(<span class="text-purple-400 text-lg">${relation.method.line}</span>)`,
+                    'relation',
+                    relation
+                );
+            });
+        },
+
+        getStyleSettings(style) {
             return {
                 'bezier': {
                     curviness: 100,

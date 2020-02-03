@@ -1,0 +1,7 @@
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\$class$
+     */
+    public function $method$()
+    {
+        return $this->$type$('$target$'$keys$);
+    }

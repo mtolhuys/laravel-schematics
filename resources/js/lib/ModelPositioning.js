@@ -31,8 +31,6 @@ export default {
         setModelsPosition() {
             this.$withRelations.forEach(this.setModelPosition);
             this.$withoutRelations.forEach(this.setModelPosition);
-
-            EventBus.$emit('plumb');
         },
 
         setModelPosition(element) {

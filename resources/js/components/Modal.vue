@@ -4,7 +4,8 @@
     >
         <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
 
-        <div class="modal-container flex bg-white w-auto inline-block mx-auto rounded shadow-lg overflow-y-scroll z-50">
+        <div
+            class="modal-container flex bg-white w-auto inline-block mx-auto rounded shadow-lg overflow-y-scroll z-50">
             <div class="py-4 text-left px-6 w-full">
                 <div class="flex justify-between items-center w-full pb-3">
                     <p class="modal-title text-2xl font-bold" v-html="title"/>
@@ -21,6 +22,7 @@
                 <div class="flex w-full">
                     <span v-if="type === 'html'" v-html="content" />
                     <relation v-if="type === 'relation'" :relation="content" />
+                    <new-relation v-if="type === 'new-relation'" :models="content" />
                     <model-fields v-if="type === 'model-fields'" :fields="content" />
                 </div>
             </div>
@@ -30,6 +32,7 @@
 
 <script>
     import ModelFields from './Modal/ModelFields.vue';
+    import NewRelation from './Modal/NewRelation.vue';
     import Relation from './Modal/Relation.vue';
 
     export default {
@@ -37,6 +40,7 @@
 
         components: {
             'model-fields': ModelFields,
+            'new-relation': NewRelation,
             'relation': Relation
         },
 
@@ -57,7 +61,7 @@
                 this.closed = false;
             });
 
-            EventBus.$on('modal-close', () => { this.closed = true; });
+            EventBus.$on('modal-close', this.close);
         },
 
         destroyed() {
@@ -66,7 +70,9 @@
         },
 
         methods: {
-
+            close() {
+                this.closed = true;
+            }
         },
     }
 </script>

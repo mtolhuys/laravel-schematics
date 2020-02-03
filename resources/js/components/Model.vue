@@ -1,5 +1,7 @@
 <template>
     <div
+        @mouseover="plumbSource"
+        @mouseleave="clear"
         class="model-container bg-white w-full md:max-w-md mx-auto rounded shadow-lg overflow-y-auto">
         <span
             :id="table"
@@ -19,7 +21,7 @@
             </span>
 
             <span
-                @click="edit(model, table)"
+                @click="inspect(model, table)"
                 class="cursor-pointer edit">
                 <i class="fas fa-search text-gray-400 hover:text-purple-700"/>
             </span>
@@ -40,13 +42,95 @@
 
         data() {
             return {
-                table: Schematics.tables[this.model]
+                table: Schematics.tables[this.model],
+                endpoint: null,
             }
         },
 
-        created() {},
+        mounted() {
+            const $el = $(this.$el).find('span');
+
+            Schematics.endpoints = [];
+            Schematics.endpointLock = false;
+
+            jsPlumb.makeTarget($el, {connectionsDetachable: false});
+        },
 
         methods: {
+            clear(event = null) {
+                if (!event || $(event.relatedTarget).prop('nodeName') !== 'IMG') {
+                    Schematics.endpoints.forEach(endpoint => jsPlumb.deleteEndpoint(endpoint));
+
+                    this.$endpoints().detach();
+
+                    Schematics.endpointLock = false;
+                    Schematics.endpoints = [];
+                }
+            },
+
+            getEndpointPosition(e) {
+                let rect = e.target.getBoundingClientRect(),
+                    x = e.clientX - rect.left,
+                    y = e.clientY - rect.top,
+                    left = x < (rect.width / 2.7),
+                    right = x > (rect.width / 1.3),
+                    top = y < (rect.height / 2) && (!left && !right),
+                    bottom = !top && (!left && !right);
+
+                return [
+                    'Top',
+                    'Left',
+                    'Right',
+                    'Bottom',
+                ][[top, left, right, bottom].indexOf(true)];
+            },
+
+            getEndpointStyle(location) {
+                return {
+                    'Top': {'margin-top': '-6px'},
+                    'Left': {'margin-left': '-6px'},
+                    'Right': {'margin-left': '6px'},
+                    'Bottom': {'margin-top': '6px'},
+                }[location];
+            },
+
+            plumbSource(e) {
+                if (Schematics.endpointLock) {
+                    return;
+                }
+
+                let endpoint = this.endpoint,
+                    location = this.getEndpointPosition(e);
+
+                jsPlumb.deleteEndpoint(endpoint);
+
+                this.endpoint = endpoint = jsPlumb.addEndpoint($(e.target), {
+                    isSource: true,
+                    reattach: true,
+                    isTarget: true,
+                    connector: Schematics.style,
+                    anchor: location,
+                    endpoint: ["Image", {
+                        src: `vendor/schematics/images/${location.toLowerCase()}-arrow.png`,
+                        cssClass: `plumb-arrow plumb-arrow-${location.toLowerCase()}`,
+                    }],
+                    dragOptions: {
+                        drag: () => {
+                            Schematics.endpointLock = true;
+                        },
+                        stop: () => {
+                            Schematics.endpointLock = false;
+
+                            this.clear();
+                        }
+                    }
+                });
+
+                Schematics.endpoints.push(endpoint);
+
+                $(`.plumb-arrow-${location.toLowerCase()}`).css(this.getEndpointStyle(location));
+            },
+
             hide() {
                 const $model = $(this.$el);
 
@@ -59,7 +143,7 @@
                 EventBus.$emit('plumb');
             },
 
-            edit(model, table) {
+            inspect(model, table) {
                 EventBus.$emit('loading', true);
 
                 $.get(`schematics/details/${table}`, function (fields) {
@@ -76,7 +160,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     .selected {
         border: 2px double rgba(255, 71, 58, 0.81);
     }

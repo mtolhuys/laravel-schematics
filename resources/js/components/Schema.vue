@@ -1,5 +1,7 @@
 <template>
-    <div class="schema" id="schema">
+    <div class="schema"
+         id="schema"
+    >
         <div v-for="model in models">
             <model :model="model"/>
         </div>
@@ -17,7 +19,7 @@
 
         mixins: [
             ModelPositioning,
-            Plumbing
+            Plumbing,
         ],
 
         components: {
@@ -35,6 +37,8 @@
             EventBus.$emit('loading', true);
 
             this.setModelsPosition();
+
+            EventBus.$emit('plumb');
 
             new DragSelect({
                 selectables: this.$models().all(),

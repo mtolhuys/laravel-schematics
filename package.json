@@ -19,7 +19,6 @@
         "Schema"
     ],
     "devDependencies": {
-        "axios": "^0.19.2",
         "babel": "^6.23.0",
         "babel-core": "^6.26.0",
         "babel-loader": "^7.1.2",

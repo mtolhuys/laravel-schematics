@@ -2,15 +2,17 @@
 
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\View\View;
+use Mtolhuys\LaravelSchematics\Actions\GenerateRelation;
+use Mtolhuys\LaravelSchematics\Http\Requests\NewRelationRequest;
 use Mtolhuys\LaravelSchematics\Services\ModelMapper;
 use Mtolhuys\LaravelSchematics\Services\RelationMapper;
-use ReflectionException;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use ReflectionException;
 
 class SchematicsController extends Controller
 {
@@ -25,11 +27,28 @@ class SchematicsController extends Controller
         ));
     }
 
+    public function newRelation(NewRelationRequest $request)
+    {
+        $success = (new GenerateRelation())->generate($request->all());
+
+        if ($success) {
+            Cache::forget('schematics');
+
+            while (Cache::has('schematics')) {
+                sleep(1);
+            }
+
+            return response("Relation {$request['method']['name']}() created", 200);
+        }
+
+        return response('Failed creating relation', 500);
+    }
+
     public function clearCache()
     {
         Cache::forget('schematics');
 
-        return response('cache cleared', 200);
+        return response('Cache cleared', 200);
     }
 
     public function details($table)
