@@ -156,6 +156,8 @@
             EventBus.$on('new-relation', (models) => {
                 this.relation.source = models.source;
                 this.relation.target = models.target;
+                this.relation.sourceTable = models.target;
+                this.relation.targetTable = models.target;
                 this.relation.keys = '';
                 this.relation.method = {
                     name: '',
@@ -170,6 +172,20 @@
         },
 
         methods: {
+            addRelation(relation) {
+                relation.relation = {};
+                relation.model = this.models.source;
+                relation.table = this.models.sourceTable;
+                relation.relation.model = this.models.target;
+                relation.relation.table = this.models.targetTable;
+
+                if (! Schematics.relations[this.models.sourceTable]) {
+                    Schematics.relations[this.models.sourceTable] = [];
+                }
+
+                Schematics.relations[this.models.sourceTable].push(relation);
+            },
+
             save() {
                 if (this.methodNameError) {
                     EventBus.$emit('alert', 'Invalid method name!', 'error');
@@ -180,14 +196,11 @@
                 EventBus.$emit('modal-close');
                 EventBus.$emit('loading', true);
 
-                $.post('schematics/new-relation', this.relation, (response) => {
-                    EventBus.$emit('alert', response, 'info');
+                $.post('schematics/new-relation', this.relation, (relation) => {
+                    this.addRelation(relation);
 
-                    setTimeout(() => {
-                        EventBus.$emit('alert', 'Clearing cache...', 'info');
-
-                        location.reload();
-                    }, 4000);
+                    EventBus.$emit('loading', false);
+                    EventBus.$emit('plumb');
                 }).fail((e) => {
                     console.error(e);
 
@@ -201,8 +214,8 @@
             'relation.method.name': {
                 handler(name) {
                     this.methodNameError = !name.trim().length || (
-                        Schematics.relations[this.models.table] &&
-                        Schematics.relations[this.models.table].map(r => {
+                        Schematics.relations[this.models.sourceTable] &&
+                        Schematics.relations[this.models.sourceTable].map(r => {
                             return r.method.name
                         }).includes(name)
                     );

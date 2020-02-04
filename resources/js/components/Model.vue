@@ -16,14 +16,14 @@
 
             <span
                 @click="hide()"
-                class="px-4 model-hide cursor-pointer">
-                <i class="far fa-eye-slash text-gray-400 hover:text-purple-700"/>
+                class="px-4 model-hide cursor-pointer text-gray-400 hover:text-purple-700">
+                <i class="far fa-eye-slash"/>
             </span>
 
             <span
                 @click="inspect(model, table)"
-                class="cursor-pointer edit">
-                <i class="fas fa-search text-gray-400 hover:text-purple-700"/>
+                class="cursor-pointer edit text-gray-400 hover:text-purple-700">
+                <i class="fas fa-search"/>
             </span>
         </span>
     </div>

@@ -3,7 +3,9 @@
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
 use Mtolhuys\LaravelSchematics\Actions\GenerateRelation;
+use Mtolhuys\LaravelSchematics\Actions\RemoveRelation;
 use Mtolhuys\LaravelSchematics\Http\Requests\NewRelationRequest;
+use Mtolhuys\LaravelSchematics\Http\Requests\RemoveRelationRequest;
 use Mtolhuys\LaravelSchematics\Services\ModelMapper;
 use Mtolhuys\LaravelSchematics\Services\RelationMapper;
 use Illuminate\Contracts\View\Factory;
@@ -27,21 +29,26 @@ class SchematicsController extends Controller
         ));
     }
 
+    public function removeRelation(RemoveRelationRequest $request)
+    {
+        (new RemoveRelation())->execute($request->all());
+
+        Cache::forget('schematics');
+
+        return response('Relation removed', 200);
+    }
+
     public function newRelation(NewRelationRequest $request)
     {
-        $success = (new GenerateRelation())->generate($request->all());
+        $relation = $request->all();
+        $result = (new GenerateRelation())->execute($relation);
 
-        if ($success) {
-            Cache::forget('schematics');
+        Cache::forget('schematics');
 
-            while (Cache::has('schematics')) {
-                sleep(1);
-            }
+        $relation['method']['file'] = $result->file;
+        $relation['method']['line'] = $result->line;
 
-            return response("Relation {$request['method']['name']}() created", 200);
-        }
-
-        return response('Failed creating relation', 500);
+        return $relation;
     }
 
     public function clearCache()
@@ -63,10 +70,14 @@ class SchematicsController extends Controller
      * @return array
      * @throws ReflectionException
      */
-    private function modelsWithRelations(array $models): array
+    public function modelsWithRelations(array $models = []): array
     {
         if (Cache::has('schematics')) {
             return Cache::get('schematics');
+        }
+
+        if (empty($models)) {
+            $models = ModelMapper::map();
         }
 
         $data = [

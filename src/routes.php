@@ -8,5 +8,7 @@ Route::group([
     Route::get('/', 'SchematicsController@index');
     Route::get('/details/{table}', 'SchematicsController@details');
     Route::get('/clear-cache', 'SchematicsController@clearCache');
+    Route::get('/refresh', 'SchematicsController@modelsWithRelations');
     Route::post('/new-relation', 'SchematicsController@newRelation');
+    Route::post('/remove-relation', 'SchematicsController@removeRelation');
 });

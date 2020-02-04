@@ -24,6 +24,12 @@
             tables: {!! json_encode($tables) !!},
             exceptions: {!! json_encode($exceptions) !!},
             exceptions: {!! json_encode($exceptions) !!},
+            refresh: function() {
+                $.get('schematics/refresh', function(response) {
+                    Schematics.models = response.models;
+                    Schematics.relations = response.relations;
+                })
+            },
         };
     </script>
 

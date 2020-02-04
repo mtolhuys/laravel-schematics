@@ -8,7 +8,6 @@ export default {
     created() {
         EventBus.$on('chart-style', style => {
             this.style = Schematics.style = style;
-            jsPlumb.deleteEveryEndpoint();
             this.plumb();
         });
 
@@ -30,10 +29,12 @@ export default {
                 if (info.sourceId === info.targetId) return;
 
                 const $source = $(`#${info.sourceId}`),
+                    $target = $(`#${info.targetId}`),
                     source = $source.data('model'),
-                    target = $(`#${info.targetId}`).data('model'),
+                    target = $target.data('model'),
                     data = {
-                        table: $source.data('table'),
+                        sourceTable: $source.data('table'),
+                        targetTable: $target.data('table'),
                         source: source,
                         target: target,
                     };
@@ -75,13 +76,11 @@ export default {
         plumb() {
             EventBus.$emit('loading', true);
 
-            setTimeout(() => {
-                try {
-                    jsPlumb.deleteEveryEndpoint();
-                } catch (e) {
-                    console.error(e);
-                }
+            if (jsPlumb.getConnections().length) {
+                jsPlumb.deleteEveryEndpoint();
+            }
 
+            setTimeout(() => {
                 Object.keys(Schematics.relations).forEach((table) => {
                     Schematics.relations[table].forEach((relation, index) => {
                         let $source = $(`#${table}:visible`),
