@@ -44,6 +44,10 @@ class RemoveRelation
             $index--;
         }
 
+        if (trim($lines[$index]) === '') {
+            $remove[] = $index;
+        }
+
         return $remove;
     }
 

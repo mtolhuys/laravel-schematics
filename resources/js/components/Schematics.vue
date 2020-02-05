@@ -91,10 +91,6 @@
         cursor: pointer;
     }
 
-    .icon {
-        color: #9F7AEA
-    }
-
     .loading {
         z-index: 1000;
     }

@@ -19,9 +19,9 @@
         crossorigin="anonymous">
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@simonwep/selection-js/dist/selection.min.js"></script>
-
     <link href="https://unpkg.com/tailwindcss@next/dist/tailwind.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://unpkg.com/balloon-css/balloon.min.css">
 
     <link
         rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.12.8/css/jsplumbtoolkit-defaults.css"

@@ -40,7 +40,11 @@ export default {
                     };
 
                 EventBus.$emit('modal-open', source, 'new-relation', data);
-                EventBus.$emit('new-relation', data);
+
+                setTimeout(() => {
+                    EventBus.$emit('new-relation', data);
+                    $('#method').focus();
+                }, 1);
             });
         });
     },

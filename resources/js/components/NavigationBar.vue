@@ -39,19 +39,19 @@
                 </ul>
             </div>
 
-            <dropdowns/>
+            <actions/>
         </div>
     </nav>
 </template>
 
 <script>
-    import DropDowns from './NavigationBar/DropDowns.vue';
+    import Actions from './NavigationBar/Actions.vue';
 
     export default {
         name: "nav-bar",
 
         components: {
-            'dropdowns': DropDowns,
+            'actions': Actions,
         },
 
         data() {
@@ -111,5 +111,9 @@
 <style>
     #header {
         z-index: 1000;
+    }
+
+    .icon {
+        color: #9F7AEA
     }
 </style>

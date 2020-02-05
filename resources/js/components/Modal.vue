@@ -3,9 +3,7 @@
         :class="{ 'opacity-0 pointer-events-none' : closed }"
     >
         <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-
-        <div
-            class="modal-container flex bg-white w-auto inline-block mx-auto rounded shadow-lg overflow-y-scroll z-50">
+        <div class="modal-container flex bg-white w-auto inline-block mx-auto rounded shadow-lg overflow-y-scroll z-50">
             <div class="py-4 text-left px-6 w-full">
                 <div class="flex justify-between items-center w-full pb-3">
                     <p class="modal-title text-2xl font-bold" v-html="title"/>
@@ -24,6 +22,7 @@
                     <relation v-if="type === 'relation'" :relation="content" />
                     <new-relation v-if="type === 'new-relation'" :models="content" />
                     <model-fields v-if="type === 'model-fields'" :fields="content" />
+                    <new-model v-if="type === 'new-model'"/>
                 </div>
             </div>
         </div>
@@ -31,9 +30,10 @@
 </template>
 
 <script>
-    import ModelFields from './Modal/ModelFields.vue';
     import NewRelation from './Modal/NewRelation.vue';
+    import ModelFields from './Modal/ModelFields.vue';
     import Relation from './Modal/Relation.vue';
+    import NewModel from './Modal/NewModel.vue';
 
     export default {
         name: "modal",
@@ -41,7 +41,8 @@
         components: {
             'model-fields': ModelFields,
             'new-relation': NewRelation,
-            'relation': Relation
+            'relation': Relation,
+            'new-model': NewModel,
         },
 
         data() {
