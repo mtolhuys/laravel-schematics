@@ -3,5 +3,5 @@
      */
     public function $method$()
     {
-        return $this->$type$('$target$'$keys$);
+        return $this->$type$($target$$keys$);
     }
