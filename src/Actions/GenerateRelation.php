@@ -39,7 +39,7 @@ class GenerateRelation
     private function generateMethod(array $relation, string $stub)
     {
         $relationGeneratorMethod = config('schematics.relation-generator-method', 'string');
-        if($relationGeneratorMethod === 'class') {
+        if ($relationGeneratorMethod === 'class') {
             $relationTarget = '\\' . $relation['target'] . '::class';
         } else {
             $relationTarget = '\'' . $relation['target'] . '\'';
