@@ -38,6 +38,13 @@ class GenerateRelation
      */
     private function generateMethod(array $relation, string $stub)
     {
+        $relationGeneratorMethod = config('schematics.relation-generator-method', 'string');
+        if ($relationGeneratorMethod === 'class') {
+            $relationTarget = '\\' . $relation['target'] . '::class';
+        } else {
+            $relationTarget = '\'' . $relation['target'] . '\'';
+        }
+
         return str_replace([
             '$class$',
             '$method$',
@@ -48,7 +55,7 @@ class GenerateRelation
             $relation['type'],
             $relation['method']['name'],
             lcfirst($relation['type']),
-            $relation['target'],
+            $relationTarget,
             $relation['keys'] ?? '',
         ], File::get($stub));
     }
