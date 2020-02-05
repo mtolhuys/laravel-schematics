@@ -25,7 +25,7 @@
 
 <script>
     export default {
-        name: "ModelFields",
+        name: "model-fields",
 
         props: {
             relation: {
@@ -36,6 +36,12 @@
 
         methods: {
             copy(link) {
+                if (! window.isSecureContext) {
+                    EventBus.$emit('alert', 'Can\'t copy due to insecure host...<br/>Try localhost or HTTPS.', 'error');
+
+                    return;
+                }
+
                 navigator.clipboard.writeText(link);
 
                 EventBus.$emit('alert', 'Link copied!', 'info');
