@@ -15,15 +15,21 @@
             <i class="fas fa-project-diagram icon"/> {{ model }}
 
             <span
+                @click="remove(model)"
+                class="px-4 cursor-pointer text-gray-400 hover:text-purple-700">
+                <i class="fas fa-trash-alt"/>
+            </span>
+
+            <span
                 @click="hide()"
-                class="px-4 model-hide cursor-pointer text-gray-400 hover:text-purple-700">
+                class="pr-4 cursor-pointer text-gray-400 hover:text-purple-700">
                 <i class="far fa-eye-slash"/>
             </span>
 
             <span
                 @click="inspect(model, table)"
-                class="cursor-pointer edit text-gray-400 hover:text-purple-700">
-                <i class="fas fa-search"/>
+                class="cursor-pointer text-gray-400 hover:text-purple-700">
+                <i class="fas fa-info"/>
             </span>
         </span>
     </div>
@@ -141,6 +147,10 @@
                 this.$models().count().text(this.$models().visible().length);
 
                 EventBus.$emit('plumb');
+            },
+
+            remove(model) {
+                EventBus.$emit('modal-open', `Deleting model!`, `delete-model`, model);
             },
 
             inspect(model, table) {

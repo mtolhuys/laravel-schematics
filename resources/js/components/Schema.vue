@@ -55,6 +55,15 @@
 
                 jsPlumb.addToDragSelection($model);
             },
+        },
+
+        watch: {
+            'models': {
+                deep: true,
+                handler() {
+                    this.setModelsPosition();
+                }
+            }
         }
     }
 </script>

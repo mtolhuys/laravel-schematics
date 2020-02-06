@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 use ReflectionException;
 use ReflectionClass;
 
-class GenerateRelation
+class CreateRelationAction
 {
     /**
      * @param array $relation

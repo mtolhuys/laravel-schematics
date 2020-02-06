@@ -126,7 +126,7 @@
 
 <script>
     export default {
-        name: "new-relation",
+        name: "create-relation",
 
         props: {
             models: {
@@ -196,7 +196,7 @@
                 EventBus.$emit('modal-close');
                 EventBus.$emit('loading', true);
 
-                $.post('schematics/new-relation', this.relation, (relation) => {
+                $.post('schematics/relations/create', this.relation, (relation) => {
                     this.addRelation(relation);
 
                     EventBus.$emit('loading', false);

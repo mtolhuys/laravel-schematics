@@ -50,7 +50,7 @@
             remove(method) {
                 EventBus.$emit('modal-close');
 
-                $.post('schematics/remove-relation', method, () => {
+                $.post('schematics/relation/delete', method, () => {
                     Schematics.relations[this.relation.table]
                         .splice(
                             Schematics.relations[this.relation.table]

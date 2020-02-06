@@ -2,12 +2,10 @@
 
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
-use Mtolhuys\LaravelSchematics\Actions\GenerateRelation;
-use Mtolhuys\LaravelSchematics\Actions\RemoveRelation;
-use Mtolhuys\LaravelSchematics\Http\Requests\NewRelationRequest;
-use Mtolhuys\LaravelSchematics\Http\Requests\RemoveRelationRequest;
-use Mtolhuys\LaravelSchematics\Services\ModelMapper;
 use Mtolhuys\LaravelSchematics\Services\RelationMapper;
+use Mtolhuys\LaravelSchematics\Services\ModelMapper;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Cache;
@@ -24,33 +22,13 @@ class SchematicsController extends Controller
      */
     public function index()
     {
-        return view('schematics::index', $this->modelsWithRelations(
-            ModelMapper::map()
-        ));
+        return view('schematics::index', $this
+            ->modelsWithRelations(ModelMapper::map()));
     }
 
-    public function removeRelation(RemoveRelationRequest $request)
-    {
-        (new RemoveRelation())->execute($request->all());
-
-        Cache::forget('schematics');
-
-        return response('Relation removed', 200);
-    }
-
-    public function newRelation(NewRelationRequest $request)
-    {
-        $relation = $request->all();
-        $result = (new GenerateRelation())->execute($relation);
-
-        Cache::forget('schematics');
-
-        $relation['method']['file'] = $result->file;
-        $relation['method']['line'] = $result->line;
-
-        return $relation;
-    }
-
+    /**
+     * @return ResponseFactory|\Illuminate\Http\Response|Response
+     */
     public function clearCache()
     {
         Cache::forget('schematics');
@@ -58,6 +36,10 @@ class SchematicsController extends Controller
         return response('Cache cleared', 200);
     }
 
+    /**
+     * @param $table
+     * @return array
+     */
     public function details($table)
     {
          $exists = Schema::hasTable($table);

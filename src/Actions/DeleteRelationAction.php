@@ -4,7 +4,7 @@ namespace Mtolhuys\LaravelSchematics\Actions;
 
 use ReflectionException;
 
-class RemoveRelation
+class DeleteRelationAction
 {
     /**
      * @param $method

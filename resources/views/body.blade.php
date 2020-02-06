@@ -19,15 +19,20 @@
 
     <script>
         window.Schematics = {
-            models: {!! json_encode($models) !!},
+            namespace: {!! json_encode(config('schematics.namespace')) !!},
+            models: Object.values({!! json_encode($models) !!}),
             relations: {!! json_encode($relations) !!},
             tables: {!! json_encode($tables) !!},
             exceptions: {!! json_encode($exceptions) !!},
             exceptions: {!! json_encode($exceptions) !!},
             refresh: function() {
+                $('body').css('cursor', 'progress');
+
                 $.get('schematics/refresh', function(response) {
                     Schematics.models = response.models;
                     Schematics.relations = response.relations;
+
+                    $('body').css('cursor', 'default');
                 })
             },
         };

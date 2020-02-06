@@ -4,7 +4,7 @@ namespace Mtolhuys\LaravelSchematics\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RemoveRelationRequest extends FormRequest
+class CreateModelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,7 @@ class RemoveRelationRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'file' => 'required|string',
-            'line' => 'required|integer',
+            'fields' => 'required|array',
         ];
     }
 }

@@ -20,9 +20,10 @@
                 <div class="flex w-full">
                     <span v-if="type === 'html'" v-html="content" />
                     <relation v-if="type === 'relation'" :relation="content" />
-                    <new-relation v-if="type === 'new-relation'" :models="content" />
+                    <create-relation v-if="type === 'new-relation'" :models="content" />
                     <model-fields v-if="type === 'model-fields'" :fields="content" />
-                    <new-model v-if="type === 'new-model'"/>
+                    <delete-model v-if="type === 'delete-model'" :model="content"/>
+                    <create-model v-if="type === 'new-model'"/>
                 </div>
             </div>
         </div>
@@ -30,19 +31,21 @@
 </template>
 
 <script>
-    import NewRelation from './Modal/NewRelation.vue';
+    import CreateRelation from './Modal/CreateRelation.vue';
+    import CreateModel from './Modal/CreateModel.vue';
+    import DeleteModel from './Modal/DeleteModel.vue';
     import ModelFields from './Modal/ModelFields.vue';
     import Relation from './Modal/Relation.vue';
-    import NewModel from './Modal/NewModel.vue';
 
     export default {
         name: "modal",
 
         components: {
+            'create-relation': CreateRelation,
             'model-fields': ModelFields,
-            'new-relation': NewRelation,
+            'create-model': CreateModel,
+            'delete-model': DeleteModel,
             'relation': Relation,
-            'new-model': NewModel,
         },
 
         data() {

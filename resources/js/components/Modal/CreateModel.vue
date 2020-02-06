@@ -1,8 +1,10 @@
 <template>
-    <span class="modal-content new-model w-full">
+    <span
+        class="modal-content new-model w-full">
         <div v-for="field in fields" class="md:flex md:items-center">
             <div class="md:w-1/3">
                 <input
+                    @keydown.enter="save()"
                     v-model="field.name"
                     placeholder="Field name"
                     class="bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
@@ -92,7 +94,7 @@
 
 <script>
     export default {
-        name: "new-model",
+        name: "create-model",
 
         data() {
             return {
@@ -145,29 +147,30 @@
 
             save() {
                 let $modelName = $('.new-model-name'),
-                    model = $modelName.val();
+                    name = $modelName.val();
 
-                $modelName.toggleClass('focus:border-red-500 border-red-500', ! model.trim().length);
+                $modelName
+                    .parent()
+                    .toggleClass('focus:border-red-500 border-red-500', ! name.trim().length);
 
-                if (! model.trim().length || ! this.validateFields()) {
+                if (! name.trim().length || ! this.validateFields()) {
                     return;
                 }
 
-                console.info('this.fields', this.fields);
-                // EventBus.$emit('modal-close');
-                // EventBus.$emit('loading', true);
-                //
-                // $.post('schematics/new-relation', this.relation, (relation) => {
-                //     this.addRelation(relation);
-                //
-                //     EventBus.$emit('loading', false);
-                //     EventBus.$emit('plumb');
-                // }).fail((e) => {
-                //     console.error(e);
-                //
-                //     EventBus.$emit('alert', e.statusText, 'error');
-                //     EventBus.$emit('loading', false);
-                // });
+                EventBus.$emit('modal-close');
+                EventBus.$emit('loading', true);
+
+                $.post('schematics/models/create', {
+                    'name': name,
+                    'fields': this.fields,
+                }, () => {
+                    location.reload();
+                }).fail((e) => {
+                    console.error(e);
+
+                    EventBus.$emit('alert', e.statusText, 'error');
+                    EventBus.$emit('loading', false);
+                });
             }
         },
     }

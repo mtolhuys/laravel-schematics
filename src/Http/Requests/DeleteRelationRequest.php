@@ -4,7 +4,7 @@ namespace Mtolhuys\LaravelSchematics\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewRelationRequest extends FormRequest
+class DeleteRelationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class NewRelationRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|string',
-            'source' => 'required|string',
-            'target' => 'required|string',
-            'method.name' => 'required|string',
+            'name' => 'required|string',
+            'file' => 'required|string',
+            'line' => 'required|integer',
         ];
     }
 }

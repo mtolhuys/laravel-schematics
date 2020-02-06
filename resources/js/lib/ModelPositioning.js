@@ -16,12 +16,12 @@ export default {
         }
     },
 
-    mounted() {
-        this.$withoutRelations = this.$models().withoutRelations();
-        this.$withRelations = this.$models().withRelations();
-    },
-
     methods: {
+        defineModels() {
+            this.$withoutRelations = this.$models().withoutRelations();
+            this.$withRelations = this.$models().withRelations();
+        },
+
         getModelPosition(model) {
             return JSON.parse(
                 localStorage.getItem(`schematics-settings-${model.toLowerCase()}-position`)
@@ -29,6 +29,8 @@ export default {
         },
 
         setModelsPosition() {
+            this.defineModels();
+
             this.$withRelations.forEach(this.setModelPosition);
             this.$withoutRelations.forEach(this.setModelPosition);
         },
