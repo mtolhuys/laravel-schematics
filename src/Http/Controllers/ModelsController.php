@@ -110,7 +110,7 @@ class ModelsController extends Controller
     {
         return array_merge(
             ...array_values(array_map(static function ($field) {
-                return [$field['name'] => self::getFieldType($field['type'])];
+                return [$field['name'] => self::getFieldType($field['type'] ?? '')];
             }, $fields))
         );
     }

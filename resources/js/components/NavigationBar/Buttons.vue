@@ -9,6 +9,7 @@
                 </button>
             </div>
         </div>
+        <migrations/>
         <warnings v-if="exceptions"/>
         <chart-style/>
         <settings/>
@@ -16,14 +17,16 @@
 </template>
 
 <script>
+    import Migrations from './Migrations.vue';
     import Warnings from './Warnings.vue';
     import ChartStyle from './ChartStyle.vue';
     import Settings from './Settings.vue';
 
     export default {
-        name: "actions",
+        name: "buttons",
 
         components: {
+            'migrations': Migrations,
             'warnings': Warnings,
             'chart-style': ChartStyle,
             'settings': Settings,

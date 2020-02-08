@@ -19,4 +19,11 @@ Route::group([
         Route::post('/create', 'ModelsController@create');
         Route::post('/delete', 'ModelsController@delete');
     });
+
+    Route::group(['prefix' => 'migrations'], static function () {
+        Route::post('/run', 'MigrationsController@run');
+        Route::post('/rollback', 'MigrationsController@rollback');
+        Route::post('/refresh', 'MigrationsController@refresh');
+        Route::post('/seed', 'MigrationsController@seed');
+    });
 });

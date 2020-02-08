@@ -39,19 +39,19 @@
                 </ul>
             </div>
 
-            <actions/>
+            <buttons/>
         </div>
     </nav>
 </template>
 
 <script>
-    import Actions from './NavigationBar/Actions.vue';
+    import Buttons from './NavigationBar/Buttons.vue';
 
     export default {
         name: "nav-bar",
 
         components: {
-            'actions': Actions,
+            'buttons': Buttons,
         },
 
         data() {
