@@ -14,23 +14,23 @@
 
             <i class="fas fa-project-diagram icon"/> {{ model }}
 
-            <span
+            <button
                 @click="remove(model)"
                 class="px-4 cursor-pointer text-gray-400 hover:text-purple-700">
                 <i class="fas fa-trash-alt"/>
-            </span>
+            </button>
 
-            <span
+            <button
                 @click="hide()"
                 class="pr-4 cursor-pointer text-gray-400 hover:text-purple-700">
                 <i class="far fa-eye-slash"/>
-            </span>
+            </button>
 
-            <span
+            <button
                 @click="inspect(model, table)"
                 class="cursor-pointer text-gray-400 hover:text-purple-700">
                 <i class="fas fa-info"/>
-            </span>
+            </button>
         </span>
     </div>
 </template>

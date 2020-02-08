@@ -2,7 +2,7 @@
 
 namespace Mtolhuys\LaravelSchematics\Services;
 
-class ColumnParser
+class RuleParser
 {
     public static $columnTypes = [
         'date',

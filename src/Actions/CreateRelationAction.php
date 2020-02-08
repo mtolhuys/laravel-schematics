@@ -9,19 +9,19 @@ use ReflectionClass;
 class CreateRelationAction
 {
     /**
-     * @param array $relation
+     * @param array $request
      * @return object
      * @throws ReflectionException
      */
-    public function execute($relation)
+    public function execute($request)
     {
-        $source = $relation['source'];
+        $source = $request['source'];
         $stub = __DIR__ . '/../../resources/stubs/relation.stub';
         $file = (new ReflectionClass($source))->getFileName();
         $lines = file($file, FILE_IGNORE_NEW_LINES);
         $injectionLine = $this->endOfClass($file) - 1;
 
-        $lines[$injectionLine] = PHP_EOL . $this->generateMethod($relation, $stub) . '}';
+        $lines[$injectionLine] = PHP_EOL . $this->generateMethod($request, $stub) . '}';
 
         file_put_contents($file, implode("\n", $lines));
 

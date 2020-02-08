@@ -7,19 +7,19 @@ use Illuminate\Support\Facades\File;
 class CreateModelAction
 {
     /**
-     * @param $model
+     * @param $request
      * @return void
      */
-    public function execute($model)
+    public function execute($request)
     {
-        $name = $model['name'];
+        $name = $request['name'];
         $namespace = config('schematics.namespace');
         $stub = __DIR__ . '/../../resources/stubs/model.stub';
         $path = app_path(str_replace(['App\\', '\\'], ['', '/'], $namespace) . "{$name}.php");
 
         File::put($path, str_replace(
             ['$namespace$', '$model$', '$fillables$'],
-            [rtrim($namespace, '\\'), $name, $this->getFillables($model['fields'])],
+            [rtrim($namespace, '\\'), $name, $this->getFillables($request['fields'])],
             File::get($stub)
         ));
     }

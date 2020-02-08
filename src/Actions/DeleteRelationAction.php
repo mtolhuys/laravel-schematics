@@ -2,19 +2,17 @@
 
 namespace Mtolhuys\LaravelSchematics\Actions;
 
-use ReflectionException;
-
 class DeleteRelationAction
 {
     /**
-     * @param $method
+     * @param $request
      * @return false|int
      */
-    public function execute($method)
+    public function execute($request)
     {
-        $file = $method['file'];
+        $file = $request['file'];
         $lines = file($file, FILE_IGNORE_NEW_LINES);
-        $index = $method['line'] - 1;
+        $index = $request['line'] - 1;
 
         $removeLines = $this->removeLeading($lines, $index - 1);
         $removeLines = array_merge($removeLines, $this->removeTrailing($lines, $index));

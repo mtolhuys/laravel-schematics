@@ -8,14 +8,14 @@ use ReflectionClass;
 class DeleteModelAction
 {
     /**
-     * @param $model
+     * @param $request
      * @return void
      * @throws \ReflectionException
      */
-    public function execute($model)
+    public function execute($request)
     {
-        $path = (new ReflectionClass($model['name']))->getFileName();
-
-        File::delete($path);
+        File::delete(
+            (new ReflectionClass($request['name']))->getFileName()
+        );
     }
 }
