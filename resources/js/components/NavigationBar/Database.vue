@@ -74,7 +74,7 @@
                 }).fail((e) => {
                     console.error(e);
 
-                    EventBus.$emit('alert', e.statusText, 'error');
+                    EventBus.$emit('alert', e.responseJSON.message, 'error', 10000);
                     EventBus.$emit('loading', false);
                 });
             }

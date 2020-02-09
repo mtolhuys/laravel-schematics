@@ -55,6 +55,10 @@
                 clearTimeout(window.Alert || 0);
 
                 window.Alert = setTimeout(function () {
+                    if ($alert.is(":hover")) {
+                        return;
+                    }
+
                     $alert.hide();
                 }, time)
             },

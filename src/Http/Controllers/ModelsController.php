@@ -3,14 +3,14 @@
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Mtolhuys\LaravelSchematics\Actions\CreateFormRequestAction;
-use Mtolhuys\LaravelSchematics\Actions\CreateMigrationAction;
-use Mtolhuys\LaravelSchematics\Actions\CreateResourceControllerAction;
-use Mtolhuys\LaravelSchematics\Actions\DeleteMigrationAction;
+use Mtolhuys\LaravelSchematics\Actions\FormRequest\CreateFormRequestAction;
+use Mtolhuys\LaravelSchematics\Actions\Migration\CreateMigrationAction;
+use Mtolhuys\LaravelSchematics\Actions\Resource\CreateResourceControllerAction;
+use Mtolhuys\LaravelSchematics\Actions\Migration\DeleteMigrationAction;
 use Mtolhuys\LaravelSchematics\Http\Requests\CreateModelRequest;
 use Mtolhuys\LaravelSchematics\Http\Requests\DeleteModelRequest;
-use Mtolhuys\LaravelSchematics\Actions\CreateModelAction;
-use Mtolhuys\LaravelSchematics\Actions\DeleteModelAction;
+use Mtolhuys\LaravelSchematics\Actions\Model\CreateModelAction;
+use Mtolhuys\LaravelSchematics\Actions\Model\DeleteModelAction;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Routing\Controller;

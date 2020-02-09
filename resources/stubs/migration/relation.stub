@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Laravel Schematics
+ *
+ * WARNING: removing @tag value will disable automated removal
+ *
+ * @package Laravel-schematics
+ * @url     https://github.com/mtolhuys/laravel-schematics
+ * @tag     laravel-schematics-$source$-relation
+ * @tag     laravel-schematics-$target$-relation
+ */
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class $classname$ extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('$source$', static function (Blueprint $table) {
+            $column$
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('$source$', static function (Blueprint $table) {
+            $table->dropForeign(['$foreignKey$']);
+            $table->dropColumn('$foreignKey$');
+        });
+    }
+}

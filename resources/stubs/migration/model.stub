@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Laravel Schematics
+ *
+ * WARNING: removing @tag value will disable automated removal
+ *
+ * @package Laravel-schematics
+ * @url     https://github.com/mtolhuys/laravel-schematics
+ * @tag     laravel-schematics-$table$-model
+ */
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

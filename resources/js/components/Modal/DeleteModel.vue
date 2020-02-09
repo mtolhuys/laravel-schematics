@@ -5,15 +5,13 @@
 
         <div class="flex text-lg mt-3 items-end outline-none">
             <div class="inline-block relative bg-transparent pt-2 pl-5">
-                <label
-                    aria-label="Delete model migration as well" data-balloon-pos="down"
-                    class="tooltip block text-gray-500 font-bold">
+                <label class="tooltip block text-gray-500 font-bold">
                     <input
                         v-model="options.hasMigration"
                         class="mr-2 leading-tight" type="checkbox"
                     >
                     <span class="text-sm">
-                        Migration
+                        + Migration
                     </span>
                 </label>
             </div>

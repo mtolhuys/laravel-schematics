@@ -22,8 +22,7 @@ class SchematicsController extends Controller
      */
     public function index()
     {
-        return view('schematics::index', $this
-            ->modelsWithRelations(ModelMapper::map()));
+        return view('schematics::index', $this->modelsWithRelations(ModelMapper::map()));
     }
 
     /**

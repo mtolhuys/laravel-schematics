@@ -1,6 +1,6 @@
 <?php
 
-namespace Mtolhuys\LaravelSchematics\Actions;
+namespace Mtolhuys\LaravelSchematics\Actions\Relation;
 
 class DeleteRelationAction
 {
@@ -10,9 +10,9 @@ class DeleteRelationAction
      */
     public function execute($request)
     {
-        $file = $request['file'];
+        $file = $request['method']['file'];
         $lines = file($file, FILE_IGNORE_NEW_LINES);
-        $index = $request['line'] - 1;
+        $index = $request['method']['line'] - 1;
 
         $removeLines = $this->removeLeading($lines, $index - 1);
         $removeLines = array_merge($removeLines, $this->removeTrailing($lines, $index));
