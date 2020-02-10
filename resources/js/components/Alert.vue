@@ -33,10 +33,16 @@
 
         created() {
             EventBus.$on('alert', this.alert);
+            EventBus.$on('delayed-alert', this.delay);
         },
 
         destroyed() {
             EventBus.$off('alert');
+            EventBus.$off('delayed-alert');
+        },
+
+        mounted() {
+            this.fireDelayed();
         },
 
         methods: {
@@ -44,8 +50,26 @@
                 this.$alert().hide();
             },
 
+            delay(msg, type = 'info', time = 3000) {
+                localStorage.setItem('schematics-settings-alert', JSON.stringify({
+                    msg: msg,
+                    type: type,
+                    time: time,
+                }));
+            },
+
+            fireDelayed() {
+                const alert = JSON.parse(localStorage.getItem('schematics-settings-alert'));
+
+                if (alert) {
+                    this.alert(alert.msg, alert.type, alert.time);
+                    localStorage.setItem('schematics-settings-alert', null);
+                }
+            },
+
             alert(msg, type = 'info', time = 3000) {
-                let $alert = this.$alert();
+                let self = this,
+                    $alert = this.$alert();
 
                 this.type = type;
 
@@ -56,6 +80,8 @@
 
                 window.Alert = setTimeout(function () {
                     if ($alert.is(":hover")) {
+                        self.alert(msg, type, 1000);
+
                         return;
                     }
 

@@ -3,7 +3,7 @@
 namespace Mtolhuys\LaravelSchematics;
 
 use Illuminate\Support\ServiceProvider;
-use Mtolhuys\LaravelSchematics\Console\Commands\CreateMigration;
+use Mtolhuys\LaravelSchematics\Console\Commands\install;
 use Mtolhuys\LaravelSchematics\Console\Commands\CreateModel;
 
 class LaravelSchematicsServiceProvider extends ServiceProvider
@@ -17,8 +17,7 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                CreateMigration::class,
-                CreateModel::class,
+                install::class,
             ]);
         }
 

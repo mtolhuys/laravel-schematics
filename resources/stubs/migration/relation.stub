@@ -7,6 +7,7 @@
  *
  * @package Laravel-schematics
  * @url     https://github.com/mtolhuys/laravel-schematics
+ * @author  Maarten Tolhuijs <mtolhuys@protonmail.com>
  * @tag     laravel-schematics-$source$-relation
  * @tag     laravel-schematics-$target$-relation
  */

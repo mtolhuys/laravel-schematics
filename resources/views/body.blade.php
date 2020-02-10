@@ -21,6 +21,7 @@
         window.Schematics = {
             namespace: {!! json_encode(config('schematics.namespace')) !!},
             models: Object.values({!! json_encode($models) !!}),
+            migrations: {!! json_encode($migrations) !!},
             relations: {!! json_encode($relations) !!},
             tables: {!! json_encode($tables) !!},
             exceptions: {!! json_encode($exceptions) !!},

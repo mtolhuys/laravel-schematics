@@ -59,13 +59,17 @@
             },
 
             confirm() {
+                const model = this.model;
+
                 EventBus.$emit('modal-close');
                 EventBus.$emit('loading', true);
 
                 $.post('schematics/models/delete', {
-                    name: this.model,
+                    name: model,
                     options: this.options,
                 }, function () {
+                    EventBus.$emit('delayed-alert', `${model} deleted`, 'info', 7000);
+
                     location.reload();
                 }).fail(function (e) {
                     console.error(e);

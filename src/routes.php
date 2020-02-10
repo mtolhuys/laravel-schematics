@@ -8,7 +8,7 @@ Route::group([
     Route::get('/', 'SchematicsController@index');
     Route::get('/details/{table}', 'SchematicsController@details');
     Route::get('/clear-cache', 'SchematicsController@clearCache');
-    Route::get('/refresh', 'SchematicsController@modelsWithRelations');
+    Route::get('/refresh', 'SchematicsController@schematics');
 
     Route::group(['prefix' => 'relations'], static function () {
         Route::post('/create', 'RelationsController@create');
@@ -24,6 +24,7 @@ Route::group([
         Route::post('/run', 'MigrationsController@run');
         Route::post('/rollback', 'MigrationsController@rollback');
         Route::post('/refresh', 'MigrationsController@refresh');
+        Route::post('/fresh', 'MigrationsController@fresh');
         Route::post('/seed', 'MigrationsController@seed');
     });
 });

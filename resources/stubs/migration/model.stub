@@ -6,6 +6,7 @@
  * WARNING: removing @tag value will disable automated removal
  *
  * @package Laravel-schematics
+ * @author  Maarten Tolhuijs <mtolhuys@protonmail.com>
  * @url     https://github.com/mtolhuys/laravel-schematics
  * @tag     laravel-schematics-$table$-model
  */

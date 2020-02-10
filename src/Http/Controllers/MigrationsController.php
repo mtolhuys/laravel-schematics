@@ -36,4 +36,11 @@ class MigrationsController extends Controller
 
         return Artisan::output();
     }
+
+    public function fresh()
+    {
+        Artisan::call('migrate:fresh');
+
+        return Artisan::output();
+    }
 }

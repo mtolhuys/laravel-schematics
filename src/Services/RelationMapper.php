@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use ReflectionClass;
 use ReflectionMethod;
 
-class RelationMapper
+class RelationMapper extends ClassReader
 {
     public static $relations = [];
 
@@ -39,28 +39,6 @@ class RelationMapper
         }
 
         return self::$relations;
-    }
-
-    /**
-     * @param string $model
-     * @return Collection
-     * @throws ReflectionException
-     */
-    public static function getMethods(string $model): Collection
-    {
-        $class = new ReflectionClass($model);
-
-        return Collection::make($class->getMethods(ReflectionMethod::IS_PUBLIC))
-            ->merge(Collection::make($class->getTraits())
-                ->map(static function (ReflectionClass $trait) {
-                    return Collection::make(
-                        $trait->getMethods(ReflectionMethod::IS_PUBLIC)
-                    );
-                })->flatten()
-            )
-            ->reject(static function (ReflectionMethod $method) use ($model) {
-                return $method->class !== $model || $method->getNumberOfParameters() > 0;
-            });
     }
 
     /**

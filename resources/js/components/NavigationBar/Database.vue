@@ -10,7 +10,7 @@
         <ul class="dropdown-menu absolute left-10 pt-5 hidden">
             <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
-                    @click="runMigrations()"
+                    @click="migrate('run')"
                     class="action inline-block button rounded-full px-4 py-2">
                     <i class="fab icon fa-laravel mr-2"/> migrate
                 </div>
@@ -18,7 +18,7 @@
 
             <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
-                    @click="rollbackMigrations()"
+                    @click="migrate('rollback')"
                     class="action inline-block button rounded-full px-4 py-2">
                     <i class="fab icon fa-laravel mr-2"/> migrate:rollback
                 </div>
@@ -26,7 +26,7 @@
 
             <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
-                    @click="refreshMigrations()"
+                    @click="migrate('refresh')"
                     class="action inline-block button rounded-full px-4 py-2">
                     <i class="fab icon fa-laravel mr-2"/> migrate:refresh
                 </div>
@@ -34,7 +34,15 @@
 
             <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
-                    @click="seed()"
+                    @click="migrate('fresh')"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fab icon fa-laravel mr-2"/> migrate:fresh
+                </div>
+            </li>
+
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <div
+                    @click="migrate('seed')"
                     class="action inline-block button rounded-full px-4 py-2">
                     <i class="fab icon fa-laravel mr-2"/> db:seed
                 </div>
@@ -48,29 +56,13 @@
         name: "migrations",
 
         methods: {
-            runMigrations() {
-                this.migrations('run');
-            },
-
-            rollbackMigrations() {
-                this.migrations('rollback');
-            },
-
-            refreshMigrations() {
-                this.migrations('refresh');
-            },
-
-            seed() {
-                this.migrations('seed');
-            },
-
-            migrations(action) {
+            migrate(action) {
                 EventBus.$emit('loading', true);
 
                 $.post(`schematics/migrations/${action}`, (response) => {
-                    EventBus.$emit('alert', response, 'info', 7000);
+                    EventBus.$emit('delayed-alert', response, 'info', 7000);
 
-                    EventBus.$emit('loading', false);
+                    location.reload();
                 }).fail((e) => {
                     console.error(e);
 

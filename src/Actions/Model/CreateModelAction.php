@@ -34,9 +34,7 @@ class CreateModelAction
 
         foreach ($fields as $index => $field) {
             if ($index === 0) {
-                $fillables .= "'{$field['name']}'" . (count($fields) > 1 ? ',' : '');
-            } elseif ($index === count($fields) - 1) {
-                $fillables .= PHP_EOL . str_repeat(' ', 8) . "'{$field['name']}'";
+                $fillables .= "'{$field['name']}',";
             } else {
                 $fillables .= PHP_EOL . str_repeat(' ', 8) . "'{$field['name']}',";
             }

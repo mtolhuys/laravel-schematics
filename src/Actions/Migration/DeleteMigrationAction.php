@@ -5,14 +5,19 @@ namespace Mtolhuys\LaravelSchematics\Actions\Migration;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Mtolhuys\LaravelSchematics\Http\Requests\DeleteRelationRequest;
+use Mtolhuys\LaravelSchematics\Models\Migration;
+use Mtolhuys\LaravelSchematics\Services\ClassReader;
 
 class DeleteMigrationAction
 {
-    public $path;
+    public
+        $autoMigrate,
+        $path;
 
     public function __construct()
     {
-        $this->path = base_path('database/migrations/');
+        $this->autoMigrate = config('schematics.auto-migrate');
+        $this->path = base_path('database/migrations');
     }
 
     /**
@@ -25,11 +30,40 @@ class DeleteMigrationAction
 
         foreach ($migrations as $migration) {
             if ($this->isRelatedMigration($migration, $request)) {
+                if ($this->autoMigrate) {
+                    $this->down($migration);
+                }
+
                 File::delete("$this->path/$migration");
             }
         }
     }
 
+    /**
+     * Running down in case auto-migrate is turned on
+     *
+     * @param $migration
+     */
+    public function down($migration): void
+    {
+        $file = "$this->path/$migration";
+
+        require_once $file;
+
+        Migration::where('migration', pathinfo($migration, PATHINFO_FILENAME))->delete();
+
+        $migration = ClassReader::getClassName($file);
+
+        try {
+            (new $migration)->down();
+        } catch (\Throwable $e) {}
+    }
+
+    /**
+     * @param $migration
+     * @param $request
+     * @return bool
+     */
     private function isRelatedMigration($migration, $request): bool
     {
         $content = file_get_contents("$this->path/$migration");
