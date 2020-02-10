@@ -147,6 +147,9 @@
                         foreignKey: '',
                         localKey: '',
                     }
+                },
+                options: {
+                    hasMigration: true,
                 }
             }
         },
@@ -191,6 +194,8 @@
 
                     return;
                 }
+
+                this.relation.options = this.options;
 
                 EventBus.$emit('modal-close');
                 EventBus.$emit('loading', true);

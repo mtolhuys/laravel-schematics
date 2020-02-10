@@ -126,27 +126,4 @@ class CreateMigrationAction
             )
             : $request['method']['foreignKey'];
     }
-
-
-    /**
-     * @param $fields
-     * @return array
-     */
-    private static function getFields($fields): array
-    {
-        return array_merge(
-            ...array_values(array_map(static function ($field) {
-                return [$field['name'] => self::getFieldType($field['type'] ?? '')];
-            }, $fields))
-        );
-    }
-
-    /**
-     * @param $type
-     * @return string
-     */
-    private static function getFieldType(string $type): string
-    {
-        return $type === '' ? 'string|max:255' : $type;
-    }
 }

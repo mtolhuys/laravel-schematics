@@ -24,40 +24,83 @@
                         <div class="absolute search-icon" style="top: 0.375rem; left: 1.75rem;">
                             <svg class="fill-current pointer-events-none text-gray-800 w-4 h-4"
                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                <path
+                                    d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                             </svg>
                         </div>
                     </div>
                 </div>
 
                 <ul class="flex justify-center">
-                    <li class="text-center font-bold flex-2">
-                        <a class="block py-2 px-4 text-gray-800">
-                            <span id="model-count">{{ models }}</span> Model(s)
+                    <li class="text-center flex-2">
+                        <a class="block py-2 pl-4">
+                            <span id="model-count">
+                                {{ models }}
+                            </span> Model{{ models === 1 ? '' : 's' }}
+                        </a>
+                    </li>
+
+                    <li class="text-center flex-2">
+                        <a class="block py-2 pl-2">
+                            <span id="migration-count">
+                                {{ migrations }}
+                            </span> Migration{{ migrations === 1 ? '' : 's' }}
+
+                            <span v-if="idleMigrations || redundantMigrations" class="text-black text-xs">
+                                (
+                                    <button
+                                        aria-label="Migrations not migrated"
+                                        data-balloon-pos="down"
+                                        class="tooltip migration-warning"
+                                    >
+                                    <span id="idle-migrations-count">
+                                        {{ idleMigrations }}
+                                    </span>
+                                        <i class="fa fa-file-alt text-gray-400"/>
+                                    </button>
+
+                                    <button
+                                        aria-label="Migrations still in migrations table"
+                                        data-balloon-pos="down"
+                                        class="tooltip migration-warning"
+                                    >
+                                    <span id="redundant-migrations-count">
+                                        {{ redundantMigrations }}
+                                    </span>
+                                        <i class="fa fa-database text-gray-400"/>
+                                    </button>
+                                )
+                            </span>
+                            <span v-else>
+                                <i class="fa fa-check text-xs text-green-400"/>
+                            </span>
                         </a>
                     </li>
                 </ul>
             </div>
 
-            <actions/>
+            <buttons/>
         </div>
     </nav>
 </template>
 
 <script>
-    import Actions from './NavigationBar/Actions.vue';
+    import Buttons from './NavigationBar/Buttons.vue';
 
     export default {
         name: "nav-bar",
 
         components: {
-            'actions': Actions,
+            'buttons': Buttons,
         },
 
         data() {
             return {
                 searchFor: localStorage.getItem('schematics-settings-search') || '',
                 models: Schematics.models.length,
+                migrations: Schematics.migrations.created,
+                redundantMigrations: Schematics.migrations.redundant,
+                idleMigrations: Schematics.migrations.created - Schematics.migrations.run,
             }
         },
 
@@ -115,5 +158,25 @@
 
     .icon {
         color: #9F7AEA
+    }
+
+    .migration-warning {
+        cursor: help !important;
+    }
+
+    #model-count {
+        color: #9F7AEA;
+    }
+
+    #migration-count {
+        color: #9F7AEA;
+    }
+
+    #idle-migrations-count {
+        color: #ea3d4c;
+    }
+
+    #redundant-migrations-count {
+        color: #ea3d4c;
     }
 </style>

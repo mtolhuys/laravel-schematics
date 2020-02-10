@@ -1,6 +1,6 @@
 <?php
 
-namespace Mtolhuys\LaravelSchematics\Actions;
+namespace Mtolhuys\LaravelSchematics\Actions\Relation;
 
 use Illuminate\Support\Facades\File;
 use ReflectionException;
@@ -16,7 +16,7 @@ class CreateRelationAction
     public function execute($request)
     {
         $source = $request['source'];
-        $stub = __DIR__ . '/../../resources/stubs/relation.stub';
+        $stub = __DIR__ . '/../../../resources/stubs/relation.stub';
         $file = (new ReflectionClass($source))->getFileName();
         $lines = file($file, FILE_IGNORE_NEW_LINES);
         $injectionLine = $this->endOfClass($file) - 1;
@@ -36,7 +36,7 @@ class CreateRelationAction
      * @param string $stub
      * @return string|string[]
      */
-    private function generateMethod(array $relation, string $stub)
+    private function generateMethod($relation, string $stub)
     {
         $relationGeneratorMethod = config('schematics.relation-generator-method', 'string');
         if ($relationGeneratorMethod === 'class') {

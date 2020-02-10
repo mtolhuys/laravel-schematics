@@ -20,6 +20,7 @@
             <div class="md:w-2/3">
                 <input
                     v-model="field.type"
+                    @keydown.enter="save()"
                     @keydown.tab="tab"
                     placeholder="Default: string|max:255"
                     class="field bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4
@@ -31,29 +32,25 @@
 
         <div class="flex text-lg mt-3 items-end outline-none">
             <div class="inline-block hidden relative bg-transparent pt-1 pl-5">
-                <label
-                    aria-label="Generate form request with fields" data-balloon-pos="down"
-                    class="tooltip block text-gray-500 font-bold">
+                <label class="tooltip block text-gray-500 font-bold">
                     <input
                         v-model="options.hasFormRequest"
                         class="mr-2 leading-tight" type="checkbox"
                     >
                     <span class="text-sm">
-                        Form request
+                        + Form request
                     </span>
                 </label>
             </div>
 
             <div class="inline-block hidden relative bg-transparent pt-1 pl-5">
-                <label
-                    aria-label="Generate resource route with controller" data-balloon-pos="down"
-                    class="tooltip block text-gray-500 font-bold">
+                <label class="tooltip block text-gray-500 font-bold">
                     <input
                         v-model="options.hasResource"
                         class="mr-2 leading-tight" type="checkbox"
                     >
                     <span class="text-sm">
-                        Resource
+                        + Resource
                     </span>
                 </label>
             </div>

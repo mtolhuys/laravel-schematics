@@ -1,6 +1,6 @@
 <?php
 
-namespace Mtolhuys\LaravelSchematics\Actions;
+namespace Mtolhuys\LaravelSchematics\Actions\FormRequest;
 
 use Illuminate\Support\Facades\File;
 

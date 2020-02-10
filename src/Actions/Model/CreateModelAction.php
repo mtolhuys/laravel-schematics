@@ -1,6 +1,6 @@
 <?php
 
-namespace Mtolhuys\LaravelSchematics\Actions;
+namespace Mtolhuys\LaravelSchematics\Actions\Model;
 
 use Illuminate\Support\Facades\File;
 
@@ -14,7 +14,7 @@ class CreateModelAction
     {
         $name = $request['name'];
         $namespace = config('schematics.namespace');
-        $stub = __DIR__ . '/../../resources/stubs/model.stub';
+        $stub = __DIR__ . '/../../../resources/stubs/model.stub';
         $path = app_path(str_replace(['App\\', '\\'], ['', '/'], $namespace) . "{$name}.php");
 
         File::put($path, str_replace(
@@ -34,9 +34,7 @@ class CreateModelAction
 
         foreach ($fields as $index => $field) {
             if ($index === 0) {
-                $fillables .= "'{$field['name']}'" . (count($fields) > 1 ? ',' : '');
-            } elseif ($index === count($fields) - 1) {
-                $fillables .= PHP_EOL . str_repeat(' ', 8) . "'{$field['name']}'";
+                $fillables .= "'{$field['name']}',";
             } else {
                 $fillables .= PHP_EOL . str_repeat(' ', 8) . "'{$field['name']}',";
             }

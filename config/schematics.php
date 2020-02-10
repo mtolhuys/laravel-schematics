@@ -3,7 +3,7 @@
 return [
     'project-name' => null,
     'middleware' => null,
-    'auto-migrate' => true,
+    'auto-migrate' => false,
     'namespace' => 'App\\Models\\',
 
     /* Decides if relation generator uses \App\Model::class or 'App\Model' for generating relations

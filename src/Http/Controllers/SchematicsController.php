@@ -2,6 +2,7 @@
 
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
+use Mtolhuys\LaravelSchematics\Models\Migration;
 use Mtolhuys\LaravelSchematics\Services\RelationMapper;
 use Mtolhuys\LaravelSchematics\Services\ModelMapper;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -22,8 +23,10 @@ class SchematicsController extends Controller
      */
     public function index()
     {
-        return view('schematics::index', $this
-            ->modelsWithRelations(ModelMapper::map()));
+        $schema = $this->schematics(ModelMapper::map());
+        $schema['migrations'] = $this->migrations();
+
+        return view('schematics::index', $schema);
     }
 
     /**
@@ -49,11 +52,33 @@ class SchematicsController extends Controller
     }
 
     /**
+     * @return array
+     */
+    public function migrations(): array
+    {
+        $redundant = [];
+        $ran = Migration::all();
+        $created = glob(base_path('database/migrations').'/*.php');
+
+        foreach($ran as $migration) {
+            if (! in_array(base_path("database/migrations/$migration->migration.php"), $created, true)) {
+                $redundant[] = $migration;
+            }
+        }
+
+        return [
+            'redundant' => count($redundant),
+            'created' => count($created),
+            'run' => count($ran),
+        ];
+    }
+
+    /**
      * @param array $models
      * @return array
      * @throws ReflectionException
      */
-    public function modelsWithRelations(array $models = []): array
+    public function schematics(array $models = []): array
     {
 //        if (! empty($models) && Cache::has('schematics')) {
 //            return Cache::get('schematics');
@@ -65,7 +90,7 @@ class SchematicsController extends Controller
 
         $data = [
             'models' => $models,
-            'relations' => RelationMapper::map($models),
+            'relations' => RelationMapper::map($models)
         ];
 
         Cache::put('schematics', $data, 1440);

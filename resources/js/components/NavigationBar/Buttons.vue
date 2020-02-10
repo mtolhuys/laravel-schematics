@@ -9,6 +9,7 @@
                 </button>
             </div>
         </div>
+        <database/>
         <warnings v-if="exceptions"/>
         <chart-style/>
         <settings/>
@@ -16,14 +17,16 @@
 </template>
 
 <script>
+    import Database from './Database.vue';
     import Warnings from './Warnings.vue';
     import ChartStyle from './ChartStyle.vue';
     import Settings from './Settings.vue';
 
     export default {
-        name: "actions",
+        name: "buttons",
 
         components: {
+            'database': Database,
             'warnings': Warnings,
             'chart-style': ChartStyle,
             'settings': Settings,

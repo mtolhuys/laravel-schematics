@@ -8,13 +8,13 @@
 
         <div class="flex justify-end pt-2">
             <button
-                @click="remove(relation.method)"
+                @click="remove()"
                 class="modal-action px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-red-200 hover:text-white mr-2"
             >
                 Remove
             </button>
             <button
-                @click="copy(`${relation.method.file}:${relation.method.line}`)"
+                @click="copy()"
                 class="modal-action px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-200 hover:text-indigo-400 mr-2"
             >
                 Copy Link
@@ -35,22 +35,29 @@
         },
 
         methods: {
-            copy(link) {
+            copy() {
                 if (! window.isSecureContext) {
-                    EventBus.$emit('alert', 'Can\'t copy due to insecure host...<br/>Try localhost or HTTPS.', 'error');
+                    EventBus.$emit(
+                        'alert',
+                        'Can\'t copy due to insecure host...<br/>Try localhost or HTTPS.',
+                        'error'
+                    );
 
                     return;
                 }
 
+                const link = `${this.relation.method.file}:${this.relation.method.line}`;
+
                 navigator.clipboard.writeText(link);
 
-                EventBus.$emit('alert', 'Link copied!', 'info');
+                EventBus.$emit('alert', `Copied: ${link}`, 'info');
             },
 
-            remove(method) {
+            remove() {
+                EventBus.$emit('loading', true);
                 EventBus.$emit('modal-close');
 
-                $.post('schematics/relations/delete', method, () => {
+                $.post('schematics/relations/delete', this.relation, () => {
                     Schematics.relations[this.relation.table]
                         .splice(
                             Schematics.relations[this.relation.table]

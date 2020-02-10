@@ -1,6 +1,6 @@
 <?php
 
-namespace Mtolhuys\LaravelSchematics\Actions;
+namespace Mtolhuys\LaravelSchematics\Actions\Model;
 
 use Illuminate\Support\Facades\File;
 use ReflectionClass;

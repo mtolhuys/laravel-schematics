@@ -24,9 +24,9 @@ class DeleteRelationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'file' => 'required|string',
-            'line' => 'required|integer',
+            'method.name' => 'required|string',
+            'method.file' => 'required|string',
+            'method.line' => 'required|integer',
         ];
     }
 }

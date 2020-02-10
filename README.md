@@ -6,15 +6,13 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
 
 This package will map your Eloquent models and methods calling their relations.
-You can see a flowchart of the results visiting `{your-app}/schematics`
+It will help building them by drag and drop relations and running migrations.
+You can see a diagram of the results visiting `{your-app}/schematics`
 
 Example result: 
 ![](resources/images/schematics.gif)
 
-This package is still in BETA stage. More features coming soon:
-
-    - Form requests, migrations and models creation
-    - Migrate and rollback buttons
+This package is still in BETA stage. More features coming soon!
     
 ## Installation
 
@@ -25,7 +23,13 @@ composer require mtolhuys/laravel-schematics
 ```
 
 ## Usage
+Run `php artisan schematics:install` which will do everything necessary.
+
+Or...
+
 Run `php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"` and visit `{your-app}/schematics`
+
+Make sure the routes are cached!
 
 ### Changelog
 

@@ -12,7 +12,8 @@ class RuleParser
         'string',
         'text',
         'time',
-        'timestamp'
+        'timestamp',
+        'unsigned',
     ];
 
     /**
@@ -28,43 +29,17 @@ class RuleParser
         foreach ($rules as $column => $rule) {
             $type = self::getType($rule);
             $max = self::getMax($rule);
+            $unsigned = self::isUnsigned($rule) ? '->unsigned()' : '';
             $nullable = self::isRequired($rule) ? '' : '->nullable()';
             $unique = self::isUnique($rule) ? '->unique()' : '';
 
             $columns .=
                 str_repeat(' ', 12) .
-                "\$table->{$type}('$column'{$max}){$nullable}{$unique};" .
+                "\$table->{$type}('$column'{$max}){$unsigned}{$nullable}{$unique};" .
                 PHP_EOL;
         }
 
         return $columns . str_repeat(' ', 12) . '$table->timestamps();';
-    }
-
-    /**
-     * Fill the $fillable, mostly for cosmetics
-     *
-     * @param $rules
-     * @return string
-     */
-    public static function rulesToFillables($rules): string
-    {
-        $fillables = '';
-
-        foreach (array_keys($rules) as $index => $column) {
-            if (count($rules) === 1) {
-                return "'$column'";
-            }
-
-            if ($index === 0) {
-                $fillables .= "'$column'," . PHP_EOL;
-            } elseif ($index === count($rules) - 1) {
-                $fillables .= str_repeat(' ', 8) . "'$column'";
-            } else {
-                $fillables .= str_repeat(' ', 8) . "'$column'," . PHP_EOL;
-            }
-        }
-
-        return $fillables;
     }
 
     /**
@@ -124,6 +99,28 @@ class RuleParser
     public static function isUnique($rule): bool
     {
         return self::contains($rule, 'unique');
+    }
+
+    /**
+     * Checks if columns is unsigned
+     *
+     * @param $rule
+     * @return boolean
+     */
+    public static function isUnsigned($rule): bool
+    {
+        return self::contains($rule, 'unsigned');
+    }
+
+    /**
+     * Checks if columns needs to be constructed as a foreign key
+     *
+     * @param $rule
+     * @return boolean
+     */
+    public static function isForeign($rule): bool
+    {
+        return self::contains($rule, 'foreign');
     }
 
     private static function contains($rule, $needle): bool
