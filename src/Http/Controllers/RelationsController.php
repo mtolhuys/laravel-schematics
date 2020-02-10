@@ -53,7 +53,7 @@ class RelationsController extends Controller
     /**
      * @param $request
      */
-    public function createOptional($request): void
+    public function createOptional($request)
     {
         foreach ($request['options'] as $option => $shouldUse) {
             if (json_decode($shouldUse, false)) {

@@ -44,7 +44,7 @@ class DeleteMigrationAction
      *
      * @param $migration
      */
-    public function down($migration): void
+    public function down($migration)
     {
         $file = "$this->path/$migration";
 

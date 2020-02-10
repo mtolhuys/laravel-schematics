@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 class CreateResourceControllerAction
 {
     /**
-     * @param $model
+     * @param $fields
      * @return void
      */
     public function execute($fields)

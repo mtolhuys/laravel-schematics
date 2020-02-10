@@ -20,23 +20,19 @@ class ClassReader
         $hasNamespace = $hasClass = false;
 
         foreach (token_get_all($contents) as $token) {
-            if (is_array($token) && $token[0] === T_NAMESPACE) {
-                $hasNamespace = true;
-            }
-
-            if (is_array($token) && $token[0] === T_CLASS) {
-                $hasClass = true;
-            }
+            $tokenArray = is_array($token);
+            $hasNamespace = $hasNamespace || ($tokenArray && $token[0] === T_NAMESPACE);
+            $hasClass = $hasClass || ($tokenArray && $token[0] === T_CLASS);
 
             if ($hasNamespace) {
-                if (is_array($token) && in_array($token[0], [T_STRING, T_NS_SEPARATOR], true)) {
+                if ($tokenArray && in_array($token[0], [T_STRING, T_NS_SEPARATOR], true)) {
                     $namespace .= $token[1];
                 } else if ($token === ';') {
                     $hasNamespace = false;
                 }
             }
 
-            if ($hasClass && is_array($token) && $token[0] === T_STRING) {
+            if ($hasClass && $tokenArray && $token[0] === T_STRING) {
                 $class = $token[1];
                 break;
             }

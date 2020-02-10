@@ -46,29 +46,31 @@
                                 {{ migrations }}
                             </span> Migration{{ migrations === 1 ? '' : 's' }}
 
-                            <span v-if="idleMigrations || redundantMigrations" class="text-black text-xs">(
-                                <button
-                                    aria-label="Migrations not migrated"
-                                    data-balloon-pos="down"
-                                    class="tooltip migration-warning"
-                                >
-                                <span id="idle-migrations-count">
-                                    {{ idleMigrations }}
-                                </span>
-                                    <i class="fa fa-file-alt text-gray-400"/>
-                                </button>
+                            <span v-if="idleMigrations || redundantMigrations" class="text-black text-xs">
+                                (
+                                    <button
+                                        aria-label="Migrations not migrated"
+                                        data-balloon-pos="down"
+                                        class="tooltip migration-warning"
+                                    >
+                                    <span id="idle-migrations-count">
+                                        {{ idleMigrations }}
+                                    </span>
+                                        <i class="fa fa-file-alt text-gray-400"/>
+                                    </button>
 
-                                <button
-                                    aria-label="Migrations still in migrations table"
-                                    data-balloon-pos="down"
-                                    class="tooltip migration-warning"
-                                >
-                                <span id="redundant-migrations-count">
-                                    {{ redundantMigrations }}
-                                </span>
-                                    <i class="fa fa-database text-gray-400"/>
-                                </button>
-                            )</span>
+                                    <button
+                                        aria-label="Migrations still in migrations table"
+                                        data-balloon-pos="down"
+                                        class="tooltip migration-warning"
+                                    >
+                                    <span id="redundant-migrations-count">
+                                        {{ redundantMigrations }}
+                                    </span>
+                                        <i class="fa fa-database text-gray-400"/>
+                                    </button>
+                                )
+                            </span>
                             <span v-else>
                                 <i class="fa fa-check text-xs text-green-400"/>
                             </span>
