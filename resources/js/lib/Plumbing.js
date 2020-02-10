@@ -12,18 +12,18 @@ export default {
         });
 
         EventBus.$on('plumb', this.plumb);
+        EventBus.$on('group', this.group);
     },
 
     destroyed() {
         EventBus.$off('chart-style');
         EventBus.$off('plumb');
+        EventBus.$off('group');
     },
 
     mounted() {
         jsPlumb.ready(() => {
             Schematics.style = this.style;
-
-            this.group();
 
             jsPlumb.bind("beforeDrop", function (info) {
                 if (info.sourceId === info.targetId) return;
@@ -119,7 +119,10 @@ export default {
                 this.$nextTick(() => {
                     EventBus.$emit('loading', false);
 
-                    setTimeout(jsPlumb.repaintEverything, 1);
+                    setTimeout(() => {
+                        jsPlumb.repaintEverything();
+                        EventBus.$emit('group');
+                    }, 1);
                 })
             }, 1);
         },
