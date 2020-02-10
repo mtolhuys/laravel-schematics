@@ -3,6 +3,7 @@
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Mtolhuys\LaravelSchematics\Actions\DeleteMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\DeleteRelationAction;
 use Mtolhuys\LaravelSchematics\Actions\CreateRelationAction;
 use Mtolhuys\LaravelSchematics\Http\Requests\CreateRelationRequest;
@@ -14,7 +15,6 @@ use ReflectionException;
 
 class RelationsController extends Controller
 {
-
     /**
      * @param CreateRelationRequest $request
      * @return array
@@ -23,9 +23,10 @@ class RelationsController extends Controller
     public function create(CreateRelationRequest $request)
     {
         $relation = $request->all();
-        $result = (new CreateRelationAction())->execute($relation);
 
         Cache::forget('schematics');
+
+        $result = (new CreateRelationAction())->execute($request);
 
         $relation['method']['file'] = $result->file;
         $relation['method']['line'] = $result->line;
@@ -39,9 +40,10 @@ class RelationsController extends Controller
      */
     public function delete(DeleteRelationRequest $request)
     {
-        (new DeleteRelationAction())->execute($request->all());
-
         Cache::forget('schematics');
+
+        (new DeleteRelationAction())->execute($request);
+        (new DeleteMigrationAction())->execute($request);
 
         return response('Relation removed', 200);
     }

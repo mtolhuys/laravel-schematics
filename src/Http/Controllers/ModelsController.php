@@ -24,6 +24,7 @@ class ModelsController extends Controller
     public function create(CreateModelRequest $request)
     {
         (new CreateModelAction())->execute($request);
+        (new CreateMigrationAction())->execute($request);
 
         $this->createOptional($request);
 
@@ -40,8 +41,7 @@ class ModelsController extends Controller
     public function delete(DeleteModelRequest $request)
     {
         (new DeleteModelAction())->execute($request);
-
-        $this->deleteOptional($request);
+        (new DeleteMigrationAction())->execute($request);
 
         Cache::forget('schematics');
 
@@ -65,62 +65,14 @@ class ModelsController extends Controller
     }
 
     /**
-     * @param $request
-     */
-    public function deleteOptional($request)
-    {
-        foreach ($request['options'] as $option => $shouldUse) {
-            if (json_decode($shouldUse, false)) {
-                $this->getDeleteAction($option)->execute([
-                    'name' => $request['name'],
-                ]);
-            }
-        }
-    }
-
-    /**
      * @param $option
      * @return mixed
      */
     private function getCreateAction($option)
     {
         return [
-            'hasMigration' => new CreateMigrationAction,
             'hasFormRequest' => new CreateFormRequestAction,
             'hasResource' => new CreateResourceControllerAction,
         ][$option];
-    }
-
-    /**
-     * @param $option
-     * @return mixed
-     */
-    private function getDeleteAction($option)
-    {
-        return [
-            'hasMigration' => new DeleteMigrationAction,
-        ][$option];
-    }
-
-    /**
-     * @param $fields
-     * @return array
-     */
-    private static function getFields($fields): array
-    {
-        return array_merge(
-            ...array_values(array_map(static function ($field) {
-                return [$field['name'] => self::getFieldType($field['type'])];
-            }, $fields))
-        );
-    }
-
-    /**
-     * @param $type
-     * @return string
-     */
-    private static function getFieldType(string $type): string
-    {
-        return $type === '' ? 'string|max:255' : $type;
     }
 }

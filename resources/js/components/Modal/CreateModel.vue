@@ -30,20 +30,6 @@
         </div>
 
         <div class="flex text-lg mt-3 items-end outline-none">
-            <div class="inline-block relative bg-transparent pl-5">
-                <label
-                    aria-label="Generate model migration" data-balloon-pos="down"
-                    class="tooltip block text-gray-500 font-bold">
-                    <input
-                        v-model="options.hasMigration"
-                        class="mr-2 leading-tight" type="checkbox"
-                    >
-                    <span class="text-sm">
-                        Migration
-                    </span>
-                </label>
-            </div>
-
             <div class="inline-block hidden relative bg-transparent pt-1 pl-5">
                 <label
                     aria-label="Generate form request with fields" data-balloon-pos="down"
@@ -109,7 +95,6 @@
             return {
                 fieldsErrors: false,
                 options: {
-                    hasMigration: true,
                     hasFormRequest: false,
                     hasResource: false,
                 },

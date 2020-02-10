@@ -19,18 +19,28 @@
 
     <script>
         window.Schematics = {
-            namespace: {!! json_encode(config('schematics.namespace')) !!},
+            namespace: {!! json_encode(config('schematics.namespace', 'App\\')) !!},
             models: Object.values({!! json_encode($models) !!}),
             relations: {!! json_encode($relations) !!},
+            exceptions: {!! json_encode($exceptions) !!},
             tables: {!! json_encode($tables) !!},
-            exceptions: {!! json_encode($exceptions) !!},
-            exceptions: {!! json_encode($exceptions) !!},
             refresh: function() {
                 $('body').css('cursor', 'progress');
 
                 $.get('schematics/refresh', function(response) {
+                    console.info('response', response);
+
                     Schematics.models = response.models;
                     Schematics.relations = response.relations;
+
+                    if (response.exception) {
+                        EventBus.$emit(
+                            'alert',
+                            `${response.exception.title}: ${response.exception.message}`,
+                            'error',
+                            10000
+                        );
+                    }
 
                     $('body').css('cursor', 'default');
                 })

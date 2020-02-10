@@ -100,7 +100,6 @@
             />
         </div>
 
-
         <div class="md:flex md:items-center border border-gray-400 rounded w-full flex py-3 mt-2">
             <span
                 id="result"
@@ -201,6 +200,7 @@
 
                     EventBus.$emit('loading', false);
                     EventBus.$emit('plumb');
+                    setTimeout(Schematics.refresh, 1);
                 }).fail((e) => {
                     console.error(e);
 

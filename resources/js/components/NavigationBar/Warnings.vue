@@ -13,13 +13,14 @@
             </button>
 
             <ul class="dropdown-menu exceptions absolute left-10 pt-5 hidden">
-                <li v-for="(exception, model) in exceptions"
-                    class="exception hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-red-700 hover:text-white"
+                <li v-for="(exception, title) in exceptions"
+                    class="exception hover:bg-purple-400 px-4 block whitespace-no-wrap
+                    bg-white text-red-700 hover:text-white"
                     :data-exception="exception"
-                    :data-model="model"
+                    :data-title="title"
                 >
                     <div class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-exclamation mr-2"/> {{ model }}
+                        {{ title }}
                     </div>
                 </li>
             </ul>
@@ -39,11 +40,24 @@
 
         mounted() {
             $('.exception').unbind().click(function () {
-                let model = $(this).data('model'),
+                let title = $(this).data('title'),
                     exception = $(this).data('exception');
 
-                EventBus.$emit('modal-open', model, 'html', `Exception: <b class="text-red-700">${exception}</b>`);
+                EventBus.$emit(
+                    'modal-open',
+                    title,
+                    'html',
+                    `<b class="text-red-700 font-light">${exception}</b>`
+                );
             });
+        },
+
+        watch: {
+            'exceptions': {
+                handler(value) {
+                    console.info('value', value);
+                }
+            }
         }
     }
 </script>

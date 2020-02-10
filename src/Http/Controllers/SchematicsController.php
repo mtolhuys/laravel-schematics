@@ -32,6 +32,7 @@ class SchematicsController extends Controller
     public function clearCache()
     {
         Cache::forget('schematics');
+        Cache::forget('schematics-exception');
 
         return response('Cache cleared', 200);
     }
@@ -54,9 +55,9 @@ class SchematicsController extends Controller
      */
     public function modelsWithRelations(array $models = []): array
     {
-        if (Cache::has('schematics')) {
-            return Cache::get('schematics');
-        }
+//        if (! empty($models) && Cache::has('schematics')) {
+//            return Cache::get('schematics');
+//        }
 
         if (empty($models)) {
             $models = ModelMapper::map();

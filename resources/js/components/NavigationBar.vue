@@ -7,7 +7,7 @@
             class="w-full flex flex-wrap justify-between mt-0 py-4"
         >
             <div class="pl-4 flex items-center">
-                <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl">
+                <a class="text-gray-900 text-base no-underline hover:no-underline font-bold text-xl">
                     <i class="fas fa-sitemap icon"/> Laravel Schematics
                 </a>
 

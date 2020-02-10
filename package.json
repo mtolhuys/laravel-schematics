@@ -50,7 +50,6 @@
     "homepage": "https://github.com/mtolhuys/laravel-schematics#readme",
     "dependencies": {
         "dragselect": "^1.13.1",
-        "lodash.template": ">=4.5.0",
         "mem": ">=4.0.0",
         "braces": ">=2.3.1",
         "tunnel-agent": ">=0.6.0"

@@ -114,12 +114,14 @@ export default {
                     });
                 });
 
-                this.bindRelationClicks();
-
                 this.$nextTick(() => {
                     EventBus.$emit('loading', false);
 
-                    setTimeout(jsPlumb.repaintEverything, 1);
+                    setTimeout(() => {
+                        jsPlumb.repaintEverything();
+                        EventBus.$emit('group');
+                        this.bindRelationClicks();
+                    }, 1);
                 })
             }, 1);
         },
