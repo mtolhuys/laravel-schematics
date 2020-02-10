@@ -23,15 +23,13 @@ class RelationsController extends Controller
      */
     public function create(CreateRelationRequest $request)
     {
-        $relation = $request->all();
-        $result = (new CreateRelationAction())->execute($request);
-
-        $this->createOptional($request);
-
         Cache::forget('schematics');
 
         $result = (new CreateRelationAction())->execute($request);
 
+        $this->createOptional($request);
+
+        $relation = $request->all();
         $relation['method']['file'] = $result->file;
         $relation['method']['line'] = $result->line;
 

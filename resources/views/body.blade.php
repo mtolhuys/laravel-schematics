@@ -29,10 +29,11 @@
                 $('body').css('cursor', 'progress');
 
                 $.get('schematics/refresh', function(response) {
-                    console.info('response', response);
-
                     Schematics.models = response.models;
                     Schematics.relations = response.relations;
+                    Schematics.migrations = response.migrations;
+
+                    EventBus.$emit('refresh-navbar', response);
 
                     if (response.exception) {
                         EventBus.$emit(

@@ -104,6 +104,19 @@
             }
         },
 
+        created() {
+            EventBus.$on('refresh-navbar', (data) => {
+                this.models = data.models.created;
+                this.migrations = data.migrations.created;
+                this.redundantMigrations = data.migrations.redundant;
+                this.idleMigrations = data.migrations.created - Schematics.migrations.run;
+            });
+        },
+
+        destroyed() {
+            EventBus.$off('refresh-navbar');
+        },
+
         mounted() {
             this.search();
         },

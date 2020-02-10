@@ -127,22 +127,66 @@ export default {
         },
 
         bindRelationClicks() {
+            const self = this;
+
             $('.relation').unbind().click(function () {
                 let relation = $.grep(this.className.split(' '), c => {
                     return c.indexOf('rel-') === 0
                 }).join().replace('rel-', '').split('-');
 
-                relation = Schematics.relations[relation[0]][relation[1]];
-                relation.model = `${relation.model}`.split('\\').slice(-1)[0];
-                relation.type = relation.type.charAt(0).toLowerCase() + relation.type.slice(1);
-
-                EventBus.$emit(
-                    'modal-open',
-                    `${relation.model}.php(<span class="text-purple-400 text-lg">${relation.method.line}</span>)`,
-                    'relation',
-                    relation
-                );
+                self.fetch(relation);
             });
+        },
+
+        fetch(relation, max = 50, speed = 500) {
+            const self = this;
+
+            let ran = 0,
+                handler,
+                hasRelationData = () => {
+                    return Object.keys(Schematics.relations).length
+                        && Schematics.relations[relation[0]]
+                        && Schematics.relations[relation[0]][relation[1]];
+                },
+                loop = () => {
+                    Schematics.refresh();
+
+                    ran++;
+
+                    if (hasRelationData()) {
+                        clearInterval(handler);
+                        EventBus.$emit('loading', false);
+
+                        self.openRelationModal(Schematics.relations[relation[0]][relation[1]]);
+                    }
+
+                    if (ran === max) {
+                        clearInterval(handler);
+                        EventBus.$emit('loading', false);
+
+                        console.error('Could not fetch relations data for: ', relation);
+                    }
+                };
+
+            if (hasRelationData()) {
+                this.openRelationModal(Schematics.relations[relation[0]][relation[1]]);
+            } else {
+                EventBus.$emit('loading', true);
+
+                handler = setInterval(loop, speed);
+            }
+        },
+
+        openRelationModal(relation) {
+            relation.model = `${relation.model}`.split('\\').slice(-1)[0];
+            relation.type = relation.type.charAt(0).toLowerCase() + relation.type.slice(1);
+
+            EventBus.$emit(
+                'modal-open',
+                `${relation.model}.php(<span class="text-purple-400 text-lg">${relation.method.line}</span>)`,
+                'relation',
+                relation
+            );
         },
 
         getStyleSettings(style) {
