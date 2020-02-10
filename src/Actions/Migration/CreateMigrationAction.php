@@ -33,7 +33,9 @@ class CreateMigrationAction
         }
 
         if ($this->autoMigrate) {
-            Artisan::call('migrate');
+            try {
+                Artisan::call('migrate');
+            } catch (\Throwable $e) {}
         }
     }
 
@@ -60,7 +62,7 @@ class CreateMigrationAction
         ], [
             $source,
             $target,
-            'Create' . ucfirst($source) . ucfirst($target) . 'Relation',
+            'Create' . ucfirst(Str::camel($source)) . ucfirst(Str::camel($target)) . 'Relation',
             "\$table->foreign('$foreignKey')->references('{$this->getLocalKey($request)}')->on('$target');",
             $foreignKey
         ], File::get($stub)));
@@ -96,7 +98,8 @@ class CreateMigrationAction
      */
     private function getLocalKey($request): string
     {
-        return $request['method']['localKey'] ?? 'id';
+        return empty($request['method']['localKey'])
+            ? 'id' : $request['method']['localKey'];
     }
 
     /**
@@ -105,7 +108,12 @@ class CreateMigrationAction
      */
     private function getForeignKey($request): string
     {
-        return $request['method']['foreignKey']
-            ?? strtolower(substr(strrchr($request['target'], "\\"), 1) . '_id');
+        return empty($request['method']['foreignKey'])
+            ? strtolower(
+                Str::snake(
+                    substr(strrchr($request['target'], "\\"), 1) . '_id'
+                )
+            )
+            : $request['method']['foreignKey'];
     }
 }
