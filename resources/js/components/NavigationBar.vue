@@ -43,29 +43,29 @@
                     <li class="text-center flex-2">
                         <a class="block py-2 pl-2">
                             <span id="migration-count">
-                                {{ migrations }}
+                                {{ migrations.created }}
                             </span> Migration{{ migrations === 1 ? '' : 's' }}
 
-                            <span v-if="idleMigrations || redundantMigrations" class="text-black text-xs">
+                            <span v-if="migrations.created || migrations.run" class="text-black text-xs">
                                 (
                                     <button
-                                        aria-label="Migrations not migrated"
+                                        aria-label="Migrations found as file"
                                         data-balloon-pos="down"
                                         class="tooltip migration-warning"
                                     >
                                     <span id="idle-migrations-count">
-                                        {{ idleMigrations }}
+                                        {{ migrations.created }}
                                     </span>
                                         <i class="fa fa-file-alt text-gray-400"/>
                                     </button>
 
                                     <button
-                                        aria-label="Migrations still in migrations table"
+                                        aria-label="Migrations found in migrations table"
                                         data-balloon-pos="down"
                                         class="tooltip migration-warning"
                                     >
                                     <span id="redundant-migrations-count">
-                                        {{ redundantMigrations }}
+                                        {{ migrations.run }}
                                     </span>
                                         <i class="fa fa-database text-gray-400"/>
                                     </button>
@@ -98,9 +98,7 @@
             return {
                 searchFor: localStorage.getItem('schematics-settings-search') || '',
                 models: Schematics.models.length,
-                migrations: Schematics.migrations.created,
-                redundantMigrations: Schematics.migrations.redundant,
-                idleMigrations: Schematics.migrations.created - Schematics.migrations.run,
+                migrations: Schematics.migrations,
             }
         },
 
