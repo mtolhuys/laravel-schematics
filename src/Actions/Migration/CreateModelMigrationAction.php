@@ -1,0 +1,47 @@
+<?php
+
+namespace Mtolhuys\LaravelSchematics\Actions\Migration;
+
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Mtolhuys\LaravelSchematics\Services\RuleParser;
+use Mtolhuys\LaravelSchematics\Actions\Migration\Traits\CreatesMigrations;
+
+class CreateModelMigrationAction
+{
+    use CreatesMigrations;
+
+    /**
+     * @param $request
+     */
+    public function execute($request)
+    {
+        $model = ucfirst($request['name']);
+        $table = Str::plural(Str::snake($model));
+        $stub = __DIR__ . '/../../../resources/stubs/migration/model.stub';
+        $this->filename = 'database/migrations/'
+            . date('Y_m_d_His')
+            . "_create_{$table}_table.php";
+
+        File::put(base_path($this->filename), str_replace([
+            '$classname$',
+            '$table$',
+            '$columns$'
+        ], [
+            'Create' . Str::plural($model) . 'Table',
+            $table,
+            $this->getColumns($request)
+        ], File::get($stub)));
+    }
+
+    /**
+     * @param $request
+     * @return string
+     */
+    private function getColumns($request): string
+    {
+        $columns = '$table->increments(\'id\');' . PHP_EOL;
+        $columns .= RuleParser::rulesToMigrationColumns($this->getFields($request['fields']));
+        return $columns . str_repeat(' ', 12) . '$table->timestamps();';
+    }
+}

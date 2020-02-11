@@ -27,7 +27,7 @@
             </button>
 
             <button
-                @click="inspect(model, table)"
+                @click="edit(model, table)"
                 class="cursor-pointer text-gray-400 hover:text-purple-700">
                 <i class="fas fa-info"/>
             </button>
@@ -153,11 +153,14 @@
                 EventBus.$emit('modal-open', `Deleting model!`, `delete-model`, model);
             },
 
-            inspect(model, table) {
+            edit(model, table) {
                 EventBus.$emit('loading', true);
 
                 $.get(`schematics/details/${table}`, function (fields) {
-                    EventBus.$emit('modal-open', model, 'model-fields', fields);
+                    EventBus.$emit('modal-open', model, 'model-fields', {
+                        model: model,
+                        fields: fields
+                    });
 
                     EventBus.$emit('loading', false);
                 }).fail(function (e) {

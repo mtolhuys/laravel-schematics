@@ -54,7 +54,7 @@
                 }, function () {
                     EventBus.$emit('delayed-alert', `${model} deleted`, 'info', 7000);
 
-                    setTimeout(Schematics.refresh, 1);
+                    location.reload();
                 }).fail(function (e) {
                     console.error(e);
                     EventBus.$emit('alert', e.statusText, 'error');

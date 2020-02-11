@@ -24,7 +24,7 @@ class RuleParser
      */
     public static function rulesToMigrationColumns(array $rules): string
     {
-        $columns = '$table->increments(\'id\');' . PHP_EOL;
+        $columns = '';
 
         foreach ($rules as $column => $rule) {
             $type = self::getType($rule);
@@ -39,7 +39,7 @@ class RuleParser
                 PHP_EOL;
         }
 
-        return $columns . str_repeat(' ', 12) . '$table->timestamps();';
+        return $columns;
     }
 
     /**

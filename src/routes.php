@@ -18,6 +18,7 @@ Route::group([
     Route::group(['prefix' => 'models'], static function () {
         Route::post('/create', 'ModelsController@create');
         Route::post('/delete', 'ModelsController@delete');
+        Route::post('/add-fields', 'ModelsController@addFields');
     });
 
     Route::group(['prefix' => 'migrations'], static function () {

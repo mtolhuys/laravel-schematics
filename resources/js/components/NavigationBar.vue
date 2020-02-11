@@ -46,7 +46,7 @@
                                 {{ migrations.created }}
                             </span> Migration{{ migrations === 1 ? '' : 's' }}
 
-                            <span v-if="migrations.created || migrations.run" class="text-black text-xs">
+                            <span v-if="migrations.created !== migrations.run" class="text-black text-xs">
                                 (
                                     <button
                                         aria-label="Migrations found as file"
