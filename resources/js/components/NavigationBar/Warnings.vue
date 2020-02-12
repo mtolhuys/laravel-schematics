@@ -20,7 +20,7 @@
                     :data-title="title"
                 >
                     <div class="action inline-block button rounded-full px-4 py-2">
-                        {{ title }}
+                        <i class="fas fa-bug pr-1"></i> {{ title }}
                     </div>
                 </li>
             </ul>

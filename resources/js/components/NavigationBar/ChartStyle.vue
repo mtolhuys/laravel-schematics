@@ -13,7 +13,7 @@
                     <div
                         @click="setStyle('Bezier')"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-bezier-curve mr-2"/> Bezier
+                        <i class="fas icon fa-bezier-curve mr-2"/> Bezier
                     </div>
                 </li>
 
@@ -21,7 +21,7 @@
                     <div
                         @click="setStyle('Straight')"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-draw-polygon mr-2"/> Straight
+                        <i class="fas icon fa-draw-polygon mr-2"/> Straight
                     </div>
                 </li>
 
@@ -29,7 +29,7 @@
                     <div
                         @click="setStyle('Flowchart')"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-sitemap mr-2"/> Flowchart
+                        <i class="fas icon fa-sitemap mr-2"/> Flowchart
                     </div>
                 </li>
 
@@ -37,7 +37,7 @@
                     <div
                         @click="setStyle('StateMachine')"
                         class="action inline-block button rounded-full px-4 py-2">
-                        <i class="fas fa-project-diagram mr-2"/> State Machine
+                        <i class="fas icon fa-project-diagram mr-2"/> State Machine
                     </div>
                 </li>
             </ul>

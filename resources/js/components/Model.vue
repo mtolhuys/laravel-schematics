@@ -29,7 +29,7 @@
             <button
                 @click="edit(model, table)"
                 class="cursor-pointer text-gray-400 hover:text-purple-700">
-                <i class="fas fa-info"/>
+                <i class="fas fa-pencil-alt"/>
             </button>
         </span>
     </div>
