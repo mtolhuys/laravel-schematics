@@ -156,13 +156,18 @@
             edit(model, table) {
                 EventBus.$emit('loading', true);
 
-                $.get(`schematics/details/${table}`, function (fields) {
-                    EventBus.$emit('modal-open', model, 'model-fields', {
+                $.get(`schematics/edit/${table}`, function (fields) {
+                    let data = {
                         model: model,
                         fields: fields
-                    });
+                    };
 
-                    EventBus.$emit('loading', false);
+                    EventBus.$emit('modal-open', model, 'model-fields', data);
+
+                    setTimeout(() => {
+                        EventBus.$emit('edit-model', data);
+                        EventBus.$emit('loading', false);
+                    }, 1);
                 }).fail(function (e) {
                     console.error(e);
                     EventBus.$emit('alert', e.statusText, 'error');

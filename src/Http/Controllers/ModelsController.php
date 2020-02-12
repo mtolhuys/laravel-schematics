@@ -2,13 +2,13 @@
 
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
-use Mtolhuys\LaravelSchematics\Actions\Model\CreateFieldsAction;
+use Mtolhuys\LaravelSchematics\Actions\Model\EditModelAction;
 use Mtolhuys\LaravelSchematics\Actions\Resource\CreateResourceControllerAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\CreateFieldsMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\CreateModelMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\FormRequest\CreateFormRequestAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\DeleteMigrationAction;
-use Mtolhuys\LaravelSchematics\Http\Requests\AddFieldsRequest;
+use Mtolhuys\LaravelSchematics\Http\Requests\EditModelRequest;
 use Mtolhuys\LaravelSchematics\Http\Requests\CreateModelRequest;
 use Mtolhuys\LaravelSchematics\Http\Requests\DeleteModelRequest;
 use Mtolhuys\LaravelSchematics\Actions\Model\CreateModelAction;
@@ -52,13 +52,13 @@ class ModelsController extends Controller
     }
 
     /**
-     * @param AddFieldsRequest $request
+     * @param EditModelRequest $request
      * @return Response
      */
-    public function addFields(AddFieldsRequest $request)
+    public function edit(EditModelRequest $request)
     {
+        (new EditModelAction())->execute($request);
 //        (new CreateFieldsMigrationAction())->execute($request);
-        (new CreateFieldsAction())->execute($request);
 
         return response('Fields created', 200);
     }

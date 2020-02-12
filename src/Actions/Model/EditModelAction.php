@@ -5,7 +5,7 @@ namespace Mtolhuys\LaravelSchematics\Actions\Model;
 use Illuminate\Support\Facades\File;
 use ReflectionClass;
 
-class CreateFieldsAction
+class EditModelAction
 {
     /**
      * @param $request
@@ -14,35 +14,42 @@ class CreateFieldsAction
      */
     public function execute($request)
     {
+        $model = $request['model'];
         $fields = array_values(array_map(static function ($field) {
             return $field['name'];
         }, $request['fields']));
-        $model = $request['model'];
-        $fillables = $this->getFillables(array_merge((new $model)->getFillable(), $fields));
-
-        dd($fillables);
-
+        $stub = __DIR__ . '/../../../resources/stubs/fillables.stub';
         $file = (new ReflectionClass($model))->getFileName();
         $lines = file($file, FILE_IGNORE_NEW_LINES);
         $index = $this->getFillableIndex($lines);
+        $injectionLine = $index;
+        $removeLines = $this->removeTrailing($lines, $index);
+        $removeLines = array_merge($removeLines, $this->removeLeading($lines, $index));
 
-        $removeLines = $this->removeLeading($lines, $index - 1);
-        $removeLines = array_merge($removeLines, $this->removeTrailing($lines, $index));
+        foreach ($removeLines as $removeLine) {
+            $injectionLine = $removeLine + 1;
+            unset($lines[$removeLine]);
+        }
 
-        dd($request['fields'], $request['new_fields']);
+        $lines[$injectionLine] = PHP_EOL . $this->generateFillables($fields, $stub);
 
-//        File::put($path, str_replace(
-//            ['$namespace$', '$model$', '$fillables$'],
-//            [rtrim($namespace, '\\'), $model, $this->getFillables($request['fields'])],
-//            File::get($stub)
-//        ));
+        file_put_contents($file, implode("\n", $lines));
+    }
+
+    private function generateFillables($fields, $stub)
+    {
+        return str_replace([
+            '$fillables$'
+        ], [
+            $this->getFillables($fields),
+        ], File::get($stub));
     }
 
     private function getFillableIndex(array $lines)
     {
         foreach ($lines as $index => $line) {
             if (strpos($line, '$fillable') !== false) {
-                return $index + 1;
+                return $index;
             }
         }
 
@@ -56,20 +63,12 @@ class CreateFieldsAction
      */
     private function removeLeading($lines, $index): array
     {
-        $line = '';
-        $remove = [];
+        $remove = [$index];
 
-        while (!$this->startOfFillable($line)) {
-            $line = $lines[$index];
-
-            $remove[] = $index;
-
+        do {
             $index--;
-        }
-
-        if (trim($lines[$index]) === '') {
             $remove[] = $index;
-        }
+        } while (! $this->startOfFillable($lines[$index]));
 
         return $remove;
     }
@@ -81,20 +80,12 @@ class CreateFieldsAction
      */
     private function removeTrailing($lines, $index): array
     {
-        $line = '';
-        $remove = [];
+        $remove = [$index];
 
-        while (!$this->endOfFillable($line)) {
-            $line = $lines[$index];
-
-            $remove[] = $index;
-
+        do {
             $index++;
-        }
-
-        if (trim($lines[$index]) === '') {
             $remove[] = $index;
-        }
+        } while (! $this->endOfFillable($lines[$index]));
 
         return $remove;
     }

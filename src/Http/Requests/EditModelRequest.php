@@ -4,7 +4,7 @@ namespace Mtolhuys\LaravelSchematics\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddFieldsRequest extends FormRequest
+class EditModelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,6 +26,7 @@ class AddFieldsRequest extends FormRequest
         return [
             'model' => 'required|string',
             'fields' => 'required|array',
+            'deleted' => 'required|array',
         ];
     }
 }
