@@ -7,7 +7,7 @@
             </svg>
         </button>
 
-        <ul class="dropdown-menu absolute left-10 pt-5 hidden">
+        <ul class="dropdown-menu absolute left-10 hidden">
             <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
                 <div
                     @click="migrate('run')"
@@ -47,13 +47,22 @@
                     <i class="fab icon fa-laravel mr-2"/> db:seed
                 </div>
             </li>
+
+
+            <li class="hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <div
+                    @click="migrate('delete-last')"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fab icon fa-laravel mr-2"/> remove:latest
+                </div>
+            </li>
         </ul>
     </div>
 </template>
 
 <script>
     export default {
-        name: "migrations",
+        name: "database",
 
         methods: {
             migrate(action) {

@@ -25,7 +25,7 @@ class $classname$ extends Migration
     public function up()
     {
         Schema::table('$table$', static function (Blueprint $table) {
-            $columns$
+            $columnsUp$
         });
     }
 
@@ -36,6 +36,8 @@ class $classname$ extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('$table$');
+        Schema::table('$table$', static function (Blueprint $table) {
+            $columnsDown$
+        });
     }
 }

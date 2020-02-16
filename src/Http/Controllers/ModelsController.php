@@ -4,7 +4,7 @@ namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
 use Mtolhuys\LaravelSchematics\Actions\Model\EditModelAction;
 use Mtolhuys\LaravelSchematics\Actions\Resource\CreateResourceControllerAction;
-use Mtolhuys\LaravelSchematics\Actions\Migration\CreateFieldsMigrationAction;
+use Mtolhuys\LaravelSchematics\Actions\Migration\CreateColumnsMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\CreateModelMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\FormRequest\CreateFormRequestAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\DeleteMigrationAction;
@@ -54,13 +54,16 @@ class ModelsController extends Controller
     /**
      * @param EditModelRequest $request
      * @return Response
+     * @throws ReflectionException
      */
     public function edit(EditModelRequest $request)
     {
         (new EditModelAction())->execute($request);
-//        (new CreateFieldsMigrationAction())->execute($request);
+        (new CreateColumnsMigrationAction())->execute($request);
 
-        return response('Fields created', 200);
+        Cache::forget('schematics');
+
+        return response('Model changed', 200);
     }
 
     /**
@@ -68,7 +71,7 @@ class ModelsController extends Controller
      */
     public function createOptional($request)
     {
-        foreach ($request['options'] as $option => $shouldUse) {
+        foreach ($request['actions'] as $option => $shouldUse) {
             if (json_decode($shouldUse, false)) {
                 $this->getCreateAction($option)->execute($request);
             }

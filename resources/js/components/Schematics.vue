@@ -41,7 +41,7 @@
                 if (notClicked($(".modal-container"))) {
                     EventBus.$emit('modal-close');
                 } else {
-                    e.stopImmediatePropagation();
+                    if (Schematics.modal) e.stopImmediatePropagation();
                 }
 
                 if (notClicked(this.$alert())) {

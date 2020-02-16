@@ -18,6 +18,9 @@
                         >
                     </div>
 
+                    <i style="cursor:move"
+                       class="fas fa-arrows-alt-v text-gray-200 mx-1"/>
+
                     <div class="md:w-2/3">
                         <input
                             v-model="field.type"
@@ -40,30 +43,6 @@
         </draggable>
 
         <div class="flex text-lg mt-3 items-end outline-none">
-            <div class="inline-block hidden relative bg-transparent pt-1 pl-5">
-                <label class="tooltip block text-gray-500 font-bold">
-                    <input
-                        v-model="options.hasFormRequest"
-                        class="mr-2 leading-tight" type="checkbox"
-                    >
-                    <span class="text-sm">
-                        + Form request
-                    </span>
-                </label>
-            </div>
-
-            <div class="inline-block hidden relative bg-transparent pt-1 pl-5">
-                <label class="tooltip block text-gray-500 font-bold">
-                    <input
-                        v-model="options.hasResource"
-                        class="mr-2 leading-tight" type="checkbox"
-                    >
-                    <span class="text-sm">
-                        + Resource
-                    </span>
-                </label>
-            </div>
-
             <div class="inline-block w-full relative bg-transparent mx-5 mb-10 pt-2 pl-5">
                 <span class="plus-minus">
                     <button @click="addField()"
@@ -80,10 +59,32 @@
                         <span class="mr-1"><i class="fas fa-minus"/></span>
                     </button>
                 </span>
+
+                <div class="md:flex md:items-center">
+                    <label class="block text-gray-500 font-bold">
+                        <input
+                            v-model="options.hasTimestamps"
+                            class="mr-2 leading-tight" type="checkbox">
+                        <span class="text-sm w-2/3">
+                            Timestamps
+                        </span>
+                    </label>
+                </div>
+
+                <div class="md:flex md:items-center">
+                    <label class="block text-gray-500 font-bold">
+                        <input
+                            v-model="actions.hasResource"
+                            class="mr-2 leading-tight" type="checkbox">
+                        <span class="text-sm w-2/3">
+                            Resource Controller
+                        </span>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div class="flex justify-end pt-2">
+        <div class="flex justify-end">
             <button
                 @click="save()"
                 class="modal-action px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2"
@@ -107,9 +108,12 @@
         data() {
             return {
                 fieldsErrors: false,
-                options: {
+                actions: {
                     hasFormRequest: false,
                     hasResource: false,
+                },
+                options: {
+                    hasTimestamps: true,
                 },
                 fields: [{
                     id: this.uuid(),
@@ -170,7 +174,7 @@
 
             validName(name) {
                 return name.trim().length
-                    && ! Schematics.models.includes(Schematics.namespace + name)
+                    && !Schematics.models.includes(Schematics.namespace + name)
             },
 
             save() {
@@ -179,9 +183,9 @@
 
                 $modelName
                     .parent()
-                    .toggleClass('focus:border-red-500 border-red-500', ! this.validName(name));
+                    .toggleClass('focus:border-red-500 border-red-500', !this.validName(name));
 
-                if (! this.validName(name) || ! this.validFields()) return;
+                if (!this.validName(name) || !this.validFields()) return;
 
                 EventBus.$emit('modal-close');
                 EventBus.$emit('loading', true);
@@ -189,6 +193,7 @@
                 $.post('schematics/models/create', {
                     'name': name,
                     'fields': this.fields,
+                    'actions': this.actions,
                     'options': this.options,
                 }, () => {
                     location.reload();

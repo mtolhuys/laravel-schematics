@@ -14,26 +14,40 @@ class EditModelAction
      */
     public function execute($request)
     {
-        $model = $request['model'];
-        $fields = array_values(array_map(static function ($field) {
-            return $field['name'];
-        }, $request['fields']));
-        $stub = __DIR__ . '/../../../resources/stubs/fillables.stub';
-        $file = (new ReflectionClass($model))->getFileName();
+        $file = (new ReflectionClass($request['model']))->getFileName();
         $lines = file($file, FILE_IGNORE_NEW_LINES);
-        $index = $this->getFillableIndex($lines);
-        $injectionLine = $index;
-        $removeLines = $this->removeTrailing($lines, $index);
-        $removeLines = array_merge($removeLines, $this->removeLeading($lines, $index));
+        $index = $this->getFillableIndex($lines) - 1;
 
-        foreach ($removeLines as $removeLine) {
-            $injectionLine = $removeLine + 1;
-            unset($lines[$removeLine]);
+        if ($index > 0) {
+            $fields = array_values(array_map(static function ($field) {
+                return $field['name'];
+            }, $request['fields']));
+            $stub = __DIR__ . '/../../../resources/stubs/fillables.stub';
+            $removeLines = array_merge(
+                $this->removeTrailing($lines, $index),
+                $this->removeLeading($lines, $index + 1)
+            );
+
+            sort($removeLines);
+            $injectionLine = $removeLines[0];
+
+            foreach ($removeLines as $index => $removeLine) {
+                if (in_array(str_replace(' ', '', $lines[$removeLine]), ['{', '}'])) {
+                    $injectionLine++;
+                    continue;
+                }
+
+                unset($lines[$removeLine]);
+            }
+
+            $lines[$injectionLine] = rtrim($this->generateFillables($fields, $stub));
+            ksort($lines);
+            file_put_contents($file, implode("\n", $lines));
+
+            return;
         }
 
-        $lines[$injectionLine] = PHP_EOL . $this->generateFillables($fields, $stub);
-
-        file_put_contents($file, implode("\n", $lines));
+        abort(422, 'Cannot replace non-existing $fillable');
     }
 
     private function generateFillables($fields, $stub)
@@ -63,12 +77,11 @@ class EditModelAction
      */
     private function removeLeading($lines, $index): array
     {
-        $remove = [$index];
+        $remove = [];
 
-        do {
-            $index--;
+        while (! $this->startOfFillable($lines[$index--])) {
             $remove[] = $index;
-        } while (! $this->startOfFillable($lines[$index]));
+        }
 
         return $remove;
     }
@@ -80,12 +93,11 @@ class EditModelAction
      */
     private function removeTrailing($lines, $index): array
     {
-        $remove = [$index];
+        $remove = [];
 
-        do {
-            $index++;
+        while (! $this->endOfFillable($lines[$index++])) {
             $remove[] = $index;
-        } while (! $this->endOfFillable($lines[$index]));
+        }
 
         return $remove;
     }

@@ -64,6 +64,8 @@
                 this.type = type;
                 this.content = content;
                 this.closed = false;
+
+                Schematics.modal = true;
             });
 
             EventBus.$on('modal-close', this.close);
@@ -77,6 +79,7 @@
         methods: {
             close() {
                 this.closed = true;
+                Schematics.modal = false;
             }
         },
     }

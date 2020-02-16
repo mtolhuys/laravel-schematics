@@ -30,7 +30,7 @@ class CreateModelMigrationAction
         ], [
             'Create' . Str::plural($model) . 'Table',
             $table,
-            $this->getColumns($request)
+            rtrim($this->getColumns($request))
         ], File::get($stub)));
     }
 
@@ -40,8 +40,14 @@ class CreateModelMigrationAction
      */
     private function getColumns($request): string
     {
-        $columns = '$table->increments(\'id\');' . PHP_EOL;
-        $columns .= RuleParser::rulesToMigrationColumns($this->getFields($request['fields']));
-        return $columns . str_repeat(' ', 12) . '$table->timestamps();';
+        $columns = RuleParser::fieldsToMigrationMethods(
+            $this->getFields($request['fields'])
+        );
+
+        if (json_decode($request['options']['hasTimestamps'], false)) {
+            $columns .= '$table->timestamps();';
+        }
+
+        return $columns;
     }
 }

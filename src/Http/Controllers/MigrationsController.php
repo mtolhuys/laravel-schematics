@@ -5,6 +5,7 @@ namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
+use Mtolhuys\LaravelSchematics\Actions\Migration\DeleteLastMigrationAction;
 
 class MigrationsController extends Controller
 {
@@ -53,5 +54,14 @@ class MigrationsController extends Controller
         Cache::forget('schematics');
 
         return Artisan::output();
+    }
+
+    public function deleteLast()
+    {
+        (new DeleteLastMigrationAction())->execute();
+
+        Cache::forget('schematics');
+
+        return response('Last migration removed', 200);
     }
 }

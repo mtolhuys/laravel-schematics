@@ -69,6 +69,7 @@
 
     .dropdown-menu {
         right: -60px;
+        padding-top: 20px;
     }
 
     .bottom-full {

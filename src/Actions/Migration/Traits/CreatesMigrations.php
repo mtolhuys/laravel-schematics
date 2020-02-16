@@ -64,12 +64,54 @@ trait CreatesMigrations
      */
     protected function getFields($fields): array
     {
-        return array_merge(
-            ...array_values(array_map(static function ($field) {
-                return [
-                    $field['name'] => empty($field['type']) ? 'string|max:255' : $field['type']
-                ];
-            }, $fields))
-        );
+        return array_map(static function ($field) {
+            return [
+                $field['name'] => empty($field['type']) ? 'string|max:255' : $field['type']
+            ];
+        }, $fields);
     }
+
+
+    /**
+     * Parsing column type to migration rule
+     *
+     * @param $columnType
+     * @return string
+     */
+    protected function parseColumnType($columnType): string
+    {
+        $max = (int)preg_replace('/\D/', '', $columnType);
+        $type = str_replace(' ', '',
+            preg_replace(
+                '/[^a-zA-Z]+/',
+                '',
+                explode(' ', $columnType, 2)[0]
+            )
+        );
+
+        switch (strtolower($type)) {
+            case 'date':
+                $type = 'date';
+                break;
+            case 'timestamp':
+                $type = 'dateTime';
+                break;
+            case 'int':
+            case 'tinyint':
+            case 'bigint':
+                $type = 'integer';
+                break;
+            case 'varchar':
+            case 'text':
+            default:
+                $type = 'string';
+        }
+
+        if ($max > 0) {
+            $type .= "|max:{$max}";
+        }
+
+        return $type;
+    }
+
 }

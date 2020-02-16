@@ -27,5 +27,6 @@ Route::group([
         Route::post('/refresh', 'MigrationsController@refresh');
         Route::post('/fresh', 'MigrationsController@fresh');
         Route::post('/seed', 'MigrationsController@seed');
+        Route::post('/delete-last', 'MigrationsController@deleteLast');
     });
 });

@@ -16,9 +16,11 @@
         }
     ],
     "require": {
-        "php": "^7.0"
+        "php": "^7.1"
     },
     "require-dev": {
+        "doctrine/dbal": "^2.0",
+        "laravel/framework": "^5.0",
         "orchestra/testbench": "^3.5",
         "phpunit/phpunit": "^7.0"
     },
