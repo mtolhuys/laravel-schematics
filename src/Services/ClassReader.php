@@ -10,35 +10,88 @@ use ReflectionClass;
 class ClassReader
 {
     /**
+     * @var bool
+     */
+    private static $hasNamespace;
+
+    /**
+     * @var bool
+     */
+    private static $hasClass;
+
+    /**
+     * @var string
+     */
+    private static $namespace;
+
+    /**
+     * @var string
+     */
+    private static $class;
+
+
+    /**
      * @param string $path
      * @return string
      */
     public static function getClassName(string $path): string
     {
-        $namespace = $class = '';
-        $contents = file_get_contents($path);
-        $hasNamespace = $hasClass = false;
+        self::$namespace = self::$class = '';
+        self::$hasNamespace = self::$hasClass = false;
 
-        foreach (token_get_all($contents) as $token) {
+        foreach (token_get_all(file_get_contents($path)) as $token) {
             $tokenArray = is_array($token);
-            $hasNamespace = $hasNamespace || ($tokenArray && $token[0] === T_NAMESPACE);
-            $hasClass = $hasClass || ($tokenArray && $token[0] === T_CLASS);
 
-            if ($hasNamespace) {
-                if ($tokenArray && in_array($token[0], [T_STRING, T_NS_SEPARATOR], true)) {
-                    $namespace .= $token[1];
-                } else if ($token === ';') {
-                    $hasNamespace = false;
-                }
-            }
+            self::isNameSpace($tokenArray, $token);
+            self::isClass($tokenArray, $token);
+            self::setClassName($tokenArray, $token);
 
-            if ($hasClass && $tokenArray && $token[0] === T_STRING) {
-                $class = $token[1];
+            if (self::$class) {
                 break;
             }
         }
 
-        return $namespace ? $namespace . '\\' . $class : $class;
+        return self::$namespace ? self::$namespace . '\\' . self::$class : self::$class;
+    }
+
+    /**
+     * @param bool $tokenArray
+     * @param $token
+     * @return bool
+     */
+    private static function isClass(bool $tokenArray, $token)
+    {
+        self::$hasClass = self::$hasClass || ($tokenArray && $token[0] === T_CLASS);
+    }
+
+    /**
+     * @param bool $tokenArray
+     * @param $token
+     * @return bool
+     */
+    private static function isNameSpace(bool $tokenArray, $token)
+    {
+        self::$hasNamespace = self::$hasNamespace || ($tokenArray && $token[0] === T_NAMESPACE);
+    }
+
+    /**
+     * @param bool $tokenArray
+     * @param $token
+     * @return mixed
+     */
+    private static function setClassName(bool $tokenArray, $token)
+    {
+        if (self::$hasNamespace) {
+            if ($tokenArray && in_array($token[0], [T_STRING, T_NS_SEPARATOR], true)) {
+                self::$namespace .= $token[1];
+            } else if ($token === ';') {
+                self::$hasNamespace = false;
+            }
+        }
+
+        if (self::$hasClass && $tokenArray && $token[0] === T_STRING) {
+            self::$class = $token[1];
+        }
     }
 
     /**
