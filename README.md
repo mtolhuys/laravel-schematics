@@ -6,17 +6,32 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
 
 This package will map your Eloquent models, relation methods and migrations.
-It will help building them, drag and drop relations, run and roll back migrations.
+It will help building them, use drag and drop relations, run and roll back migrations.
 You can see a diagram of the results visiting `{your-app}/schematics`
 
-Examples: 
+For example: 
+
+### Adding a model
+- Creating a User model with the timestamps and resource controller options.
 
 <img src="resources/images/add-user.gif" width=800>
+
+### Adding a relation
+- Created a Post model and drag and dropped it's relation to User.
+
 <img src="resources/images/post-and-user-relation.gif" width=800>
+
+### Removing a relation
+- Removing a relation through the interface.
+
 <img src="resources/images/removing-relation.gif" width=800>
+
+### Change diagram
+- You can change you're style and export/import them.
+
 <img src="resources/images/schematics.gif" width=800>
 
-This package is still in BETA stage. More features coming soon!
+PS: This package is still in BETA stage. More features coming soon!
     
 ## Installation
 
