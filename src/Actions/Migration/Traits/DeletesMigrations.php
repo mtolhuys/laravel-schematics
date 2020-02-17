@@ -35,6 +35,10 @@ trait DeletesMigrations
 
         try {
             (new $migration)->down();
-        } catch (\Throwable $e) {}
+        }
+        /**
+         * Dont stop if the down method throws an exception
+         */
+        catch (\Throwable $e) {}
     }
 }

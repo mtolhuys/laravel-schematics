@@ -5,7 +5,6 @@ namespace Mtolhuys\LaravelSchematics\Services;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 use ReflectionException;
-use Illuminate\Support\Collection;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -70,7 +69,12 @@ class RelationMapper extends ClassReader
                     ],
                 ];
             }
-        } catch (\Throwable $e) {}
+        }
+        /**
+         * Ignore possible exceptions caused by
+         * ReflectionClass or method invocation
+         */
+        catch (\Throwable $e) {}
 
         return null;
     }
