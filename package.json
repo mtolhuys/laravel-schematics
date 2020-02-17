@@ -1,6 +1,6 @@
 {
     "name": "laravel-schematics",
-    "version": "0.6.3",
+    "version": "0.7.0",
     "description": "A package to help you build your models",
     "main": "webpack.config.js",
     "scripts": {

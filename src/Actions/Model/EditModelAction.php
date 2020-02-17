@@ -108,7 +108,9 @@ class EditModelAction
      */
     private function endOfFillable($line): bool
     {
-        return str_replace(' ', '', $line) === '];';
+        $stripped = str_replace(' ', '', $line);
+
+        return $stripped === '];' || $stripped === '';
     }
 
     /**
