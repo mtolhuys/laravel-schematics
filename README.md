@@ -26,7 +26,7 @@ For example:
 
 <img src="resources/images/removing-relation.gif" width=800>
 
-### Change diagram
+### Changing the diagram
 - You can change you're style and export/import them.
 
 <img src="resources/images/schematics.gif" width=800>
