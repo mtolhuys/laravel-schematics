@@ -60,7 +60,6 @@ class ClassReader
     /**
      * @param bool $tokenArray
      * @param $token
-     * @return bool
      */
     private static function isClass(bool $tokenArray, $token)
     {
@@ -70,13 +69,16 @@ class ClassReader
     /**
      * @param bool $tokenArray
      * @param $token
-     * @return bool
      */
     private static function isNameSpace(bool $tokenArray, $token)
     {
         self::$hasNamespace = self::$hasNamespace || ($tokenArray && $token[0] === T_NAMESPACE);
     }
 
+    /**
+     * @param bool $tokenArray
+     * @param $token
+     */
     private static function setNamespace(bool $tokenArray, $token)
     {
         if (self::$hasNamespace) {
@@ -91,7 +93,6 @@ class ClassReader
     /**
      * @param bool $tokenArray
      * @param $token
-     * @return mixed
      */
     private static function setClassName(bool $tokenArray, $token)
     {
