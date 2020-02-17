@@ -2,28 +2,32 @@
 
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Mtolhuys\LaravelSchematics\Actions\FormRequest\CreateFormRequestAction;
-use Mtolhuys\LaravelSchematics\Actions\Migration\CreateMigrationAction;
+use Mtolhuys\LaravelSchematics\Actions\Model\EditModelAction;
 use Mtolhuys\LaravelSchematics\Actions\Resource\CreateResourceControllerAction;
+use Mtolhuys\LaravelSchematics\Actions\Migration\CreateColumnsMigrationAction;
+use Mtolhuys\LaravelSchematics\Actions\Migration\CreateModelMigrationAction;
+use Mtolhuys\LaravelSchematics\Actions\FormRequest\CreateFormRequestAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\DeleteMigrationAction;
+use Mtolhuys\LaravelSchematics\Http\Requests\EditModelRequest;
 use Mtolhuys\LaravelSchematics\Http\Requests\CreateModelRequest;
 use Mtolhuys\LaravelSchematics\Http\Requests\DeleteModelRequest;
 use Mtolhuys\LaravelSchematics\Actions\Model\CreateModelAction;
 use Mtolhuys\LaravelSchematics\Actions\Model\DeleteModelAction;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Routing\Controller;
+use Illuminate\Http\Response;
+use ReflectionException;
 
 class ModelsController extends Controller
 {
     /**
      * @param $request
-     * @return ResponseFactory|\Illuminate\Http\Response|Response
+     * @return Response
      */
     public function create(CreateModelRequest $request)
     {
         (new CreateModelAction())->execute($request);
+        (new CreateModelMigrationAction())->execute($request);
 
         $this->createOptional($request);
 
@@ -34,14 +38,13 @@ class ModelsController extends Controller
 
     /**
      * @param DeleteModelRequest $request
-     * @return ResponseFactory|\Illuminate\Http\Response|Response
-     * @throws \ReflectionException
+     * @return Response
+     * @throws ReflectionException
      */
     public function delete(DeleteModelRequest $request)
     {
         (new DeleteModelAction())->execute($request);
-
-        $this->deleteOptional($request);
+        (new DeleteMigrationAction())->execute($request);
 
         Cache::forget('schematics');
 
@@ -49,31 +52,28 @@ class ModelsController extends Controller
     }
 
     /**
-     * @param $request
+     * @param EditModelRequest $request
+     * @return Response
+     * @throws ReflectionException
      */
-    public function createOptional($request)
+    public function edit(EditModelRequest $request)
     {
-        foreach ($request['options'] as $option => $shouldUse) {
-            if (json_decode($shouldUse, false)) {
-                $this->getCreateAction($option)->execute([
-                    'name' => $request['name'],
-                    'model' => config('schematics.namespace') . $request['name'],
-                    'fields' => self::getFields($request['fields'])
-                ]);
-            }
-        }
+        (new EditModelAction())->execute($request);
+        (new CreateColumnsMigrationAction())->execute($request);
+
+        Cache::forget('schematics');
+
+        return response('Model changed', 200);
     }
 
     /**
      * @param $request
      */
-    public function deleteOptional($request)
+    public function createOptional($request)
     {
-        foreach ($request['options'] as $option => $shouldUse) {
+        foreach ($request['actions'] as $option => $shouldUse) {
             if (json_decode($shouldUse, false)) {
-                $this->getDeleteAction($option)->execute([
-                    'name' => $request['name'],
-                ]);
+                $this->getCreateAction($option)->execute($request);
             }
         }
     }
@@ -85,42 +85,8 @@ class ModelsController extends Controller
     private function getCreateAction($option)
     {
         return [
-            'hasMigration' => new CreateMigrationAction,
             'hasFormRequest' => new CreateFormRequestAction,
             'hasResource' => new CreateResourceControllerAction,
         ][$option];
-    }
-
-    /**
-     * @param $option
-     * @return mixed
-     */
-    private function getDeleteAction($option)
-    {
-        return [
-            'hasMigration' => new DeleteMigrationAction,
-        ][$option];
-    }
-
-    /**
-     * @param $fields
-     * @return array
-     */
-    private static function getFields($fields): array
-    {
-        return array_merge(
-            ...array_values(array_map(static function ($field) {
-                return [$field['name'] => self::getFieldType($field['type'] ?? '')];
-            }, $fields))
-        );
-    }
-
-    /**
-     * @param $type
-     * @return string
-     */
-    private static function getFieldType(string $type): string
-    {
-        return $type === '' ? 'string|max:255' : $type;
     }
 }

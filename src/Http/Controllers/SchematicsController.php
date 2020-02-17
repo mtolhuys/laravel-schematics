@@ -24,7 +24,6 @@ class SchematicsController extends Controller
     public function index()
     {
         $schema = $this->schematics(ModelMapper::map());
-        $schema['migrations'] = $this->migrations();
 
         return view('schematics::index', $schema);
     }
@@ -35,6 +34,7 @@ class SchematicsController extends Controller
     public function clearCache()
     {
         Cache::forget('schematics');
+        Cache::forget('schematics-exception');
 
         return response('Cache cleared', 200);
     }
@@ -43,7 +43,7 @@ class SchematicsController extends Controller
      * @param $table
      * @return array
      */
-    public function details($table)
+    public function details($table): array
     {
          $exists = Schema::hasTable($table);
 
@@ -79,7 +79,7 @@ class SchematicsController extends Controller
      */
     public function schematics(array $models = []): array
     {
-        if (Cache::has('schematics')) {
+        if (! empty($models) && Cache::has('schematics')) {
             return Cache::get('schematics');
         }
 
@@ -89,7 +89,8 @@ class SchematicsController extends Controller
 
         $data = [
             'models' => $models,
-            'relations' => RelationMapper::map($models)
+            'relations' => RelationMapper::map($models),
+            'migrations' => $this->migrations(),
         ];
 
         Cache::put('schematics', $data, 1440);

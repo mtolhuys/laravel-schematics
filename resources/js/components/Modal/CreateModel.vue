@@ -1,91 +1,90 @@
 <template>
     <span class="modal-content new-model w-full">
-        <div v-for="field in fields" class="md:flex md:items-center">
-            <div class="md:w-1/3">
-                <input
-                    @keydown.enter="save()"
-                    @keydown.tab="tab"
-                    v-model="field.name"
-                    placeholder="Field name"
-                    class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
-                     text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                    :class="{
-                        'focus:border-purple-500' : ! field.error,
-                        'focus:border-red-500 border-red-500' : field.error,
-                    }"
-                    type="text"
-                >
-            </div>
+        <draggable v-model="fields">
+            <transition-group>
+                <div v-for="field in fields" :key="field.id" class="md:flex md:items-center">
+                    <div class="md:w-1/3">
+                        <input
+                            @keydown.enter="save()"
+                            v-model="field.name"
+                            placeholder="Field name"
+                            class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+                             text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                            :class="{
+                                'focus:border-purple-500' : ! field.error,
+                                'focus:border-red-500 border-red-500' : field.error,
+                            }"
+                            type="text"
+                        >
+                    </div>
 
-            <div class="md:w-2/3">
-                <input
-                    v-model="field.type"
-                    @keydown.enter="save()"
-                    @keydown.tab="tab"
-                    placeholder="Default: string|max:255"
-                    class="field bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4
-                    text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                    type="text"
-                >
-            </div>
-        </div>
+                    <i style="cursor:move"
+                       class="fas fa-arrows-alt-v text-gray-200 mx-1"/>
+
+                    <div class="md:w-2/3">
+                        <input
+                            v-model="field.type"
+                            @keydown.enter="save()"
+                            placeholder="Default: string|max:255"
+                            class="field bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4
+                            text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                            type="text"
+                        >
+                    </div>
+
+                    <button
+                        @click="removeField(field)"
+                        @keydown.tab="tab"
+                        class="px-4 remove-field cursor-pointer text-gray-400 hover:text-purple-700">
+                        <i class="fas fa-trash-alt"/>
+                    </button>
+                </div>
+            </transition-group>
+        </draggable>
 
         <div class="flex text-lg mt-3 items-end outline-none">
-            <div class="inline-block relative bg-transparent pl-5">
-                <label class="tooltip block text-gray-500 font-bold">
-                    <input
-                        v-model="options.hasMigration"
-                        class="mr-2 leading-tight" type="checkbox"
-                    >
-                    <span class="text-sm">
-                        + Migration
-                    </span>
-                </label>
-            </div>
-
-            <div class="inline-block hidden relative bg-transparent pt-1 pl-5">
-                <label class="tooltip block text-gray-500 font-bold">
-                    <input
-                        v-model="options.hasFormRequest"
-                        class="mr-2 leading-tight" type="checkbox"
-                    >
-                    <span class="text-sm">
-                        + Form request
-                    </span>
-                </label>
-            </div>
-
-            <div class="inline-block hidden relative bg-transparent pt-1 pl-5">
-                <label class="tooltip block text-gray-500 font-bold">
-                    <input
-                        v-model="options.hasResource"
-                        class="mr-2 leading-tight" type="checkbox"
-                    >
-                    <span class="text-sm">
-                        + Resource
-                    </span>
-                </label>
-            </div>
-
-            <div class="inline-block relative bg-transparent ml-5 pt-2 pl-5">
-                <button @click="addField()"
-                        class="tooltip text-black inline-flex items-center
+            <div class="inline-block w-full relative bg-transparent mx-5 mb-10 pt-2 pl-5">
+                <span class="plus-minus">
+                    <button @click="addField()"
+                            class="tooltip text-black inline-flex items-center
                          focus:outline-none text-purple-300 hover:text-purple-500">
-                    <span class="mr-1"><i class="fas fa-plus"/></span>
-                </button>
-            </div>
+                        <span class="mr-1"><i class="fas fa-plus"/></span>
+                    </button>
 
-            <div v-if="fields.length > 1"
-                 class="inline-block relative bg-transparent pt-2 pl-5">
-                <button @click="removeField()"
+                    <button
+                        v-if="fields.length > 1"
+                        @click="removeField()"
                         class="tooltip text-black inline-flex items-center
-                         focus:outline-none text-purple-300 hover:text-purple-500">
-                    <span class="mr-1"><i class="fas fa-minus"/></span>
-                </button>
+                             focus:outline-none text-purple-300 hover:text-purple-500">
+                        <span class="mr-1"><i class="fas fa-minus"/></span>
+                    </button>
+                </span>
+
+                <div class="md:flex md:items-center">
+                    <label class="block text-gray-500 font-bold">
+                        <input
+                            v-model="options.hasTimestamps"
+                            class="mr-2 leading-tight" type="checkbox">
+                        <span class="text-sm w-2/3">
+                            Timestamps
+                        </span>
+                    </label>
+                </div>
+
+                <div class="md:flex md:items-center">
+                    <label class="block text-gray-500 font-bold">
+                        <input
+                            v-model="actions.hasResource"
+                            class="mr-2 leading-tight" type="checkbox">
+                        <span class="text-sm w-2/3">
+                            Resource Controller
+                        </span>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div class="flex justify-end pt-2">
+        <div class="flex justify-end">
             <button
                 @click="save()"
                 class="modal-action px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2"
@@ -97,18 +96,27 @@
 </template>
 
 <script>
+    import Draggable from 'vuedraggable';
+
     export default {
         name: "create-model",
+
+        components: {
+            Draggable,
+        },
 
         data() {
             return {
                 fieldsErrors: false,
-                options: {
-                    hasMigration: true,
+                actions: {
                     hasFormRequest: false,
                     hasResource: false,
                 },
+                options: {
+                    hasTimestamps: false,
+                },
                 fields: [{
+                    id: this.uuid(),
                     name: '',
                     type: '',
                     error: false
@@ -119,6 +127,7 @@
         created() {
             EventBus.$on('new-model', () => {
                 this.fields = [{
+                    id: this.uuid(),
                     name: '',
                     type: '',
                     error: false
@@ -132,21 +141,24 @@
 
         methods: {
             tab(e) {
-                if ($(e.target).is('.field:last')) {
+                if ($(e.target).is('.remove-field')) {
                     this.addField();
                 }
             },
 
             addField() {
                 this.fields.push({
+                    id: this.uuid(),
                     name: '',
                     type: '',
                     error: false
                 })
             },
 
-            removeField() {
-                this.fields.splice(-1, 1);
+            removeField(field = null) {
+                if (this.fields.length > 1) {
+                    this.fields.splice(field ? this.fields.indexOf(field) : -1, 1);
+                }
             },
 
             validFields() {
@@ -162,7 +174,7 @@
 
             validName(name) {
                 return name.trim().length
-                    && ! Schematics.models.includes(Schematics.namespace + name)
+                    && !Schematics.models.includes(Schematics.namespace + name)
             },
 
             save() {
@@ -171,9 +183,9 @@
 
                 $modelName
                     .parent()
-                    .toggleClass('focus:border-red-500 border-red-500', ! this.validName(name));
+                    .toggleClass('focus:border-red-500 border-red-500', !this.validName(name));
 
-                if (! this.validName(name) || ! this.validFields()) return;
+                if (!this.validName(name) || !this.validFields()) return;
 
                 EventBus.$emit('modal-close');
                 EventBus.$emit('loading', true);
@@ -181,6 +193,7 @@
                 $.post('schematics/models/create', {
                     'name': name,
                     'fields': this.fields,
+                    'actions': this.actions,
                     'options': this.options,
                 }, () => {
                     location.reload();
@@ -200,5 +213,10 @@
         --balloon-color: #9F7AEA;
         z-index: 9999;
         overflow: visible;
+    }
+
+    .plus-minus {
+        position: absolute;
+        right: 20px;
     }
 </style>

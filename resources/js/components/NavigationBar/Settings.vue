@@ -12,7 +12,7 @@
                 <div
                     @click="exportSettings()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-file-export mr-2"/> Export Settings
+                    <i class="fas icon fa-file-export mr-2"/> Export Settings
                 </div>
             </li>
 
@@ -26,7 +26,7 @@
                 <div
                     @click="importSettings()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-file-import mr-2"/> Import Settings
+                    <i class="fas icon fa-file-import mr-2"/> Import Settings
                 </div>
             </li>
 
@@ -34,7 +34,7 @@
                 <div
                     @click="hideModels()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-eye-slash mr-2"/> Hide Selected Models
+                    <i class="fas icon fa-eye-slash mr-2"/> Hide Selected Models
                 </div>
             </li>
 
@@ -42,7 +42,7 @@
                 <div
                     @click="showModels()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-eye mr-2"/> Show Hidden Models
+                    <i class="fas icon fa-eye mr-2"/> Show Hidden Models
                 </div>
             </li>
 
@@ -50,7 +50,7 @@
                 <div
                     @click="clearCache()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-broom mr-2"/> Clear Cache
+                    <i class="fas icon fa-broom mr-2"/> Clear Cache
                 </div>
             </li>
 
@@ -58,7 +58,7 @@
                 <div
                     @click="reset()"
                     class="action inline-block button rounded-full px-4 py-2">
-                    <i class="fas fa-redo-alt mr-2"/> Reset Diagram
+                    <i class="fas icon fa-redo-alt mr-2"/> Reset Diagram
                 </div>
             </li>
         </ul>

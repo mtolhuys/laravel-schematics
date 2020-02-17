@@ -5,20 +5,11 @@ namespace Mtolhuys\LaravelSchematics\Actions\Migration;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Mtolhuys\LaravelSchematics\Http\Requests\DeleteRelationRequest;
-use Mtolhuys\LaravelSchematics\Models\Migration;
-use Mtolhuys\LaravelSchematics\Services\ClassReader;
+use Mtolhuys\LaravelSchematics\Actions\Migration\Traits\DeletesMigrations;
 
 class DeleteMigrationAction
 {
-    public
-        $autoMigrate,
-        $path;
-
-    public function __construct()
-    {
-        $this->autoMigrate = config('schematics.auto-migrate');
-        $this->path = base_path('database/migrations');
-    }
+    use DeletesMigrations;
 
     /**
      * @param $request
@@ -37,26 +28,6 @@ class DeleteMigrationAction
                 File::delete("$this->path/$migration");
             }
         }
-    }
-
-    /**
-     * Running down in case auto-migrate is turned on
-     *
-     * @param $migration
-     */
-    public function down($migration)
-    {
-        $file = "$this->path/$migration";
-
-        require_once $file;
-
-        Migration::where('migration', pathinfo($migration, PATHINFO_FILENAME))->delete();
-
-        $migration = ClassReader::getClassName($file);
-
-        try {
-            (new $migration)->down();
-        } catch (\Throwable $e) {}
     }
 
     /**

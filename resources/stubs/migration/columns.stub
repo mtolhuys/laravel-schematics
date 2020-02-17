@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Laravel Schematics
+ *
+ * WARNING: removing @tag value will disable automated removal
+ *
+ * @package Laravel-schematics
+ * @author  Maarten Tolhuijs <mtolhuys@protonmail.com>
+ * @url     https://github.com/mtolhuys/laravel-schematics
+ * @tag     laravel-schematics-$table$-model
+ */
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class $classname$ extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('$table$', static function (Blueprint $table) {
+            $columnsUp$
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('$table$', static function (Blueprint $table) {
+            $columnsDown$
+        });
+    }
+}

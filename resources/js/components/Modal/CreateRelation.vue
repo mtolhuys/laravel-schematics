@@ -100,20 +100,6 @@
             />
         </div>
 
-        <div class="flex text-lg mt-3 items-end outline-none">
-            <div class="inline-block relative bg-transparent pl-5">
-                <label class="tooltip block text-gray-500 font-bold">
-                    <input
-                        v-model="options.hasMigration"
-                        class="mr-2 leading-tight" type="checkbox"
-                    >
-                    <span class="text-sm">
-                        + Migration
-                    </span>
-                </label>
-            </div>
-        </div>
-
         <div class="md:flex md:items-center border border-gray-400 rounded w-full flex py-3 mt-2">
             <span
                 id="result"
@@ -219,6 +205,7 @@
 
                     EventBus.$emit('loading', false);
                     EventBus.$emit('plumb');
+                    setTimeout(Schematics.refresh, 1);
                 }).fail((e) => {
                     console.error(e);
 

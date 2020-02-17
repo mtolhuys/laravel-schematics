@@ -3,20 +3,6 @@
         class="modal-content new-model w-full">
         <p>Are you sure you want to delete <span class="text-purple-900">'{{ model }}'</span>?</p>
 
-        <div class="flex text-lg mt-3 items-end outline-none">
-            <div class="inline-block relative bg-transparent pt-2 pl-5">
-                <label class="tooltip block text-gray-500 font-bold">
-                    <input
-                        v-model="options.hasMigration"
-                        class="mr-2 leading-tight" type="checkbox"
-                    >
-                    <span class="text-sm">
-                        + Migration
-                    </span>
-                </label>
-            </div>
-        </div>
-
         <div class="flex justify-end pt-2">
             <button
                 @click="close()"
@@ -47,9 +33,7 @@
 
         data() {
             return {
-                options: {
-                    hasMigration: true
-                }
+                options: {}
             }
         },
 

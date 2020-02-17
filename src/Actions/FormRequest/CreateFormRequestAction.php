@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\File;
 class CreateFormRequestAction
 {
     /**
-     * @param $model
+     * @param $request
      * @return void
      */
-    public function execute($fields)
+    public function execute($request)
     {
-        dd('form request', $fields);
+        // TODO: Create FormRequest with these fields
     }
 }

@@ -64,9 +64,9 @@
                                 .findIndex(r => r.method.name === this.relation.method.name)
                             , 1);
 
-                    setTimeout(Schematics.refresh, 1);
                     EventBus.$emit('loading', false);
                     EventBus.$emit('plumb');
+                    setTimeout(Schematics.refresh, 1);
                 }).fail((e) => {
                     console.error(e);
 

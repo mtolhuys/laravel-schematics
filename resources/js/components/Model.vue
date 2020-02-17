@@ -14,23 +14,28 @@
 
             <i class="fas fa-project-diagram icon"/> {{ model }}
 
-            <button
-                @click="remove(model)"
-                class="px-4 cursor-pointer text-gray-400 hover:text-purple-700">
-                <i class="fas fa-trash-alt"/>
-            </button>
+            <span @mouseover="prevent">
+                <button
+                    @click="remove(model)"
+                    aria-label="Remove Model" data-balloon-pos="down"
+                    class="pl-4 pr-2 cursor-pointer text-gray-400 hover:text-purple-700 tooltip">
+                    <i class="fas fa-trash-alt"/>
+                </button>
 
-            <button
-                @click="hide()"
-                class="pr-4 cursor-pointer text-gray-400 hover:text-purple-700">
-                <i class="far fa-eye-slash"/>
-            </button>
+                <button
+                    @click="hide()"
+                    aria-label="Hide Model" data-balloon-pos="down"
+                    class="pr-2 cursor-pointer text-gray-400 hover:text-purple-700 tooltip">
+                    <i class="far fa-eye-slash"/>
+                </button>
 
-            <button
-                @click="inspect(model, table)"
-                class="cursor-pointer text-gray-400 hover:text-purple-700">
-                <i class="fas fa-info"/>
-            </button>
+                <button
+                    @click="edit(model, table)"
+                    aria-label="Edit Model" data-balloon-pos="down"
+                    class="cursor-pointer text-gray-400 hover:text-purple-700 tooltip">
+                    <i class="fas fa-pencil-alt"/>
+                </button>
+            </span>
         </span>
     </div>
 </template>
@@ -63,6 +68,11 @@
         },
 
         methods: {
+            prevent(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            },
+
             clear(event = null) {
                 if (!event || $(event.relatedTarget).prop('nodeName') !== 'IMG') {
                     Schematics.endpoints.forEach(endpoint => jsPlumb.deleteEndpoint(endpoint));
@@ -153,13 +163,21 @@
                 EventBus.$emit('modal-open', `Deleting model!`, `delete-model`, model);
             },
 
-            inspect(model, table) {
+            edit(model, table) {
                 EventBus.$emit('loading', true);
 
-                $.get(`schematics/details/${table}`, function (fields) {
-                    EventBus.$emit('modal-open', model, 'model-fields', fields);
+                $.get(`schematics/edit/${table}`, function (fields) {
+                    let data = {
+                        model: model,
+                        fields: fields
+                    };
 
-                    EventBus.$emit('loading', false);
+                    EventBus.$emit('modal-open', model, 'model-fields', data);
+
+                    setTimeout(() => {
+                        EventBus.$emit('edit-model', data);
+                        EventBus.$emit('loading', false);
+                    }, 1);
                 }).fail(function (e) {
                     console.error(e);
                     EventBus.$emit('alert', e.statusText, 'error');
@@ -171,6 +189,10 @@
 </script>
 
 <style>
+    .tooltip {
+        --balloon-color: #9F7AEA;
+    }
+
     .selected {
         border: 2px double rgba(255, 71, 58, 0.81);
     }

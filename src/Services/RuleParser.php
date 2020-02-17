@@ -4,42 +4,61 @@ namespace Mtolhuys\LaravelSchematics\Services;
 
 class RuleParser
 {
-    public static $columnTypes = [
-        'date',
+    public static $types = [
+        'boolean',
         'dateTime',
+        'date',
         'decimal',
+        'dropColumn',
         'integer',
+        'increments',
+        'renameColumn',
         'string',
         'text',
-        'time',
         'timestamp',
+        'time',
         'unsigned',
     ];
 
     /**
      * Parse the rules to column creation methods
      *
-     * @param $rules
+     * @param $fields
      * @return string
      */
-    public static function rulesToMigrationColumns(array $rules): string
+    public static function fieldsToMigrationMethods(array $fields): string
     {
-        $columns = '$table->increments(\'id\');' . PHP_EOL;
+        $columns = '';
 
-        foreach ($rules as $column => $rule) {
-            $type = self::getType($rule);
+        foreach ($fields as $field) {
+            $column = key($field);
+            $rule = $field[$column];
             $max = self::getMax($rule);
-            $unsigned = self::isUnsigned($rule) ? '->unsigned()' : '';
-            $nullable = self::isRequired($rule) ? '' : '->nullable()';
-            $unique = self::isUnique($rule) ? '->unique()' : '';
+            $type = self::getType($rule);
+            $oldName = self::getRenameFrom($rule);
+            $additional = self::getAdditionalUpMethods($rule);
 
             $columns .=
-                str_repeat(' ', 12) .
-                "\$table->{$type}('$column'{$max}){$unsigned}{$nullable}{$unique};" .
-                PHP_EOL;
+                "\$table->{$type}({$oldName}'$column'{$max}){$additional}" .
+                PHP_EOL . str_repeat(' ', 12);
         }
 
-        return $columns . str_repeat(' ', 12) . '$table->timestamps();';
+        return $columns;
+    }
+
+    /**
+     * @param $rule
+     * @return string
+     */
+    public static function getAdditionalUpMethods($rule): string
+    {
+        $methods = '';
+        $methods .= self::isUnsigned($rule) ? '->unsigned()' : '';
+        $methods .= self::isRequired($rule) ? '' : '->nullable()';
+        $methods .= self::isUnique($rule) ? '->unique()' : '';
+        $methods .= self::hasChanged($rule) ? '->change()' : '';
+
+        return "$methods;";
     }
 
     /**
@@ -52,7 +71,7 @@ class RuleParser
      */
     public static function getType($rule)
     {
-        foreach (self::$columnTypes as $type) {
+        foreach (self::$types as $type) {
             if (stripos($rule, strtolower($type)) !== false) {
                 return $type;
             }
@@ -79,6 +98,27 @@ class RuleParser
     }
 
     /**
+     * Gets old name for renaming column
+     *
+     * @param $rule
+     * @return string
+     */
+    public static function getRenameFrom($rule): string
+    {
+        foreach(explode('|', $rule) as $token) {
+            $hasRenameRule = self::contains($token, 'from:');
+
+            if ($hasRenameRule) {
+                $from = substr($token, strpos($token, 'from:') + 5);
+
+                return "'$from', ";
+            }
+        }
+
+        return '';
+    }
+
+    /**
      * Checks if column can be set to nullable
      *
      * @param $rule
@@ -87,7 +127,19 @@ class RuleParser
     public static function isRequired($rule): bool
     {
         return self::contains($rule, 'required')
+            || self::isIncrements($rule)
             || self::isUnique($rule);
+    }
+
+    /**
+     * Checks if columns needs to be set to unique
+     *
+     * @param $rule
+     * @return boolean
+     */
+    public static function isIncrements($rule): bool
+    {
+        return self::contains($rule, 'increments');
     }
 
     /**
@@ -109,7 +161,20 @@ class RuleParser
      */
     public static function isUnsigned($rule): bool
     {
-        return self::contains($rule, 'unsigned');
+        return
+            self::contains($rule, 'unsigned');
+    }
+
+
+    /**
+     * Checks if columns has changed
+     *
+     * @param $rule
+     * @return boolean
+     */
+    public static function hasChanged($rule): bool
+    {
+        return self::contains($rule, 'change');
     }
 
     /**
@@ -123,6 +188,13 @@ class RuleParser
         return self::contains($rule, 'foreign');
     }
 
+    /**
+     * For aesthetic reasons
+     *
+     * @param $rule
+     * @param $needle
+     * @return bool
+     */
     private static function contains($rule, $needle): bool
     {
         return stripos($rule, $needle) !== false;

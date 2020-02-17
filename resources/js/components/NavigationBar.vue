@@ -7,8 +7,10 @@
             class="w-full flex flex-wrap justify-between mt-0 py-4"
         >
             <div class="pl-4 flex items-center">
-                <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl">
-                    <i class="fas fa-sitemap icon"/> Laravel Schematics
+                <img class="logo mr-2" src="vendor/schematics/images/icon.png">
+
+                <a class="text-gray-900 no-underline text-lg font-thin">
+                    Laravel Schematics
                 </a>
 
                 <div class="flex-1 w-full mx-auto max-w-sm content-center py-4 lg:py-0">
@@ -44,9 +46,9 @@
                         <a class="block py-2 pl-2">
                             <span id="migration-count">
                                 {{ migrations.created }}
-                            </span> Migration{{ migrations === 1 ? '' : 's' }}
+                            </span> Migration{{ migrations.created === 1 ? '' : 's' }}
 
-                            <span v-if="migrations.created || migrations.run" class="text-black text-xs">
+                            <span v-if="migrations.created !== migrations.run" class="text-black text-xs">
                                 (
                                     <button
                                         aria-label="Migrations found as file"
@@ -102,6 +104,17 @@
             }
         },
 
+        created() {
+            EventBus.$on('refresh-navbar', (data) => {
+                this.models = data.models.created;
+                this.migrations = data.migrations;
+            });
+        },
+
+        destroyed() {
+            EventBus.$off('refresh-navbar');
+        },
+
         mounted() {
             this.search();
         },
@@ -150,6 +163,12 @@
 </script>
 
 <style>
+    .logo {
+        margin-top: -5px;
+        width: 40px;
+        opacity: .8;
+    }
+
     #header {
         z-index: 1000;
     }

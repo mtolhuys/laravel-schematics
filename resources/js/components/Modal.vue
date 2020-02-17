@@ -1,5 +1,6 @@
 <template>
-    <div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center"
+    <div data-backdrop="static"
+         class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center"
         :class="{ 'opacity-0 pointer-events-none' : closed }"
     >
         <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
@@ -21,7 +22,7 @@
                     <span v-if="type === 'html'" v-html="content" />
                     <relation v-if="type === 'relation'" :relation="content" />
                     <create-relation v-if="type === 'new-relation'" :models="content" />
-                    <model-fields v-if="type === 'model-fields'" :fields="content" />
+                    <edit-model v-if="type === 'model-fields'" :model="content.model" :fields="content.fields" />
                     <delete-model v-if="type === 'delete-model'" :model="content"/>
                     <create-model v-if="type === 'new-model'"/>
                 </div>
@@ -34,7 +35,7 @@
     import CreateRelation from './Modal/CreateRelation.vue';
     import CreateModel from './Modal/CreateModel.vue';
     import DeleteModel from './Modal/DeleteModel.vue';
-    import ModelFields from './Modal/ModelFields.vue';
+    import EditModel from './Modal/EditModel.vue';
     import Relation from './Modal/Relation.vue';
 
     export default {
@@ -42,7 +43,7 @@
 
         components: {
             'create-relation': CreateRelation,
-            'model-fields': ModelFields,
+            'edit-model': EditModel,
             'create-model': CreateModel,
             'delete-model': DeleteModel,
             'relation': Relation,
@@ -63,6 +64,8 @@
                 this.type = type;
                 this.content = content;
                 this.closed = false;
+
+                Schematics.modal = true;
             });
 
             EventBus.$on('modal-close', this.close);
@@ -76,6 +79,7 @@
         methods: {
             close() {
                 this.closed = true;
+                Schematics.modal = false;
             }
         },
     }

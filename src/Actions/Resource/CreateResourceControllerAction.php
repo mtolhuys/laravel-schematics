@@ -2,16 +2,25 @@
 
 namespace Mtolhuys\LaravelSchematics\Actions\Resource;
 
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 
 class CreateResourceControllerAction
 {
     /**
-     * @param $fields
-     * @return void
+     * @param $request
+     * @return string
      */
-    public function execute($fields)
+    public function execute($request)
     {
-        dd('resource', $fields);
+        $model = $request['name'];
+        $name = config('schematics.controller-namespace')."{$model}Controller";
+
+        Artisan::call('make:controller', [
+            'name' => $name,
+            '--resource' => true,
+            '--model' => config('schematics.model-namespace').$model,
+        ]);
+
+        return Artisan::output();
     }
 }
