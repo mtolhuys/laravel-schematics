@@ -5,12 +5,15 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/mtolhuys/laravel-schematics.svg?style=flat-square)](https://scrutinizer-ci.com/g/mtolhuys/laravel-schematics)
 [![Total Downloads](https://img.shields.io/packagist/dt/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
 
-This package will map your Eloquent models and methods calling their relations.
-It will help building them by drag and drop relations and running migrations.
+This package will map your Eloquent models, relation methods and migrations.
+It will help building them, drag and drop relations, run and roll back migrations.
 You can see a diagram of the results visiting `{your-app}/schematics`
 
-Example result: 
-![](resources/images/schematics.gif)
+Examples: 
+<img src="resources/images/add-user.gif" width=600>
+<img src="resources/images/post-and-user-relation.gif" width=600>
+<img src="resources/images/removing-relation.gif" width=600>
+<img src="resources/images/schematics.gif" width=600>
 
 This package is still in BETA stage. More features coming soon!
     
@@ -27,7 +30,10 @@ Run `php artisan schematics:install` which will do everything necessary.
 
 Or...
 
-Run `php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"` and visit `{your-app}/schematics`
+Run 
+```php
+php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"` and visit `{your-app}/schematics
+```
 
 Make sure the routes are cached!
 
