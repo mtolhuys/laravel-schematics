@@ -89,29 +89,31 @@ trait CreatesMigrations
             )
         );
 
-        switch (strtolower($type)) {
-            case 'date':
-                $type = 'date';
-                break;
-            case 'timestamp':
-                $type = 'dateTime';
-                break;
-            case 'int':
-            case 'tinyint':
-            case 'bigint':
-                $type = 'integer';
-                break;
-            case 'varchar':
-            case 'text':
-            default:
-                $type = 'string';
-        }
+        $type = key(array_filter([
+            'date' => [
+                'date'
+            ],
+            'dateTime' => [
+                'timestamp'
+            ],
+            'string' => [
+                'varchar',
+                'text'
+            ],
+            'integer' => [
+                'int',
+                'bigint',
+                'tinyint'
+            ],
+        ], static function($values) use($type) {
+            return in_array(strtolower($type), $values, true);
+        }, ARRAY_FILTER_USE_BOTH));
 
         if ($max > 0) {
             $type .= "|max:{$max}";
         }
 
-        return $type;
+        return $type ?? 'string';
     }
 
 }

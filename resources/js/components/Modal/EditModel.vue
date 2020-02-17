@@ -218,9 +218,14 @@
                     .filter(field => this.fields.map(field => field.name).includes(field.name))
                     .filter(field => this.fields.map(field => field.type).includes(field.type))
                     .map(field => {
+                        const renameFrom = original.filter(f => f.id === field.id)[0].name;
+
                         field.changed = true;
-                        field.from = original.filter(f => f.id === field.id)[0].name;
-                        field.to = field.name;
+
+                        if (renameFrom !== field.name) {
+                            field.from = renameFrom;
+                            field.to = field.name;
+                        }
 
                         return field;
                     });

@@ -40,6 +40,8 @@ class DeleteMigrationAction
         $content = file_get_contents("$this->path/$migration");
 
         if ($request instanceof DeleteRelationRequest) {
+            $this->autoMigrate = true;
+
             return strpos($content, "laravel-schematics-{$request['table']}-relation") !== false;
         }
 

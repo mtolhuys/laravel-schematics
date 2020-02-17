@@ -198,7 +198,7 @@ class CreateColumnsMigrationAction
         }, $request['changed']));
 
         if (! empty($changes)) {
-            $request['fields'] = array_merge([array_unique($changes[0])], $request['fields']);
+            $request['fields'] = array_merge([$changes[0]], $request['fields']);
         }
 
         return $request;

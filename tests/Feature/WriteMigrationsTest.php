@@ -102,7 +102,6 @@ class WriteMigrationsTest extends TestCase
         $this->assertStringContainsString('Schema::table(\'bar_foos\',', $content);
         $this->assertStringContainsString('$table->foreign(\'bar\')->references(\'foo\')->on(\'foo_bars\');', $content);
         $this->assertStringContainsString('$table->dropForeign([\'bar\']);', $content);
-        $this->assertStringContainsString('$table->dropColumn(\'bar\');', $content);
     }
 
     /** @test */

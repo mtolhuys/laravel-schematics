@@ -39,7 +39,6 @@ class $classname$ extends Migration
     {
         Schema::table('$source$', static function (Blueprint $table) {
             $table->dropForeign(['$foreignKey$']);
-            $table->dropColumn('$foreignKey$');
         });
     }
 }
