@@ -44,6 +44,7 @@ class ClassReader
 
             self::isNameSpace($tokenArray, $token);
             self::isClass($tokenArray, $token);
+            self::setNamespace($tokenArray, $token);
             self::setClassName($tokenArray, $token);
 
             if (self::$class) {
@@ -74,12 +75,7 @@ class ClassReader
         self::$hasNamespace = self::$hasNamespace || ($tokenArray && $token[0] === T_NAMESPACE);
     }
 
-    /**
-     * @param bool $tokenArray
-     * @param $token
-     * @return mixed
-     */
-    private static function setClassName(bool $tokenArray, $token)
+    private static function setNamespace(bool $tokenArray, $token)
     {
         if (self::$hasNamespace) {
             if ($tokenArray && in_array($token[0], [T_STRING, T_NS_SEPARATOR], true)) {
@@ -88,7 +84,15 @@ class ClassReader
                 self::$hasNamespace = false;
             }
         }
+    }
 
+    /**
+     * @param bool $tokenArray
+     * @param $token
+     * @return mixed
+     */
+    private static function setClassName(bool $tokenArray, $token)
+    {
         if (self::$hasClass && $tokenArray && $token[0] === T_STRING) {
             self::$class = $token[1];
         }
