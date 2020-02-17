@@ -9,7 +9,7 @@ use ReflectionClass;
 class CreateRelationAction
 {
     /**
-     * @param array $request
+     * @param $request
      * @return object
      * @throws ReflectionException
      */
