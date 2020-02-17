@@ -21,7 +21,9 @@ class DeleteMigrationAction
 
         foreach ($migrations as $migration) {
             if ($this->isRelatedMigration($migration, $request)) {
-                $this->down($migration);
+                if ($this->autoMigrate) {
+                    $this->down($migration);
+                }
 
                 File::delete("$this->path/$migration");
             }

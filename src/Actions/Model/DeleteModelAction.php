@@ -15,7 +15,7 @@ class DeleteModelAction
     public function execute($request)
     {
         File::delete(
-            (new ReflectionClass($request['name']))->getFileName()
+            (new ReflectionClass(app($request['name'])))->getFileName()
         );
     }
 }

@@ -15,7 +15,7 @@ trait DeletesMigrations
     public function __construct()
     {
         $this->autoMigrate = config('schematics.auto-migrate');
-        $this->path = base_path('database/migrations/');
+        $this->path = database_path('migrations');
     }
 
     /**

@@ -178,7 +178,7 @@ class CreateColumnsMigrationAction
                 $actions('created'),
                 $actions('changed'),
                 $actions('deleted')
-            ])) . 'ColumnIn' . ucfirst($table) . 'Table';
+            ])) . 'ColumnIn' . ucfirst(Str::camel($table)) . 'Table';
     }
 
     private function separateNameAndTypeChanges($request)

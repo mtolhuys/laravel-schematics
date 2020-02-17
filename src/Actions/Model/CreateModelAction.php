@@ -17,6 +17,10 @@ class CreateModelAction
         $stub = __DIR__ . '/../../../resources/stubs/model.stub';
         $path = app_path(str_replace(['App\\', '\\'], ['', '/'], $namespace) . "{$name}.php");
 
+        if(! File::isDirectory(dirname($path))){
+            File::makeDirectory(dirname($path), 0777, true, true);
+        }
+
         File::put($path, str_replace(
             ['$namespace$', '$model$', '$fillables$'],
             [rtrim($namespace, '\\'), $name, $this->getFillables($request['fields'])],

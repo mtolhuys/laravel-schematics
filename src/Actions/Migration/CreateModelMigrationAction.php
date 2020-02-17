@@ -23,6 +23,10 @@ class CreateModelMigrationAction
             . date('Y_m_d_His')
             . "_create_{$table}_table.php";
 
+        if(! File::isDirectory(dirname(base_path($this->filename)))){
+            File::makeDirectory(dirname(base_path($this->filename)), 0777, true, true);
+        }
+
         File::put(base_path($this->filename), str_replace([
             '$classname$',
             '$table$',

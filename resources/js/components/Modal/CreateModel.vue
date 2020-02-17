@@ -113,7 +113,7 @@
                     hasResource: false,
                 },
                 options: {
-                    hasTimestamps: true,
+                    hasTimestamps: false,
                 },
                 fields: [{
                     id: this.uuid(),
