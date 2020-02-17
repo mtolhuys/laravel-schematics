@@ -52,7 +52,9 @@ class ClassReader
             }
         }
 
-        return self::$namespace ? self::$namespace . '\\' . self::$class : self::$class;
+        return self::$namespace
+            ? self::$namespace . '\\' . self::$class
+            : self::$class;
     }
 
     /**
