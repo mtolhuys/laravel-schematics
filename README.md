@@ -10,6 +10,7 @@ It will help building them, drag and drop relations, run and roll back migration
 You can see a diagram of the results visiting `{your-app}/schematics`
 
 Examples: 
+
 <img src="resources/images/add-user.gif" width=600>
 <img src="resources/images/post-and-user-relation.gif" width=600>
 <img src="resources/images/removing-relation.gif" width=600>
