@@ -3,8 +3,7 @@
 namespace Mtolhuys\LaravelSchematics;
 
 use Illuminate\Support\ServiceProvider;
-use Mtolhuys\LaravelSchematics\Console\Commands\install;
-use Mtolhuys\LaravelSchematics\Console\Commands\CreateModel;
+use Mtolhuys\LaravelSchematics\Console\Commands\Install;
 
 class LaravelSchematicsServiceProvider extends ServiceProvider
 {
@@ -17,7 +16,7 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                install::class,
+                Install::class,
             ]);
         }
 
