@@ -50,7 +50,7 @@ Or...
 php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"`
 ```
 
-and visit `{your-app}/schematics
+and visit {your-app}/schematics
 
 Make sure the routes are cached!
 
