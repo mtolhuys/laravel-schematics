@@ -46,10 +46,11 @@ Run `php artisan schematics:install` which will do everything necessary.
 
 Or...
 
-Run 
 ```php
-php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"` and visit `{your-app}/schematics
+php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"`
 ```
+
+and visit `{your-app}/schematics
 
 Make sure the routes are cached!
 
