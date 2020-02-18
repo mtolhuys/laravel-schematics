@@ -6,7 +6,6 @@ use Mtolhuys\LaravelSchematics\Actions\Model\EditModelAction;
 use Mtolhuys\LaravelSchematics\Actions\Resource\CreateResourceControllerAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\CreateColumnsMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\CreateModelMigrationAction;
-use Mtolhuys\LaravelSchematics\Actions\FormRequest\CreateFormRequestAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\DeleteMigrationAction;
 use Mtolhuys\LaravelSchematics\Http\Requests\EditModelRequest;
 use Mtolhuys\LaravelSchematics\Http\Requests\CreateModelRequest;
@@ -85,7 +84,6 @@ class ModelsController extends Controller
     private function getCreateAction($option)
     {
         return [
-            'hasFormRequest' => new CreateFormRequestAction,
             'hasResource' => new CreateResourceControllerAction,
         ][$option];
     }
