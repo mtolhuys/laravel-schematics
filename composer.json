@@ -43,7 +43,7 @@
     "scripts": {
         "test": [
             "php -r \"exec('cp -r ./tests/resources/app/* ./vendor/orchestra/testbench-core/laravel/app');\"",
-            "vendor/bin/phpunit"
+            "vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover"
         ]
     },
     "config": {
