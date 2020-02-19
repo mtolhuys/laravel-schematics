@@ -2,6 +2,8 @@
     <div class="schema"
          id="schema"
     >
+        <side-bar/>
+
         <div v-for="model in models">
             <model :model="model"/>
         </div>
@@ -10,6 +12,7 @@
 
 <script>
     import DragSelect from 'dragselect';
+    import SideBar from './SideBar.vue';
     import ModelPositioning from '../lib/ModelPositioning';
     import Plumbing from "../lib/Plumbing";
     import Model from './Model.vue';
@@ -24,6 +27,7 @@
 
         components: {
             'model': Model,
+            'side-bar': SideBar,
         },
 
         data() {

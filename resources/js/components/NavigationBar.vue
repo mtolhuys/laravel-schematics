@@ -13,8 +13,8 @@
                     Laravel Schematics
                 </a>
 
-                <div class="flex-1 w-full mx-auto max-w-sm content-center py-4 lg:py-0">
-                    <div class="relative pull-right pl-4 pr-4 md:pr-0">
+                <div class="flex-1 w-full mx-auto max-w-sm content-center">
+                    <div class="relative pull-right pl-4 pr-4">
                         <input
                             @keydown.enter="search()"
                             v-model="searchFor"
@@ -170,6 +170,8 @@
     }
 
     #header {
+        max-height: 70px;
+        min-width: 920px;
         z-index: 1000;
     }
 
