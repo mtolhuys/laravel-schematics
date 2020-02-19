@@ -44,9 +44,7 @@ class CreateColumnsMigrationAction
      */
     private function getUpMethods($request): string
     {
-        $changes = array_filter(
-            $this->changes($request['fields'], true)
-        );
+        $changes = array_filter($this->changes($request['fields'], true));
 
         return (empty($changes) ? '' : RuleParser::fieldsToMigrationMethods($this->getFields($changes)))
             . (empty($request['created']) ? '' : RuleParser::fieldsToMigrationMethods(
@@ -98,8 +96,7 @@ class CreateColumnsMigrationAction
                 && json_decode($field['changed'], false);
 
             if ($changedField) {
-                $field = $up ? $this->setUpChanges($field)
-                    : $field = $this->setDownChanges($field);
+                $field = $up ? $this->setUpChanges($field) : $this->setDownChanges($field);
 
                 return $field;
             }
@@ -131,7 +128,11 @@ class CreateColumnsMigrationAction
             $field['type'] = "renameColumn|from:{$field['to']}|required";
             $field['name'] = $field['from'];
         } else {
-            $field['type'] = $this->parseColumnType($field['columnType']). '|change';
+            if (isset($field['to'])) {
+                $field['name'] = $field['to'];
+            }
+
+            $field['type'] = $this->parseColumnType($field['columnType']) . '|change';
         }
 
         return $field;
@@ -187,7 +188,7 @@ class CreateColumnsMigrationAction
             return $request;
         }
 
-        $changes = array_filter(array_map(static function($field) {
+        $changes = array_filter(array_map(static function ($field) {
             if (!empty($field['from']) && !empty($field['type'])) {
                 $field['name'] = $field['from'];
                 $field['changed'] = true;
@@ -197,7 +198,7 @@ class CreateColumnsMigrationAction
             }
         }, $request['changed']));
 
-        if (! empty($changes)) {
+        if (!empty($changes)) {
             $request['fields'] = array_merge([$changes[0]], $request['fields']);
         }
 

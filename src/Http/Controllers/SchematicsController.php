@@ -23,9 +23,7 @@ class SchematicsController extends Controller
      */
     public function index()
     {
-        $schema = $this->schematics(ModelMapper::map());
-
-        return view('schematics::index', $schema);
+        return view('schematics::index', $this->schematics());
     }
 
     /**
@@ -79,7 +77,7 @@ class SchematicsController extends Controller
      */
     public function schematics(array $models = []): array
     {
-        if (! empty($models) && Cache::has('schematics')) {
+        if (Cache::has('schematics')) {
             return Cache::get('schematics');
         }
 

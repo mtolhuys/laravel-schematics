@@ -27,23 +27,22 @@ class WriteModelsTest extends TestCase
             'type' => null,
             'columnType' => null
         ]
-    ],
-        $namespace,
-        $path;
+    ];
+
+    private $path;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->namespace = config('schematics.model-namespace');
-        $this->path = app_path(str_replace(['App\\', '\\'], ['', '/'], $this->namespace) . 'FooBar.php');
+        $this->path = app_path(str_replace(['App\\', '\\'], ['', '/'], $this->modelNamespace) . 'Acme.php');
     }
 
     /** @test */
     public function it_successfully_creates_models()
     {
         (new CreateModelAction())->execute([
-            'name' => 'FooBar',
+            'name' => 'Acme',
             'fields' => $this->fields,
         ]);
 
@@ -51,8 +50,8 @@ class WriteModelsTest extends TestCase
 
         $content = File::get($this->path);
 
-        $this->assertStringContainsString(rtrim($this->namespace, '\\'), $content);
-        $this->assertStringContainsString('FooBar', $content);
+        $this->assertStringContainsString(rtrim($this->modelNamespace, '\\'), $content);
+        $this->assertStringContainsString('Acme', $content);
         $this->assertStringContainsString('protected $fillable', $content);
         $this->assertStringContainsString("'id',", $content);
         $this->assertStringContainsString("'name',", $content);
@@ -62,7 +61,7 @@ class WriteModelsTest extends TestCase
     public function it_successfully_edits_models()
     {
         (new EditModelAction())->execute([
-            'model' => "{$this->namespace}FooBar",
+            'model' => "{$this->modelNamespace}Acme",
             'fields' => array_merge($this->fields, [
                 [
                     'id' => '902a0922-6e83-482d-k0px-7b25b0e4dc10',
@@ -80,8 +79,8 @@ class WriteModelsTest extends TestCase
 
         $content = File::get($this->path);
 
-        $this->assertStringContainsString(rtrim($this->namespace, '\\'), $content);
-        $this->assertStringContainsString('FooBar', $content);
+        $this->assertStringContainsString(rtrim($this->modelNamespace, '\\'), $content);
+        $this->assertStringContainsString('Acme', $content);
         $this->assertStringContainsString('protected $fillable', $content);
         $this->assertStringContainsString("'id',", $content);
         $this->assertStringContainsString("'name',", $content);
@@ -92,7 +91,7 @@ class WriteModelsTest extends TestCase
     public function it_successfully_deletes_models()
     {
         (new DeleteModelAction())->execute([
-            'name' => "{$this->namespace}FooBar",
+            'name' => "{$this->modelNamespace}Acme",
         ]);
 
         $this->assertFalse(File::exists($this->path));

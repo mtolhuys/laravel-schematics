@@ -23,10 +23,10 @@ class RelationsController extends Controller
      */
     public function create(CreateRelationRequest $request)
     {
-        Cache::forget('schematics');
-
         $result = (new CreateRelationAction())->execute($request);
         (new CreateRelationMigrationAction())->execute($request);
+
+        Cache::forget('schematics');
 
         $relation = $request->all();
         $relation['method']['file'] = $result->file;
@@ -41,10 +41,10 @@ class RelationsController extends Controller
      */
     public function delete(DeleteRelationRequest $request)
     {
-        Cache::forget('schematics');
-
         (new DeleteRelationAction())->execute($request);
         (new DeleteMigrationAction())->execute($request);
+
+        Cache::forget('schematics');
 
         return response('Relation removed', 200);
     }

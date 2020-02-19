@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "doctrine/dbal": "^2.0",
-        "orchestra/testbench": "^3.5",
+        "orchestra/testbench": "^4.0",
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
@@ -41,7 +41,10 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": [
+            "php -r \"exec('cp -r ./tests/resources/app/* ./vendor/orchestra/testbench-core/laravel/app');\"",
+            "vendor/bin/phpunit"
+        ]
     },
     "config": {
         "sort-packages": true

@@ -17,7 +17,7 @@ class CreateModelAction
         $stub = __DIR__ . '/../../../resources/stubs/model.stub';
         $path = app_path(str_replace(['App\\', '\\'], ['', '/'], $namespace) . "{$name}.php");
 
-        if(! File::isDirectory(dirname($path))){
+        if (! File::isDirectory(dirname($path))) {
             File::makeDirectory(dirname($path), 0777, true, true);
         }
 

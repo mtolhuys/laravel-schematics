@@ -24,7 +24,7 @@ class RelationMapper extends ClassReader
         $models = $models ?? ModelMapper::map();
 
         foreach ($models as $model) {
-            foreach (self::getMethods($model) as $method) {
+            self::getMethods($model)->each(static function ($method) use ($model) {
                 $details = self::getDetails($method, $model);
 
                 if ($details) {
@@ -34,7 +34,7 @@ class RelationMapper extends ClassReader
 
                     self::$relations[$details->table][] = $details;
                 }
-            }
+            });
         }
 
         return self::$relations;
@@ -70,13 +70,9 @@ class RelationMapper extends ClassReader
                 ];
             }
         }
-        /**
-         * Ignore possible exceptions caused by
-         * ReflectionClass or method invocation
-         */
-        catch (\Throwable $e) {}
-
-        return null;
+        catch (\Throwable $e) {
+            return null;
+        }
     }
 
 }

@@ -5,11 +5,18 @@ namespace Mtolhuys\LaravelSchematics\Tests;
 use Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
-abstract class TestCase extends Orchestra
+class TestCase extends Orchestra
 {
+    public $modelNamespace;
+
+    /**
+     * @before
+     */
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->modelNamespace = config('schematics.model-namespace');
     }
 
     /**

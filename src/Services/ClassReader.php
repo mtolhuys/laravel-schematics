@@ -42,8 +42,8 @@ class ClassReader
         foreach (token_get_all(file_get_contents($path)) as $token) {
             $tokenArray = is_array($token);
 
-            self::isNameSpace($tokenArray, $token);
             self::isClass($tokenArray, $token);
+            self::isNameSpace($tokenArray, $token);
             self::setNamespace($tokenArray, $token);
             self::setClassName($tokenArray, $token);
 

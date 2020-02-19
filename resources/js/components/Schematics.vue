@@ -78,6 +78,7 @@
     }
 
     .model {
+        min-width: 250px;
         font-size: 0.9em;
         padding: 15px;
         margin: 5px;
@@ -117,6 +118,7 @@
 
     .relation {
         cursor: pointer;
+        min-width: 120px;
     }
 
     ::-webkit-scrollbar {
