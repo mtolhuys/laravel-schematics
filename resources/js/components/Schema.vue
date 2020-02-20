@@ -48,6 +48,7 @@
                 selectables: this.$models().all(),
                 multiSelectKeys: ['altKey', 'shiftKey'],
                 onElementSelect: this.select,
+                onElementUnselect: this.unselect
             });
         },
 
@@ -59,15 +60,14 @@
 
                 jsPlumb.addToDragSelection($model);
             },
-        },
 
-        watch: {
-            'models': {
-                deep: true,
-                handler() {
-                    // this.setModelsPosition();
-                }
-            }
+            unselect(model) {
+                const $model = $(model).not('.hidden-model, .filtered');
+
+                $model.removeClass('selected');
+
+                jsPlumb.removeFromDragSelection($model);
+            },
         }
     }
 </script>
