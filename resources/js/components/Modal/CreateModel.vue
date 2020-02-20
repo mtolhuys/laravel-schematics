@@ -1,5 +1,6 @@
 <template>
-    <span class="modal-content new-model w-full">
+    <fields-explanation v-if="explanation"/>
+    <span v-else class="modal-content new-model w-full">
         <draggable v-model="fields">
             <transition-group>
                 <div v-for="field in fields" :key="field.id" class="md:flex md:items-center">
@@ -45,6 +46,12 @@
         <div class="flex text-lg mt-3 items-end outline-none">
             <div class="inline-block w-full relative bg-transparent mx-5 mb-10 pt-2 pl-5">
                 <span class="plus-minus">
+                    <button @click="explain()"
+                            class="tooltip text-black inline-flex items-center
+                         focus:outline-none text-purple-300 hover:text-purple-500">
+                        <span class="mr-1"><i class="far fa-question-circle"/></span>
+                    </button>
+
                     <button @click="addField()"
                             class="tooltip text-black inline-flex items-center
                          focus:outline-none text-purple-300 hover:text-purple-500">
@@ -97,16 +104,19 @@
 
 <script>
     import Draggable from 'vuedraggable';
+    import FieldsExplanation from './FieldsExplanation.vue';
 
     export default {
         name: "create-model",
 
         components: {
             Draggable,
+            FieldsExplanation
         },
 
         data() {
             return {
+                explanation: false,
                 fieldsErrors: false,
                 actions: {
                     hasFormRequest: false,
@@ -144,6 +154,10 @@
                 if ($(e.target).is('.remove-field')) {
                     this.addField();
                 }
+            },
+
+            explain() {
+                this.explanation = ! this.explanation;
             },
 
             addField() {
