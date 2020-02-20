@@ -61,6 +61,14 @@
                     <i class="fas icon fa-redo-alt mr-2"/> Reset Diagram
                 </div>
             </li>
+
+            <li class="rounded-b hover:bg-purple-400 px-4 block whitespace-no-wrap bg-white text-gray-700 hover:text-white">
+                <div
+                    @click="resetAll()"
+                    class="action inline-block button rounded-full px-4 py-2">
+                    <i class="fas icon fa-trash-alt mr-2"/> Clear All
+                </div>
+            </li>
         </ul>
     </div>
 </template>
@@ -143,7 +151,9 @@
 
                 $hidden.removeClass('hidden-model').show();
                 $hidden.each((i, el) => {
-                    localStorage.setItem(`schematics-settings-${$(el).data('model')}-hidden`, 'false');
+                    const model = $(el).find('span').data('model').toLowerCase();
+
+                    localStorage.setItem(`schematics-settings-${model}-hidden-tab-${Schematics.activeTab}`, 'false');
                 });
 
                 this.$models().count().text(this.$models().visible().length);
@@ -156,7 +166,7 @@
 
                 $selected.addClass('hidden-model').hide();
                 $selected.each((i, el) => {
-                    localStorage.setItem(`schematics-settings-${$(el).data('model')}-hidden`, 'true');
+                    localStorage.setItem(`schematics-settings-${$(el).data('model')}-hidden-tab-${Schematics.activeTab}`, 'true');
                 });
 
                 this.$models().count().text(this.$models().visible().length);
@@ -165,6 +175,24 @@
             },
 
             reset() {
+                EventBus.$emit('loading', true);
+
+                this.$models().hidden().removeClass('hidden-model filtered').show();
+                this.$models().count().text(this.$models().visible().length);
+
+                Object.keys(localStorage).filter((key) => {
+                    return (key.indexOf('schematics-settings') === 0)
+                        && (key.includes(`tab-${Schematics.activeTab}`));
+                }).forEach(function (key) {
+                    localStorage.removeItem(key);
+                });
+
+                $.get('schematics/clear-cache', () => {
+                    location.reload();
+                });
+            },
+
+            resetAll() {
                 EventBus.$emit('loading', true);
 
                 this.$models().hidden().removeClass('hidden-model filtered').show();

@@ -71,19 +71,26 @@ class SchematicsController extends Controller
     }
 
     /**
-     * @param array $models
      * @return array
      * @throws ReflectionException
      */
-    public function schematics(array $models = []): array
+    public function refresh(): array
     {
-        if (Cache::has('schematics')) {
+        return $this->schematics(false);
+    }
+
+    /**
+     * @param bool $cache
+     * @return array
+     * @throws ReflectionException
+     */
+    public function schematics($cache = true): array
+    {
+        if ($cache && Cache::has('schematics')) {
             return Cache::get('schematics');
         }
 
-        if (empty($models)) {
-            $models = ModelMapper::map();
-        }
+        $models = ModelMapper::map();
 
         $data = [
             'models' => $models,

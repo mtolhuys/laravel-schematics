@@ -67,6 +67,10 @@
         --balloon-color: #9F7AEA;
     }
 
+    .action:hover {
+        cursor: pointer;
+    }
+
     .dropdown-menu {
         right: -60px;
         padding-top: 20px;

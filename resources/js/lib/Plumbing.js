@@ -1,7 +1,7 @@
 export default {
     data() {
         return {
-            style: localStorage.getItem('schematics-settings-style') || 'Bezier',
+            style: localStorage.getItem(`schematics-settings-style-tab-${Schematics.activeTab}`) || 'Bezier',
         }
     },
 
@@ -63,7 +63,7 @@ export default {
                             let $el = $(el);
 
                             localStorage.setItem(
-                                `schematics-settings-${$el.data('model').toLowerCase()}-position`,
+                                `schematics-settings-${$el.data('model').toLowerCase()}-position-tab-${Schematics.activeTab}`,
                                 JSON.stringify($el.position())
                             );
                         });
@@ -138,7 +138,7 @@ export default {
             });
         },
 
-        fetch(relation, max = 50, speed = 500) {
+        fetch(relation, max = 50, speed = 1000) {
             const self = this;
 
             let ran = 0,

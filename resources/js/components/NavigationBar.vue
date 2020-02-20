@@ -10,7 +10,7 @@
                 <img class="logo mr-2" src="vendor/schematics/images/icon.png">
 
                 <a class="text-gray-900 no-underline text-lg font-thin">
-                    Laravel Schematics
+                    <span class="font-bold">Laravel</span> Schematics
                 </a>
 
                 <div class="flex-1 w-full mx-auto max-w-sm content-center">
@@ -98,7 +98,7 @@
 
         data() {
             return {
-                searchFor: localStorage.getItem('schematics-settings-search') || '',
+                searchFor: localStorage.getItem(`schematics-settings-search-tab-${Schematics.activeTab}`) || '',
                 models: Schematics.models.length,
                 migrations: Schematics.migrations,
             }
@@ -125,7 +125,7 @@
 
                 EventBus.$emit('loading', true);
 
-                localStorage.setItem('schematics-settings-search', this.searchFor);
+                localStorage.setItem(`schematics-settings-search-tab-${Schematics.activeTab}`, this.searchFor);
 
                 if (this.searchFor.trim().length) {
                     let search = this.searchFor.toLowerCase();

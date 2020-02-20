@@ -8,7 +8,7 @@ Route::group([
     Route::get('/', 'SchematicsController@index');
     Route::get('/edit/{table}', 'SchematicsController@details');
     Route::get('/clear-cache', 'SchematicsController@clearCache');
-    Route::get('/refresh', 'SchematicsController@schematics');
+    Route::get('/refresh', 'SchematicsController@refresh');
 
     Route::group(['prefix' => 'relations'], static function () {
         Route::post('/create', 'RelationsController@create');

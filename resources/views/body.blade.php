@@ -19,6 +19,7 @@
 
     <script>
         window.Schematics = {
+            activeTab: parseInt(localStorage.getItem('active-tab') || 1),
             namespace: {!! json_encode(config('schematics.namespace', 'App\\')) !!},
             models: Object.values({!! json_encode($models) !!}),
             migrations: {!! json_encode($migrations) !!},
@@ -30,6 +31,7 @@
 
                 $.get('schematics/refresh', function(response) {
                     Schematics.models = response.models;
+
                     Schematics.relations = response.relations;
                     Schematics.migrations = response.migrations;
 

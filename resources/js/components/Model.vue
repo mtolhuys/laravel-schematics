@@ -23,7 +23,7 @@
                 </button>
 
                 <button
-                    @click="hide()"
+                    @click="hide(model)"
                     aria-label="Hide Model" data-balloon-pos="down"
                     class="pr-2 cursor-pointer text-gray-400 hover:text-purple-700 tooltip">
                     <i class="far fa-eye-slash"/>
@@ -59,12 +59,22 @@
         },
 
         mounted() {
-            const $el = $(this.$el).find('span');
+            const $el = $(this.$el),
+                hidden = JSON.parse(
+                    localStorage.getItem(
+                        `schematics-settings-${this.model.toLowerCase()}-hidden-tab-${Schematics.activeTab}`
+                    )
+                );
+
+            if (hidden) {
+                $el.hide();
+                $el.addClass('hidden-model');
+            }
 
             Schematics.endpoints = [];
             Schematics.endpointLock = false;
 
-            jsPlumb.makeTarget($el, {connectionsDetachable: false});
+            jsPlumb.makeTarget($el.find('span'), {connectionsDetachable: false});
         },
 
         methods: {
@@ -147,12 +157,12 @@
                 $(`.plumb-arrow-${location.toLowerCase()}`).css(this.getEndpointStyle(location));
             },
 
-            hide() {
+            hide(model) {
                 const $model = $(this.$el);
 
                 $model.addClass('hidden-model', true).hide();
 
-                localStorage.setItem(`schematics-settings-${$model.data('model')}-hidden`, 'true');
+                localStorage.setItem(`schematics-settings-${model.toLowerCase()}-hidden-tab-${Schematics.activeTab}`, 'true');
 
                 this.$models().count().text(this.$models().visible().length);
 

@@ -65,7 +65,7 @@
             'models': {
                 deep: true,
                 handler() {
-                    this.setModelsPosition();
+                    // this.setModelsPosition();
                 }
             }
         }

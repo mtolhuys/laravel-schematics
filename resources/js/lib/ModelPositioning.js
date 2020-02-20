@@ -7,7 +7,7 @@ export default {
 
             position: {
                 top: 100,
-                left: 10
+                left: 80
             },
 
             $withRelations: [],
@@ -24,7 +24,7 @@ export default {
 
         getModelPosition(model) {
             return JSON.parse(
-                localStorage.getItem(`schematics-settings-${model.toLowerCase()}-position`)
+                localStorage.getItem(`schematics-settings-${model.toLowerCase()}-position-tab-${Schematics.activeTab}`)
             );
         },
 
@@ -42,7 +42,7 @@ export default {
 
             if (position) {
                 position.top = position.top >= 80 ? position.top : 80;
-                position.left = position.left >= 10 ? position.left : 10;
+                position.left = position.left >= 80 ? position.left : 80;
 
                 $model.css(position);
             } else {
@@ -52,12 +52,12 @@ export default {
                 $model.css(this.position);
 
                 localStorage.setItem(
-                    `schematics-settings-${model}-position`,
+                    `schematics-settings-${model}-position-tab-${Schematics.activeTab}`,
                     JSON.stringify(this.position)
                 );
 
                 if (this.position.left + (posX * 1.5) >= $(window).width()) {
-                    this.position.left = 10;
+                    this.position.left = 80;
                     this.position.top += posY;
                 } else {
                     this.position.left += posX;

@@ -94,10 +94,6 @@
         margin-right: -120px;
     }
 
-    .action:hover {
-        cursor: pointer;
-    }
-
     .loading {
         z-index: 1000;
     }

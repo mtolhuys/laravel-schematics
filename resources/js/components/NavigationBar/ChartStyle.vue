@@ -49,7 +49,7 @@
 
         methods: {
             setStyle(style = 'Flowchart') {
-                localStorage.setItem('schematics-settings-style', style);
+                localStorage.setItem(`schematics-settings-style-tab-${Schematics.activeTab}`, style);
 
                 EventBus.$emit('chart-style', style);
                 EventBus.$emit('plumb');
