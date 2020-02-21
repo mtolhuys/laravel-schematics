@@ -128,6 +128,10 @@
         name: "create-relation",
 
         props: {
+            title: {
+                type: String,
+                required: true
+            },
             models: {
                 type: Object,
                 required: true
