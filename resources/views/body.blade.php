@@ -20,7 +20,7 @@
     <script>
         window.Schematics = {
             activeTab: parseInt(localStorage.getItem('active-tab') || 1),
-            namespace: {!! json_encode(config('schematics.namespace', 'App\\')) !!},
+            namespace: {!! json_encode(config('schematics.model-namespace', 'App\\')) !!},
             models: Object.values({!! json_encode($models) !!}),
             migrations: {!! json_encode($migrations) !!},
             relations: {!! json_encode($relations) !!},

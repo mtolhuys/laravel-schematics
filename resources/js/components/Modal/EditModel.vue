@@ -1,48 +1,26 @@
 <template>
-    <span class="modal-content w-full">
-        <span v-if="! fields.length">
-            You have <b class="text-red-500">{{ migrations }}</b>
-            migration{{ migrations === 1 ? '' : 's'}} to run.
-        </span>
+    <fields-explanation v-if="explanation"/>
+    <span v-else>
+        <div class="flex justify-between items-center w-full pb-3">
+            <p class="modal-title text-2xl font-bold" v-html="title"/>
 
-        <div v-else v-for="field in fields" :key="field.id" class="md:flex md:items-center">
-            <div class="md:w-1/3">
-                <input
-                    @keydown.enter="save()"
-                    v-model="field.name"
-                    placeholder="Field name"
-                    class="new-field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
-                     text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                    :class="{
-                        'focus:border-purple-500' : ! field.error,
-                        'focus:border-red-500 border-red-500' : field.error,
-                    }"
-                    type="text"
-                >
+            <div @click="closed = true"
+                 class="modal-close cursor-pointer z-50">
+                <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                     viewBox="0 0 18 18">
+                    <path
+                        d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"/>
+                </svg>
             </div>
-
-            <div class="md:w-2/3">
-                <input
-                    v-model="field.type"
-                    @keydown.enter="save()"
-                    :placeholder="field.columnType || 'Default: string|max:255'"
-                    class="new-field bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4
-                    text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                    type="text"
-                >
-            </div>
-
-            <button
-                @click="removeField(field)"
-                @keydown.tab="tab"
-                class="px-4 remove-field cursor-pointer text-gray-400 hover:text-purple-700">
-                <i class="fas fa-trash-alt"/>
-            </button>
         </div>
+        <div class="flex w-full">
+            <span class="modal-content new-model w-full">
+                <span v-if="! fields.length">
+                    You have <b class="text-red-500">{{ migrations }}</b>
+                    migration{{ migrations === 1 ? '' : 's'}} to run.
+                </span>
 
-       <draggable class="mt-5" v-model="created">
-            <transition-group>
-                 <div v-for="field in created" :key="field.id" class="md:flex md:items-center">
+                <div v-else v-for="field in fields" :key="field.id" class="md:flex md:items-center">
                     <div class="md:w-1/3">
                         <input
                             @keydown.enter="save()"
@@ -57,9 +35,6 @@
                             type="text"
                         >
                     </div>
-
-                    <i style="cursor:move"
-                       class="fas fa-arrows-alt-v text-gray-200 mx-1"/>
 
                     <div class="md:w-2/3">
                         <input
@@ -79,48 +54,102 @@
                         <i class="fas fa-trash-alt"/>
                     </button>
                 </div>
-            </transition-group>
-        </draggable>
 
-        <div v-if="fields.length" class="inline-block w-full relative bg-transparent pb-5 pl-5">
-            <span class="plus-minus">
-                <button @click="addField()"
-                        class="tooltip text-black inline-flex items-center
-                     focus:outline-none text-purple-300 hover:text-purple-500">
-                    <span class="mr-1"><i class="fas fa-plus"/></span>
-                </button>
+               <draggable class="mt-5" v-model="created">
+                    <transition-group>
+                         <div v-for="field in created" :key="field.id" class="md:flex md:items-center">
+                            <div class="md:w-1/3">
+                                <input
+                                    @keydown.enter="save()"
+                                    v-model="field.name"
+                                    placeholder="Field name"
+                                    class="new-field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+                                     text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                    :class="{
+                                        'focus:border-purple-500' : ! field.error,
+                                        'focus:border-red-500 border-red-500' : field.error,
+                                    }"
+                                    type="text"
+                                >
+                            </div>
 
-                <button
-                    @click="removeField()"
-                    class="tooltip text-black inline-flex items-center
-                         focus:outline-none text-purple-300 hover:text-purple-500">
-                    <span class="mr-1"><i class="fas fa-minus"/></span>
-                </button>
+                            <i style="cursor:move"
+                               class="fas fa-arrows-alt-v text-gray-200 mx-1"/>
+
+                            <div class="md:w-2/3">
+                                <input
+                                    v-model="field.type"
+                                    @keydown.enter="save()"
+                                    :placeholder="field.columnType || 'Default: string|max:255'"
+                                    class="new-field bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4
+                                    text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                    type="text"
+                                >
+                            </div>
+
+                            <button
+                                @click="removeField(field)"
+                                @keydown.tab="tab"
+                                class="px-4 remove-field cursor-pointer text-gray-400 hover:text-purple-700">
+                                <i class="fas fa-trash-alt"/>
+                            </button>
+                        </div>
+                    </transition-group>
+                </draggable>
+
+                <div v-if="fields.length" class="inline-block w-full relative bg-transparent pb-5 pl-5">
+                    <span class="plus-minus">
+                        <button @click="toggleExplanation()"
+                                class="tooltip text-black inline-flex items-center
+                             focus:outline-none text-purple-300 hover:text-purple-500">
+                            <span class="mr-1"><i class="far fa-question-circle"/></span>
+                        </button>
+
+                        <button @click="addField()"
+                                class="tooltip text-black inline-flex items-center
+                             focus:outline-none text-purple-300 hover:text-purple-500">
+                            <span class="mr-1"><i class="fas fa-plus"/></span>
+                        </button>
+
+                        <button
+                            @click="removeField()"
+                            class="tooltip text-black inline-flex items-center
+                                 focus:outline-none text-purple-300 hover:text-purple-500">
+                            <span class="mr-1"><i class="fas fa-minus"/></span>
+                        </button>
+                    </span>
+                </div>
+
+                <div v-if="fields.length" class="flex justify-end pt-2">
+                    <button
+                        @click="save()"
+                        class="modal-action px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2"
+                    >
+                        Save
+                    </button>
+                </div>
             </span>
-        </div>
-
-        <div v-if="fields.length" class="flex justify-end pt-2">
-            <button
-                @click="save()"
-                class="modal-action px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2"
-            >
-                Save
-            </button>
         </div>
     </span>
 </template>
 
 <script>
     import Draggable from 'vuedraggable';
+    import FieldsExplanation from './FieldsExplanation.vue';
 
     export default {
         name: "edit-model",
 
         components: {
             Draggable,
+            FieldsExplanation
         },
 
         props: {
+            title: {
+                type: String,
+                required: true
+            },
             model: {
                 type: String,
                 required: true
@@ -129,6 +158,7 @@
 
         data() {
             return {
+                explanation: false,
                 migrations: Schematics.migrations.created - Schematics.migrations.run,
                 original: [],
                 created: [],
@@ -142,7 +172,12 @@
             EventBus.$on('edit-model', this.setFields);
         },
 
+        mounted() {
+            EventBus.$on('fields-explanation-back', this.toggleExplanation);
+        },
+
         destroyed() {
+            EventBus.$off('fields-explanation-back');
             EventBus.$off('edit-model');
         },
 
@@ -168,6 +203,10 @@
                 if ($(e.target).is('.remove-field')) {
                     this.addField();
                 }
+            },
+
+            toggleExplanation() {
+                this.explanation = !this.explanation;
             },
 
             addField() {
@@ -200,8 +239,8 @@
             validFields() {
                 let fields = this.changed.concat(this.created),
                     fieldErrors = fields.filter(
-                    field => field.name.trim() === ''
-                );
+                        field => /\W/.test(field.name) || field.name.trim() === ''
+                    );
 
                 fields.forEach(field => field.error = false);
                 fieldErrors.forEach(field => field.error = true);
