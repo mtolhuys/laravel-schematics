@@ -6,7 +6,7 @@ use Mtolhuys\LaravelSchematics\Tests\TestCase;
 
 /*
  * Results are based on the pre-copy-pasted models
- * found in resources/app using composer test script
+ * found in resources/app using composer script
  */
 class MappersTest extends TestCase
 {

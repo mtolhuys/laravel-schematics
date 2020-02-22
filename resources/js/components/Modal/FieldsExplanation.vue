@@ -40,6 +40,9 @@
                    integer
                </li>
                <li>
+                   ipAddress
+               </li>
+               <li>
                    string
 
                </li>

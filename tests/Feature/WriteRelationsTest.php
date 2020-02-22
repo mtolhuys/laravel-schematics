@@ -37,6 +37,9 @@ class WriteRelationsTest extends TestCase
             'method' => [
                 'name' => 'maces'
             ],
+            'options' => [
+                'hasModelAsClass' => false
+            ],
         ]);
 
         $this->assertTrue(File::exists($this->path));
@@ -59,6 +62,9 @@ class WriteRelationsTest extends TestCase
             'target' => "{$this->modelNamespace}Mace",
             'method' => [
                 'name' => 'maces'
+            ],
+            'options' => [
+                'hasModelAsClass' => false
             ],
         ]);
 

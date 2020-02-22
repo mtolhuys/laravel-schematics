@@ -12,6 +12,7 @@ class RuleParser
         'dropColumn',
         'integer',
         'increments',
+        'ipAddress',
         'renameColumn',
         'string',
         'text',

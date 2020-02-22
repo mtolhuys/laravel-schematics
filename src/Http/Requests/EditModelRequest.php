@@ -26,6 +26,9 @@ class EditModelRequest extends FormRequest
         return [
             'model' => 'required|string',
             'fields' => 'required|array',
+            'created' => 'array',
+            'changed' => 'array',
+            'deleted' => 'array',
         ];
     }
 }

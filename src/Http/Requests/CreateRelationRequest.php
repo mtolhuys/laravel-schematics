@@ -27,6 +27,7 @@ class CreateRelationRequest extends FormRequest
             'type' => 'required|string',
             'source' => 'required|string',
             'target' => 'required|string',
+            'options' => 'required|array',
             'method.name' => 'required|string',
         ];
     }

@@ -2,7 +2,7 @@
 
 namespace Mtolhuys\LaravelSchematics\Actions\Model;
 
-use Illuminate\Support\Facades\File;
+use Mtolhuys\LaravelSchematics\Services\StubWriter;
 
 class CreateModelAction
 {
@@ -15,17 +15,13 @@ class CreateModelAction
         $name = $request['name'];
         $namespace = config('schematics.model-namespace');
         $stub = __DIR__ . '/../../../resources/stubs/model.stub';
-        $path = app_path(str_replace(['App\\', '\\'], ['', '/'], $namespace) . "{$name}.php");
+        $file = app_path(str_replace(['App\\', '\\'], ['', '/'], $namespace) . "{$name}.php");
 
-        if (! File::isDirectory(dirname($path))) {
-            File::makeDirectory(dirname($path), 0777, true, true);
-        }
-
-        File::put($path, str_replace(
-            ['$namespace$', '$model$', '$fillables$'],
-            [rtrim($namespace, '\\'), $name, $this->getFillables($request['fields'])],
-            File::get($stub)
-        ));
+        (new StubWriter($file, $stub))->write([
+            '$fillables$' => $this->getFillables($request['fields']),
+            '$namespace$' => rtrim($namespace, '\\'),
+            '$model$' => $name,
+        ]);
     }
 
     /**

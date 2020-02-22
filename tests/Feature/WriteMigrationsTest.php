@@ -53,7 +53,7 @@ class WriteMigrationsTest extends TestCase
     }
 
     /** @test */
-    public function it_successfully_created_model_migration()
+    public function it_successfully_created_model_migration(): void
     {
         $this->assertTrue(File::exists($this->modelMigration));
 
@@ -68,7 +68,7 @@ class WriteMigrationsTest extends TestCase
     }
 
     /** @test */
-    public function it_successfully_created_column_migration()
+    public function it_successfully_created_column_migration(): void
     {
         $this->assertTrue(File::exists($this->columnMigration));
 
@@ -88,7 +88,7 @@ class WriteMigrationsTest extends TestCase
     }
 
     /** @test */
-    public function it_successfully_created_relation_migration()
+    public function it_successfully_created_relation_migration(): void
     {
         $this->assertTrue(File::exists($this->relationMigration));
 
@@ -103,7 +103,7 @@ class WriteMigrationsTest extends TestCase
     }
 
     /** @test */
-    public function it_successfully_deletes_model_migration()
+    public function it_successfully_deletes_model_migration(): void
     {
         $action = new DeleteMigrationAction;
 

@@ -5,6 +5,7 @@ namespace Mtolhuys\LaravelSchematics\Actions\Migration;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Mtolhuys\LaravelSchematics\Actions\Migration\Traits\CreatesMigrations;
+use Mtolhuys\LaravelSchematics\Services\StubWriter;
 
 class CreateRelationMigrationAction
 {
@@ -24,18 +25,12 @@ class CreateRelationMigrationAction
             . date('Y_m_d_His')
             . "_create_{$source}_{$target}_relation.php";
 
-        File::put(base_path($this->filename), str_replace([
-            '$source$',
-            '$target$',
-            '$classname$',
-            '$column$',
-            '$foreignKey$'
-        ], [
-            $source,
-            $target,
-            'Create' . ucfirst(Str::camel($source)) . ucfirst(Str::camel($target)) . 'Relation',
-            "\$table->foreign('$foreignKey')->references('{$this->getLocalKey($request)}')->on('$target');",
-            $foreignKey
-        ], File::get($stub)));
+        (new StubWriter(base_path($this->filename), $stub))->write([
+            '$column$' => "\$table->foreign('$foreignKey')->references('{$this->getLocalKey($request)}')->on('$target');",
+            '$classname$' => 'Create' . ucfirst(Str::camel($source)) . ucfirst(Str::camel($target)) . 'Relation',
+            '$foreignKey$' => $foreignKey,
+            '$source$' => $source,
+            '$target$' => $target,
+        ]);
     }
 }

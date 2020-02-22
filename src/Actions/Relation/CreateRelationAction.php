@@ -25,7 +25,7 @@ class CreateRelationAction
 
         file_put_contents($file, implode("\n", $lines));
 
-        return (object) [
+        return (object)[
             'file' => $file,
             'line' => ($injectionLine + count(file($stub)) - 2),
         ];
@@ -38,25 +38,21 @@ class CreateRelationAction
      */
     private function generateMethod($request, string $stub)
     {
-        if (json_decode($request['options']['hasModelAsClass'], false)) {
-            $relationTarget = '\\' . $request['target'] . '::class';
-        } else {
-            $relationTarget = '\'' . $request['target'] . '\'';
-        }
+        $modelAsClass = json_decode($request['options']['hasModelAsClass'], false);
 
-        return str_replace([
-            '$class$',
-            '$method$',
-            '$type$',
-            '$target$',
-            '$keys$'
-        ], [
-            $request['type'],
-            $request['method']['name'],
-            lcfirst($request['type']),
-            $relationTarget,
-            $relation['keys'] ?? '',
-        ], File::get($stub));
+        $replace = [
+            '$target$' => $modelAsClass ? "\\{$request['target']}::class" : "'{$request['target']}'",
+            '$method$' => $request['method']['name'],
+            '$type$' => lcfirst($request['type']),
+            '$keys$' => $relation['keys'] ?? '',
+            '$class$' => $request['type'],
+        ];
+
+        return str_replace(
+            array_keys($replace),
+            array_values($replace),
+            File::get($stub)
+        );
     }
 
     /**

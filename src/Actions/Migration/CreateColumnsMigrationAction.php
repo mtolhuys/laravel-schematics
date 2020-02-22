@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Mtolhuys\LaravelSchematics\Services\RuleParser;
 use Mtolhuys\LaravelSchematics\Actions\Migration\Traits\CreatesMigrations;
+use Mtolhuys\LaravelSchematics\Services\StubWriter;
 
 class CreateColumnsMigrationAction
 {
@@ -16,24 +17,18 @@ class CreateColumnsMigrationAction
      */
     public function execute($request)
     {
-        $model = $request['model'];
-        $table = app($model)->getTable();
+        $table = app($request['model'])->getTable();
         $stub = __DIR__ . '/../../../resources/stubs/migration/columns.stub';
         $title = $this->title($request, $table);
         $this->filename = 'database/migrations/' . date('Y_m_d_His') . '_' . Str::snake($title) . '.php';
         $request = $this->separateNameAndTypeChanges($request);
 
-        File::put(base_path($this->filename), str_replace([
-            '$classname$',
-            '$table$',
-            '$columnsUp$',
-            '$columnsDown$'
-        ], [
-            $title,
-            $table,
-            rtrim($this->getUpMethods($request)),
-            rtrim($this->getDownMethods($request)),
-        ], File::get($stub)));
+        (new StubWriter(base_path($this->filename), $stub))->write([
+            '$columnsUp$' => rtrim($this->getUpMethods($request)),
+            '$columnsDown$' => rtrim($this->getDownMethods($request)),
+            '$classname$' => $title,
+            '$table$' => $table,
+        ]);
     }
 
     /**
@@ -96,46 +91,11 @@ class CreateColumnsMigrationAction
                 && json_decode($field['changed'], false);
 
             if ($changedField) {
-                $field = $up ? $this->setUpChanges($field) : $this->setDownChanges($field);
+                $field = $up ? $this->setUpChange($field) : $this->setDownChange($field);
 
                 return $field;
             }
         }, $fields);
-    }
-
-    /**
-     * @param $field
-     * @return mixed
-     */
-    private function setUpChanges($field)
-    {
-        if (isset($field['from'])) {
-            $field['type'] = "renameColumn|from:{$field['from']}|required";
-        } else {
-            $field['type'] .= '|change';
-        }
-
-        return $field;
-    }
-
-    /**
-     * @param $field
-     * @return mixed
-     */
-    private function setDownChanges($field)
-    {
-        if (isset($field['from'])) {
-            $field['type'] = "renameColumn|from:{$field['to']}|required";
-            $field['name'] = $field['from'];
-        } else {
-            if (isset($field['to'])) {
-                $field['name'] = $field['to'];
-            }
-
-            $field['type'] = $this->parseColumnType($field['columnType']) . '|change';
-        }
-
-        return $field;
     }
 
     /**
@@ -182,6 +142,13 @@ class CreateColumnsMigrationAction
             ])) . 'ColumnIn' . ucfirst(Str::camel($table)) . 'Table';
     }
 
+    /**
+     * This is for cases where both the name and type
+     * of the column where changed
+     *
+     * @param $request
+     * @return mixed
+     */
     private function separateNameAndTypeChanges($request)
     {
         if (empty($request['changed'])) {
