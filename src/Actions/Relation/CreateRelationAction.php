@@ -32,17 +32,16 @@ class CreateRelationAction
     }
 
     /**
-     * @param array $relation
+     * @param $request
      * @param string $stub
      * @return string|string[]
      */
-    private function generateMethod($relation, string $stub)
+    private function generateMethod($request, string $stub)
     {
-        $relationGeneratorMethod = config('schematics.relation-generator-method', 'string');
-        if ($relationGeneratorMethod === 'class') {
-            $relationTarget = '\\' . $relation['target'] . '::class';
+        if (json_decode($request['options']['hasModelAsClass'], false)) {
+            $relationTarget = '\\' . $request['target'] . '::class';
         } else {
-            $relationTarget = '\'' . $relation['target'] . '\'';
+            $relationTarget = '\'' . $request['target'] . '\'';
         }
 
         return str_replace([
@@ -52,9 +51,9 @@ class CreateRelationAction
             '$target$',
             '$keys$'
         ], [
-            $relation['type'],
-            $relation['method']['name'],
-            lcfirst($relation['type']),
+            $request['type'],
+            $request['method']['name'],
+            lcfirst($request['type']),
             $relationTarget,
             $relation['keys'] ?? '',
         ], File::get($stub));

@@ -151,7 +151,7 @@
 
                 $hidden.removeClass('hidden-model').show();
                 $hidden.each((i, el) => {
-                    const model = $(el).find('span').data('model').toLowerCase();
+                    const model = $(el).data('model').toLowerCase();
 
                     localStorage.setItem(`schematics-settings-${model}-hidden-tab-${Schematics.activeTab}`, 'false');
                 });

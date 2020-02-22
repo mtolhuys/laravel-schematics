@@ -4,7 +4,7 @@
         <div class="flex justify-between items-center w-full pb-3">
             <p class="modal-title text-2xl font-bold" v-html="title"/>
 
-            <div @click="closed = true"
+            <div @click="close"
                  class="modal-close cursor-pointer z-50">
                 <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                      viewBox="0 0 18 18">
@@ -178,6 +178,10 @@
         },
 
         methods: {
+            close() {
+                EventBus.$emit('modal-close');
+            },
+
             tab(e) {
                 if ($(e.target).is('.remove-field')) {
                     this.addField();
