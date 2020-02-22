@@ -14,7 +14,7 @@
 
             <i class="fas fa-project-diagram icon"/> {{ model }}
 
-            <span @mouseover="prevent">
+            <span class="model-actions" @mouseover="prevent">
                 <button
                     @click="remove(model)"
                     aria-label="Remove Model" data-balloon-pos="down"
@@ -199,6 +199,10 @@
 </script>
 
 <style>
+    .model-actions {
+        min-width: 90px;
+    }
+
     .tooltip {
         --balloon-color: #9F7AEA;
     }
