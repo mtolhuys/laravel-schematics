@@ -1,6 +1,7 @@
 <template>
    <span class="modal-content w-full">
-        <div class="text-gray-900 font-bold text-xl mb-2">Building / Editing Models</div>
+       <div class="text-gray-900 font-bold text-xl mb-2">Building / Editing Models</div>
+
 
        <p class="text-gray-700 text-base">
             Use this form to specify the <b>names</b> and <b>types</b> of your columns.
@@ -39,6 +40,9 @@
                    integer
                </li>
                <li>
+                   ipAddress
+               </li>
+               <li>
                    string
 
                </li>
@@ -48,7 +52,6 @@
                </li>
                <li>
                    timestamp
-
                </li>
                <li>
                    time
@@ -76,6 +79,24 @@
        </span>
 
        <p class="py-2">Examples</p>
+
+       <div class="md:flex md:items-center">
+            <div class="md:w-1/3">
+                <p class="new-field bg-white appearance-none border-2 border-gray-200
+                    rounded w-full py-2 px-4 mr-4 text-gray-700 leading-tight"
+                >
+                    id
+                </p>
+            </div>
+
+            <div class="md:w-2/3">
+                <p class="new-field bg-gray-200 appearance-none border-2 border-gray-200
+                    rounded w-full py-2 px-4 text-gray-700 leading-tight"
+                >
+                    increments
+                </p>
+            </div>
+       </div>
 
        <div class="md:flex md:items-center">
             <div class="md:w-1/3">

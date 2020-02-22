@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Mtolhuys\LaravelSchematics\Services\RuleParser;
 use Mtolhuys\LaravelSchematics\Actions\Migration\Traits\CreatesMigrations;
+use Mtolhuys\LaravelSchematics\Services\StubWriter;
 
 class CreateModelMigrationAction
 {
@@ -23,19 +24,11 @@ class CreateModelMigrationAction
             . date('Y_m_d_His')
             . "_create_{$table}_table.php";
 
-        if(! File::isDirectory(dirname(base_path($this->filename)))){
-            File::makeDirectory(dirname(base_path($this->filename)), 0777, true, true);
-        }
-
-        File::put(base_path($this->filename), str_replace([
-            '$classname$',
-            '$table$',
-            '$columns$'
-        ], [
-            'Create' . Str::plural($model) . 'Table',
-            $table,
-            rtrim($this->getColumns($request))
-        ], File::get($stub)));
+        (new StubWriter(base_path($this->filename), $stub))->write([
+            '$classname$' => 'Create' . Str::plural($model) . 'Table',
+            '$columns$' => rtrim($this->getColumns($request)),
+            '$table$' => $table,
+        ]);
     }
 
     /**

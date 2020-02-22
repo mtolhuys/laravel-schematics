@@ -71,6 +71,41 @@ trait CreatesMigrations
         }, $fields);
     }
 
+    /**
+     * @param $field
+     * @return mixed
+     */
+    protected function setUpChange($field)
+    {
+        if (isset($field['from'])) {
+            $field['type'] = "renameColumn|from:{$field['from']}|required";
+        } else {
+            $field['type'] .= '|change';
+        }
+
+        return $field;
+    }
+
+    /**
+     * @param $field
+     * @return mixed
+     */
+    protected function setDownChange($field)
+    {
+        if (isset($field['from'])) {
+            $field['type'] = "renameColumn|from:{$field['to']}|required";
+            $field['name'] = $field['from'];
+        } else {
+            if (isset($field['to'])) {
+                $field['name'] = $field['to'];
+            }
+
+            $field['type'] = $this->parseColumnType($field['columnType']) . '|change';
+        }
+
+        return $field;
+    }
+
 
     /**
      * Parsing column type to migration rule

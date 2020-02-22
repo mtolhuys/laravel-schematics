@@ -29,11 +29,14 @@
         mounted() {
             $(document).mousedown((e) => {
                 let $models = this.$models().all(),
-                    notClicked = function ($el) {
-                    return !$el.is(e.target) && $el.has(e.target).length === 0
-                };
+                    notClicked = $el => !$el.is(e.target) && $el.has(e.target).length === 0,
+                    clicked = $el => ! notClicked($el);
 
-                if (notClicked($models) && notClicked($(".action"))) {
+                if (clicked(this.$action())) {
+                    e.stopImmediatePropagation();
+                }
+
+                if (notClicked($models) && notClicked(this.$action())) {
                     $models.removeClass('selected');
                     jsPlumb.clearDragSelection();
                 }
@@ -41,7 +44,9 @@
                 if (notClicked($(".modal-container"))) {
                     EventBus.$emit('modal-close');
                 } else {
-                    if (Schematics.modal) e.stopImmediatePropagation();
+                    if (Schematics.modal) {
+                        e.stopImmediatePropagation();
+                    }
                 }
 
                 if (notClicked(this.$alert())) {

@@ -25,39 +25,34 @@ class CreateRelationAction
 
         file_put_contents($file, implode("\n", $lines));
 
-        return (object) [
+        return (object)[
             'file' => $file,
             'line' => ($injectionLine + count(file($stub)) - 2),
         ];
     }
 
     /**
-     * @param array $relation
+     * @param $request
      * @param string $stub
      * @return string|string[]
      */
-    private function generateMethod($relation, string $stub)
+    private function generateMethod($request, string $stub)
     {
-        $relationGeneratorMethod = config('schematics.relation-generator-method', 'string');
-        if ($relationGeneratorMethod === 'class') {
-            $relationTarget = '\\' . $relation['target'] . '::class';
-        } else {
-            $relationTarget = '\'' . $relation['target'] . '\'';
-        }
+        $modelAsClass = json_decode($request['options']['hasModelAsClass'], false);
 
-        return str_replace([
-            '$class$',
-            '$method$',
-            '$type$',
-            '$target$',
-            '$keys$'
-        ], [
-            $relation['type'],
-            $relation['method']['name'],
-            lcfirst($relation['type']),
-            $relationTarget,
-            $relation['keys'] ?? '',
-        ], File::get($stub));
+        $replace = [
+            '$target$' => $modelAsClass ? "\\{$request['target']}::class" : "'{$request['target']}'",
+            '$method$' => $request['method']['name'],
+            '$type$' => lcfirst($request['type']),
+            '$keys$' => $relation['keys'] ?? '',
+            '$class$' => $request['type'],
+        ];
+
+        return str_replace(
+            array_keys($replace),
+            array_values($replace),
+            File::get($stub)
+        );
     }
 
     /**

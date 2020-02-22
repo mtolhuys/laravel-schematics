@@ -1,15 +1,15 @@
 export default {
     methods: {
+        $action() {
+            return $(".action");
+        },
+
         $schema() {
             return $('.schema');
         },
 
         $selected() {
             return $('.selected');
-        },
-
-        $actions() {
-            return $('.action');
         },
 
         $alert() {

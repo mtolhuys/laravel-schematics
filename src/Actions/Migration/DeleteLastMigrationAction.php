@@ -10,7 +10,6 @@ class DeleteLastMigrationAction
     use DeletesMigrations;
 
     /**
-     * @param $request
      * @return string
      */
     public function execute()

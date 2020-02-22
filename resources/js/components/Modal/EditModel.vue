@@ -4,7 +4,7 @@
         <div class="flex justify-between items-center w-full pb-3">
             <p class="modal-title text-2xl font-bold" v-html="title"/>
 
-            <div @click="closed = true"
+            <div @click="close"
                  class="modal-close cursor-pointer z-50">
                 <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                      viewBox="0 0 18 18">
@@ -182,6 +182,10 @@
         },
 
         methods: {
+            close() {
+                EventBus.$emit('modal-close');
+            },
+
             setFields(data) {
                 const fields = data.fields.map(field => {
                     return {
@@ -222,7 +226,7 @@
             },
 
             removeField(field = null) {
-                let fields = this.created.concat(this.fields);
+                let fields = this.fields.concat(this.created);
 
                 if (!field) {
                     field = fields[fields.length - 1];

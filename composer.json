@@ -41,9 +41,14 @@
         }
     },
     "scripts": {
-        "test": [
-            "php -r \"exec('cp -r ./tests/resources/app/* ./vendor/orchestra/testbench-core/laravel/app');\"",
+        "prepare-test": "php -r \"exec('cp -r ./tests/resources/app/* ./vendor/orchestra/testbench-core/laravel/app');\"",
+        "test-coverage": [
+            "@prepare-test",
             "vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover"
+        ],
+        "test": [
+            "@prepare-test",
+            "vendor/bin/phpunit"
         ]
     },
     "config": {
