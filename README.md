@@ -10,7 +10,7 @@
 
 This package allows you to make multiple **diagrams** of your Eloquent **models** and their **relations**.
 It will help building them providing drag and drop relations, forms to **create** and **edit** your models and many options like
-adding **resource controllers**, running **migrations** by the click of a button or (configurable) automatically.
+adding **resource controllers**, **form requests**, running **migrations** by the click of a button or (configurable) automatically.
 It also will give you insights in the migrations you ran and the ones specified in your migrations folder.  
 
 ![Schematics Example](resources/images/readme/intro.png)
