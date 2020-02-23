@@ -44,14 +44,6 @@ class WriteMigrationsTest extends TestCase
         $this->createsMigrations();
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     /** @test */
     public function it_successfully_created_model_migration(): void
     {

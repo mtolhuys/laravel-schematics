@@ -42,9 +42,17 @@ class ModelsControllerTest extends TestCase
         ],
     ];
 
-    public function setUp(): void
+    public function tearDown(): void
     {
-        parent::setUp();
+        parent::tearDown();
+
+        $controller = app_path('Http/Controllers/WombatController.php');
+        $formRequest = app_path('Http/Requests/CreateWombatRequest.php');
+        $model = app_path('Wombat.php');
+
+        File::delete($controller);
+        File::delete($formRequest);
+        File::delete($model);
     }
 
     /** @test
