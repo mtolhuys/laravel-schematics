@@ -17,6 +17,8 @@ It also will give you insights in the migrations you ran and the ones specified 
 
 Its aim is to help you (and your team) get more grip on the models from a code perspective, 
 the status of your migrations and build/edit them faster.
+
+---
     
 ## Installation
 
@@ -39,10 +41,12 @@ and visit `{your-app}/schematics`
 
 Make sure the routes are cached!
 
+---
+
 ## Usage
 
 ##### Starting out / Searching
-If you already have a lot of models I recommend to use the search bar to narrow down the diagrams into 
+If you already have a lot of models I recommend you use the search bar to narrow down the diagrams into 
 specific sections f.e:
 
 ![Schematics Example](resources/images/readme/search-example.png)
@@ -76,6 +80,14 @@ I do **strongly** suggest you check the migrations before running them if the st
 There are 4 diagram styles. Bezier, Straight, Flowchart and State Machine:
 
 <img width="800" src="resources/images/readme/styles-example.gif" />
+
+##### Importing / Exporting Diagrams
+
+To save and / or share the diagrams you created you can use the export and import settings feature:
+
+<img width="800" src="resources/images/readme/export-import-example.gif" />
+
+---
 
 ### Testing
 
