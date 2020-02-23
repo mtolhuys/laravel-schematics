@@ -16,7 +16,7 @@ It also will give you insights in the migrations you ran and the ones specified 
 ![Schematics Example](resources/images/readme/intro.png)
 
 Its aim is to help you (and your team) get more grip on the models from a code perspective, 
-the status of your migrations and build/edit them faster.
+the status of your migrations and build / edit them faster.
 
 ---
     
