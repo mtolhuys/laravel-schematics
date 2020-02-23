@@ -24,7 +24,9 @@ export default {
 
         getModelPosition(model) {
             return JSON.parse(
-                localStorage.getItem(`schematics-settings-${model.toLowerCase()}-position-tab-${Schematics.activeTab}`)
+                localStorage.getItem(
+                    `schematics-settings-${model.toLowerCase()}-position-tab-${Schematics.activeTab}`
+                )
             );
         },
 

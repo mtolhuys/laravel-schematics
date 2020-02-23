@@ -7,7 +7,10 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
-    public $modelNamespace;
+    public
+        $modelNamespace,
+        $controllerNamespace,
+        $formRequestNamespace;
 
     /**
      * @before
@@ -17,6 +20,8 @@ class TestCase extends Orchestra
         parent::setUp();
 
         $this->modelNamespace = config('schematics.model-namespace');
+        $this->controllerNamespace = config('schematics.controller-namespace');
+        $this->formRequestNamespace = config('schematics.form-request-namespace');
     }
 
     /**
@@ -37,12 +42,8 @@ class TestCase extends Orchestra
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('schematics.model-namespace', 'App\\');
-        $app['config']->set('database.default', 'sqlite');
-        $app['config']->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
+        $app['config']->set('schematics.controller-namespace', null);
+        $app['config']->set('schematics.form-request-namespace', 'App\\Http\\Requests');
     }
 
 }

@@ -75,6 +75,22 @@ The package is flexible enough to differentiate between renaming and changing co
 It will create migrations according the need to change or create a table and setup your `$fillables`.
 I do **strongly** suggest you check the migrations before running them if the stakes are high.
 
+You don't have to worry about existing migrations though, the package will only look for migrations it created itself
+by checking the value of the @tag in the comment it adds. It looks like this:
+
+```php
+/**
+ * Laravel Schematics
+ *
+ * WARNING: removing @tag value will disable automated removal
+ *
+ * @package Laravel-schematics
+ * @author  Maarten Tolhuijs <mtolhuys@protonmail.com>
+ * @url     https://github.com/mtolhuys/laravel-schematics
+ * @tag     laravel-schematics-foobar-model
+ */
+```
+
 ##### Changing Diagram Style
 
 There are 4 diagram styles. Bezier, Straight, Flowchart and State Machine:
