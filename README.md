@@ -45,7 +45,7 @@ Make sure the routes are cached!
 
 ## Usage
 
-##### Starting out / Searching
+#### Starting out / Searching
 If you already have a lot of models I recommend you use the search bar to narrow down the diagrams into 
 specific sections f.e:
 
@@ -55,7 +55,7 @@ These searches are saved across your diagrams.
 
 <img width="800" src="resources/images/readme/search-example.gif" />
 
-##### Relations
+#### Relations
 When you drag and drop the arrow to another model you'll get a form to specify the relation you want to build f.e:
 
 <img width="800" src="resources/images/readme/relation-example.gif" />
@@ -64,7 +64,7 @@ Clicking on them will show something like:
 
 ![Relation Example](resources/images/readme/relation-example.png)
 
-##### Building / Editing Models
+#### Building / Editing Models
 
 To specify the types of your columns I've chosen the form request rule syntax. 
 To see what's available you can click the little help icon below the fields in the model form:
@@ -91,13 +91,13 @@ by checking the value of the `@tag` in the comment it adds. It looks like this:
  */
 ```
 
-##### Changing Diagram Style
+#### Changing Diagram Style
 
 There are 4 diagram styles. Bezier, Straight, Flowchart and State Machine:
 
 <img width="800" src="resources/images/readme/styles-example.gif" />
 
-##### Importing / Exporting Diagrams
+#### Importing / Exporting Diagrams
 
 To save and / or share the diagrams you created you can use the export and import settings feature:
 
