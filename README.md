@@ -1,5 +1,5 @@
 <h1>
-    <img align="left" align="bottom" width="40" height="40" src="resources/images/icons/icon_2.png" />
+    <img align="left" align="bottom" width="40" height="40" src="resources/images/icons/icon.png" />
     Laravel Schematics
 </h1>
 
