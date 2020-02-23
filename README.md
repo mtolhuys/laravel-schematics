@@ -1,3 +1,5 @@
+<img align="left" width="80" height="80" src="resources/images/icons/icon_2.png" />
+
 # Laravel Schematics
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
@@ -5,33 +7,14 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/mtolhuys/laravel-schematics.svg?style=flat-square)](https://scrutinizer-ci.com/g/mtolhuys/laravel-schematics)
 [![Total Downloads](https://img.shields.io/packagist/dt/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
 
-This package will map your Eloquent models, relation methods and migrations.
-It will help building them, use drag and drop relations, run and roll back migrations.
-You can see a diagram of the results visiting `{your-app}/schematics`
+This package allows you to make multiple diagrams of your Eloquent models and their relations.
+It will help building them providing drag and drop relations, forms to create and edit your models and many options like
+adding resource controllers, running migrations by the click of a button or (configurable) automatically.
+It also will give you insights in the migrations you ran and the ones specified in your migrations folder.  
 
-For example: 
+### Example:
 
-### Adding a model
-- Creating a User model with the timestamps and resource controller options.
-
-<img src="resources/images/add-user.gif" width=800>
-
-### Adding a relation
-- Created a Post model and drag and dropped it's relation to User.
-
-<img src="resources/images/post-and-user-relation.gif" width=800>
-
-### Removing a relation
-- Removing a relation through the interface.
-
-<img src="resources/images/removing-relation.gif" width=800>
-
-### Changing the diagram
-- You can change you're style and export/import them.
-
-<img src="resources/images/schematics.gif" width=800>
-
-PS: This package is still in BETA stage. More features coming soon!
+![Schematics Example](resources/images/intro.png)
     
 ## Installation
 
