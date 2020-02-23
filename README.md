@@ -76,7 +76,7 @@ It will create migrations according the need to change or create a table and set
 I do **strongly** suggest you check the migrations before running them if the stakes are high.
 
 You don't have to worry about existing migrations though, the package will only look for migrations it created itself
-by checking the value of the @tag in the comment it adds. It looks like this:
+by checking the value of the `@tag` in the comment it adds. It looks like this:
 
 ```php
 /**
