@@ -27,19 +27,19 @@ class RuleParserTest extends TestCase
         ]));
 
         $expected = str_replace([' ', '\r', '\n'], '',
-        '$table->increments(\'id\');
-                $table->string(\'name\',10)->nullable();
-                $table->renameColumn(\'name\',\'surname\')->nullable();
-                $table->string(\'email\')->unique();
-                $table->time(\'daily_alarm\')->nullable();
-                $table->dropColumn(\'daily_alarm\');
-                $table->dateTime(\'last_login\')->nullable();
-                $table->integer(\'profile_id\')->unsigned()->nullable();
-                $table->integer(\'profile_id\')->unsigned()->change();
-                $table->boolean(\'active\');
-                $table->decimal(\'balance\')->nullable();
-                $table->ipAddress(\'ip\')->nullable();
-                $table->text(\'bio\')->nullable();
+            '$table->increments(\'id\');
+            $table->string(\'name\',10)->nullable();
+            $table->renameColumn(\'name\',\'surname\')->nullable();
+            $table->string(\'email\')->unique();
+            $table->time(\'daily_alarm\')->nullable();
+            $table->dropColumn(\'daily_alarm\');
+            $table->dateTime(\'last_login\')->nullable();
+            $table->integer(\'profile_id\')->unsigned()->nullable();
+            $table->integer(\'profile_id\')->unsigned()->change();
+            $table->boolean(\'active\');
+            $table->decimal(\'balance\')->nullable();
+            $table->ipAddress(\'ip\')->nullable();
+            $table->text(\'bio\')->nullable();
         ');
 
         $this->assertEquals($expected, $result);

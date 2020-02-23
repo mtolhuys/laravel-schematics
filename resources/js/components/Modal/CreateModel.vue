@@ -102,6 +102,17 @@
                                 </span>
                             </label>
                         </div>
+
+                        <div class="md:flex md:items-center">
+                            <label class="block text-gray-500 font-bold">
+                                <input
+                                    v-model="actions.hasFormRequest"
+                                    class="mr-2 leading-tight" type="checkbox">
+                                <span class="text-sm w-2/3">
+                                    FormRequest
+                                </span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 

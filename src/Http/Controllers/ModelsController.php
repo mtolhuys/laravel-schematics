@@ -3,6 +3,7 @@
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
 use Mtolhuys\LaravelSchematics\Actions\Model\EditModelAction;
+use Mtolhuys\LaravelSchematics\Actions\Resource\CreateFormRequestAction;
 use Mtolhuys\LaravelSchematics\Actions\Resource\CreateResourceControllerAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\CreateColumnsMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\CreateModelMigrationAction;
@@ -85,6 +86,7 @@ class ModelsController extends Controller
     {
         return [
             'hasResource' => new CreateResourceControllerAction,
+            'hasFormRequest' => new CreateFormRequestAction,
         ][$option];
     }
 }

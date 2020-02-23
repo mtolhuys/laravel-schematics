@@ -48,7 +48,7 @@
             setTab(tab) {
                 Schematics.activeTab = tab;
 
-                localStorage.setItem('active-tab', tab);
+                localStorage.setItem('schematics-active-tab', tab);
 
                 EventBus.$emit('loading', true);
 
@@ -60,7 +60,7 @@
             addTab() {
                 this.tabs++;
 
-                localStorage.setItem('tabs', this.tabs);
+                localStorage.setItem('schematics-tabs', this.tabs);
 
                 this.setTab(this.tabs);
             },
@@ -75,7 +75,7 @@
 
                 this.tabs--;
 
-                localStorage.setItem('tabs', this.tabs);
+                localStorage.setItem('schematics-tabs', this.tabs);
 
                 this.setTab(this.tabs);
             },
