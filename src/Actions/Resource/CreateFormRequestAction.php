@@ -35,7 +35,7 @@ class CreateFormRequestAction
         foreach ($fields as $index => $field) {
             $rule = $this->parseRule($field['type']);
 
-            if (! $rule) {
+            if ($rule === null) {
                 continue;
             }
 
