@@ -80,9 +80,7 @@ class CreateFormRequestAction
     private function toRule(string $rawRules): string
     {
         $translations = [
-            'boolean' => 'boolean',
             'dateTime' => 'date',
-            'date' => 'date',
             'decimal' => 'numeric',
             'integer' => 'numeric',
             'ipAddress' => 'ip',
