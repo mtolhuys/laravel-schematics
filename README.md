@@ -1,18 +1,17 @@
-<img align="left" width="40" height="40" src="resources/images/icons/icon_2.png" />
-
-# Laravel Schematics
+<h1>
+    <img align="left" align="bottom" width="40" height="40" src="resources/images/icons/icon_2.png" />
+    Laravel Schematics
+</h1>
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
 [![Build Status](https://img.shields.io/travis/mtolhuys/laravel-schematics/master.svg?style=flat-square)](https://travis-ci.org/mtolhuys/laravel-schematics)
 [![Quality Score](https://img.shields.io/scrutinizer/g/mtolhuys/laravel-schematics.svg?style=flat-square)](https://scrutinizer-ci.com/g/mtolhuys/laravel-schematics)
 [![Total Downloads](https://img.shields.io/packagist/dt/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
 
-This package allows you to make multiple diagrams of your Eloquent models and their relations.
-It will help building them providing drag and drop relations, forms to create and edit your models and many options like
-adding resource controllers, running migrations by the click of a button or (configurable) automatically.
+This package allows you to make multiple **diagrams** of your Eloquent **models** and their **relations**.
+It will help building them providing drag and drop relations, forms to **create** and **edit** your models and many options like
+adding **resource controllers**, running **migrations** by the click of a button or (configurable) automatically.
 It also will give you insights in the migrations you ran and the ones specified in your migrations folder.  
-
-### Example:
 
 ![Schematics Example](resources/images/intro.png)
     
