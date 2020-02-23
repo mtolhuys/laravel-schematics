@@ -1,4 +1,4 @@
-<img align="left" width="80" height="80" src="resources/images/icons/icon_2.png" />
+<img align="left" width="40" height="40" src="resources/images/icons/icon_2.png" />
 
 # Laravel Schematics
 
