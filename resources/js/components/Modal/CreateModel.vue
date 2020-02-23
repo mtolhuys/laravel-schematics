@@ -109,7 +109,7 @@
                                     v-model="actions.hasFormRequest"
                                     class="mr-2 leading-tight" type="checkbox">
                                 <span class="text-sm w-2/3">
-                                    FormRequest
+                                    Form Request
                                 </span>
                             </label>
                         </div>
