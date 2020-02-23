@@ -19,7 +19,7 @@
                             @keydown.enter="search()"
                             v-model="searchFor"
                             type="search"
-                            placeholder="(RegEx) Search..."
+                            placeholder="Search..."
                             class="w-full bg-gray-100 text-sm text-gray-800 transition border focus:outline-none focus:border-purple-500 rounded py-1 px-2 pl-10 appearance-none leading-normal"
                         >
 

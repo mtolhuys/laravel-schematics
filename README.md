@@ -13,7 +13,10 @@ It will help building them providing drag and drop relations, forms to **create*
 adding **resource controllers**, running **migrations** by the click of a button or (configurable) automatically.
 It also will give you insights in the migrations you ran and the ones specified in your migrations folder.  
 
-![Schematics Example](resources/images/intro.png)
+![Schematics Example](resources/images/readme/intro.png)
+
+Its aim is to help you (and your team) get more grip on the models from a code perspective, 
+the status of your migrations and build/edit them faster.
     
 ## Installation
 
@@ -23,18 +26,70 @@ You can install the package via composer:
 composer require mtolhuys/laravel-schematics
 ```
 
-## Usage
-Run `php artisan schematics:install` which will do everything necessary.
+Run `php artisan schematics:install` which will do the route caching, create vendor assets in your public folder and
+setup the configuration file.
 
 Or...
 
 ```php
-php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"`
+php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider"
 ```
 
-and visit {your-app}/schematics
+and visit `{your-app}/schematics`
 
 Make sure the routes are cached!
+
+## Usage
+
+##### Starting out / Searching
+If you already have a lot of models I recommend to use the search bar to narrow down the diagrams into 
+specific sections f.e:
+
+![Schematics Example](resources/images/readme/search-example.png)
+
+These searches are saved across your diagrams.
+
+<img width="800" src="resources/images/readme/search-example.gif" />
+
+##### Relations
+When you drag and drop the arrow to another model you'll get a form to specify the relation you want to build f.e:
+
+<img width="800" src="resources/images/readme/relation-example.gif" />
+
+Clicking on them will show something like:
+
+![Relation Example](resources/images/readme/relation-example.png)
+
+##### Building / Editing Models
+
+To specify the types of your columns I've chosen the form request rule syntax. 
+To see what's available you can click the little help icon below the fields in the model form:
+
+![Fields Explanation](resources/images/readme/fields-explanation.png)
+
+The package is flexible enough to differentiate between renaming and changing column types. 
+It will create migrations according the need to change or create a table and setup your `$fillables`.
+I do **strongly** suggest you check the migrations before running them if the stakes are high.
+
+##### Changing Diagram Style
+
+There are 4 diagram styles. Bezier, Straight, Flowchart and State Machine:
+
+<img width="800" src="resources/images/readme/styles-example.gif" />
+
+### Testing
+
+You can run the tests with:
+
+```bash
+composer test
+```
+
+Or, optionally, with coverage information:
+
+```bash
+composer test-coverage
+```
 
 ### Changelog
 
