@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <div class="inline-block w-full relative bg-transparent pt-6 pl-4">
+        <div class="inline-block w-full relative bg-transparent pt-6 mx-2">
             <span class="plus-minus">
                 <button
                     :disabled="tabs === 1"
@@ -40,7 +40,7 @@
         data() {
             return {
                 active: Schematics.activeTab,
-                tabs: parseInt(localStorage.getItem('tabs') || 1),
+                tabs: parseInt(localStorage.getItem('schematics-tabs') || 1),
             }
         },
 

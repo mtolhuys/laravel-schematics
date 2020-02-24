@@ -29,7 +29,7 @@ class LaravelSchematicsServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            __DIR__.'/../dist/app.js' => public_path('vendor/schematics/app.js'),
+            __DIR__.'/../dist' => public_path('vendor/schematics'),
             __DIR__.'/../resources/images/plumb-arrows' => public_path('vendor/schematics/images'),
             __DIR__.'/../resources/images/icons' => public_path('vendor/schematics/images'),
         ], 'public');
