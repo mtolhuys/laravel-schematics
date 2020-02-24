@@ -5,32 +5,5 @@
 
     <title>Laravel Schematics</title>
 
-    <script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous">
-    </script>
-
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" crossorigin="anonymous"></script>
-
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.12.8/js/jsplumb.js"
-        integrity="sha256-f9BpQngvHT3SFvrrXx5nCBEgIit5kRNapjY9BWNPDmw="
-        crossorigin="anonymous">
-    </script>
-
-    <link href="https://unpkg.com/tailwindcss@next/dist/tailwind.min.css" rel="stylesheet" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="https://unpkg.com/balloon-css/balloon.min.css">
-
-    <link
-        rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.12.8/css/jsplumbtoolkit-defaults.css"
-        integrity="sha256-eFB5OKZPYgNuZVnVHdpzzLshBLhrGBikCXph13FeJhA="
-        crossorigin="anonymous"
-    />
-
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Lato');
-        html { font-family: 'Lato', sans-serif; }
-    </style>
+    <link rel="stylesheet" href="{{ asset('vendor/schematics/app.css') }}" />
 </head>

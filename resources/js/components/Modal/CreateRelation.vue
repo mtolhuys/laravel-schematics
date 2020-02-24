@@ -238,7 +238,6 @@
                 EventBus.$emit('loading', true);
 
                 $.post('schematics/relations/create', this.relation, (relation) => {
-                    console.info('relation', relation);
                     this.addRelation(relation);
 
                     EventBus.$emit('loading', false);
