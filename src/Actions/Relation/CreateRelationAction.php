@@ -44,7 +44,7 @@ class CreateRelationAction
             '$target$' => $modelAsClass ? "\\{$request['target']}::class" : "'{$request['target']}'",
             '$method$' => $request['method']['name'],
             '$type$' => lcfirst($request['type']),
-            '$keys$' => $relation['keys'] ?? '',
+            '$keys$' => $request['keys'] ?? '',
             '$class$' => $request['type'],
         ];
 
