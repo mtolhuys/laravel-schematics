@@ -181,7 +181,7 @@
                 this.$models().count().text(this.$models().visible().length);
 
                 Object.keys(localStorage).filter((key) => {
-                    return (key.indexOf('schematics-settings') === 0)
+                    return (key.indexOf('schematics-') === 0)
                         && (key.includes(`tab-${Schematics.activeTab}`));
                 }).forEach(function (key) {
                     localStorage.removeItem(key);

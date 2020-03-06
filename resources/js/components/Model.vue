@@ -2,6 +2,8 @@
     <div
         @mouseover="plumbSource"
         @mouseleave="clear"
+        :data-table="table"
+        :data-model="model"
         class="model-container bg-white w-full md:max-w-md mx-auto rounded shadow-lg overflow-y-auto">
         <span
             :id="table"
