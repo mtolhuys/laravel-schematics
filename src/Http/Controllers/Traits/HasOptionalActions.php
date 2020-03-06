@@ -21,7 +21,7 @@ trait HasOptionalActions
         }
 
         foreach ($request['actions'] as $option => $shouldUse) {
-            if (json_decode($shouldUse, false, 512, JSON_THROW_ON_ERROR)) {
+            if (json_decode($shouldUse, false)) {
                 $this->getAction($option)->execute($request);
             }
         }
