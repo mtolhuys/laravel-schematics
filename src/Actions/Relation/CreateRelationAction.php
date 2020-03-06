@@ -35,6 +35,7 @@ class CreateRelationAction
      * @param $request
      * @param string $stub
      * @return string|string[]
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     private function generateMethod($request, string $stub)
     {

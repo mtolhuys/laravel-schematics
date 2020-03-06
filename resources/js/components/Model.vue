@@ -2,6 +2,8 @@
     <div
         @mouseover="plumbSource"
         @mouseleave="clear"
+        :data-table="table"
+        :data-model="model"
         class="model-container bg-white w-full md:max-w-md mx-auto rounded shadow-lg overflow-y-auto">
         <span
             :id="table"
@@ -30,7 +32,7 @@
                 </button>
 
                 <button
-                    @click="edit(model, table)"
+                    @click="edit(model)"
                     aria-label="Edit Model" data-balloon-pos="down"
                     class="cursor-pointer text-gray-400 hover:text-purple-700 tooltip">
                     <i class="fas fa-pencil-alt"/>
@@ -173,10 +175,12 @@
                 EventBus.$emit('modal-open', `Deleting model!`, `delete-model`, model);
             },
 
-            edit(model, table) {
+            edit(model) {
                 EventBus.$emit('loading', true);
 
-                $.get(`schematics/edit/${table}`, function (fields) {
+                $.get(`schematics/models/edit`, {
+                    model: model
+                }, function (fields) {
                     let data = {
                         model: model,
                         fields: fields

@@ -43,7 +43,7 @@
                 EventBus.$emit(
                     'modal-open',
                     '<span class="focus:outline-none border-b-2 py-2 px-4">' +
-                         Schematics.namespace + '<input ' +
+                        this.config('model-namespace') + '<input ' +
                         'class="new-model-name" ' +
                         'placeholder="New model"' +
                     '/></span>',

@@ -1,8 +1,13 @@
 export default {
     methods: {
-        /**
-         * @return {string}
-         */
+        config(key) {
+            let value = null;
+
+            key.split('.').forEach(key => value = value ? value[key] : Schematics.config[key]);
+
+            return value;
+        },
+
         uuid() {
             let date = new Date().getTime();
 

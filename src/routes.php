@@ -6,7 +6,6 @@ Route::group([
     'middleware' => config('schematics.middleware', [])
 ], static function () {
     Route::get('/', 'SchematicsController@index');
-    Route::get('/edit/{table}', 'SchematicsController@details');
     Route::get('/clear-cache', 'SchematicsController@clearCache');
     Route::get('/refresh', 'SchematicsController@refresh');
 
@@ -16,6 +15,7 @@ Route::group([
     });
 
     Route::group(['prefix' => 'models'], static function () {
+        Route::get('/edit', 'ModelsController@columns');
         Route::post('/create', 'ModelsController@create');
         Route::post('/delete', 'ModelsController@delete');
         Route::post('/edit', 'ModelsController@edit');

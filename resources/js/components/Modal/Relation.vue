@@ -19,6 +19,19 @@
                 <b>)
             </b>;
 
+            <div class="flex text-lg mt-3 mx-5 items-end outline-none">
+                <div class="md:flex md:items-center px-2">
+                    <label class="block text-gray-500 font-bold">
+                        <input
+                            v-model="actions.deletesMigration"
+                            class="mr-2 leading-tight" type="checkbox">
+                        <span class="text-sm w-2/3">
+                            Delete migration
+                        </span>
+                    </label>
+                </div>
+            </div>
+
             <div class="flex justify-end pt-2">
                 <button
                     @click="remove()"
@@ -52,6 +65,14 @@
             }
         },
 
+        data() {
+            return {
+                actions: {
+                    deletesMigration: this.config('delete.migration'),
+                },
+            }
+        },
+
         methods: {
             close() {
                 EventBus.$emit('modal-close');
@@ -78,6 +99,8 @@
             remove() {
                 EventBus.$emit('loading', true);
                 EventBus.$emit('modal-close');
+
+                this.relation.actions = this.actions;
 
                 $.post('schematics/relations/delete', this.relation, () => {
                     Schematics.relations[this.relation.table]

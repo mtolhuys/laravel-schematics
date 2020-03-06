@@ -84,8 +84,18 @@
                         <div class="md:flex md:items-center">
                             <label class="block text-gray-500 font-bold">
                                 <input
-                                    v-model="options.hasTimestamps"
+                                    v-model="actions.hasModelMigration"
                                     class="mr-2 leading-tight" type="checkbox">
+                                <span class="text-sm w-2/3">
+                                    Create migration
+                                </span>
+                            </label>
+
+                            <label class="block text-gray-500 font-bold mx-10">
+                                <input
+                                    v-model="options.hasTimestamps"
+                                    class="mr-2 leading-tight" type="checkbox"
+                                    :disabled="! actions.hasModelMigration">
                                 <span class="text-sm w-2/3">
                                     Timestamps
                                 </span>
@@ -95,7 +105,7 @@
                         <div class="md:flex md:items-center">
                             <label class="block text-gray-500 font-bold">
                                 <input
-                                    v-model="actions.hasResource"
+                                    v-model="actions.hasResourceController"
                                     class="mr-2 leading-tight" type="checkbox">
                                 <span class="text-sm w-2/3">
                                     Resource Controller
@@ -153,8 +163,9 @@
                 explanation: false,
                 fieldsErrors: false,
                 actions: {
-                    hasFormRequest: false,
-                    hasResource: false,
+                    hasModelMigration: this.config('create.migration'),
+                    hasFormRequest: this.config('create.form-request'),
+                    hasResourceController: this.config('create.resource-controller'),
                 },
                 options: {
                     hasTimestamps: false,
@@ -232,7 +243,7 @@
             validName(name) {
                 return /^[A-Za-z]+$/.test(name)
                     && name.trim().length
-                    && !Schematics.models.includes(Schematics.namespace + name)
+                    && !Schematics.models.includes(this.config('model-namespace') + name)
             },
 
             save() {
@@ -263,6 +274,16 @@
                 });
             }
         },
+
+        watch: {
+            'actions.hasModelMigration': {
+                handler() {
+                    if (! this.actions.hasModelMigration) {
+                        this.options.hasTimestamps = false;
+                    }
+                }
+            }
+        }
     }
 </script>
 

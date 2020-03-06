@@ -40,7 +40,7 @@
         data() {
             return {
                 active: Schematics.activeTab,
-                tabs: parseInt(localStorage.getItem('schematics-tabs') || 1),
+                tabs: parseInt(localStorage.getItem('schematics-tabs')) || 1,
             }
         },
 

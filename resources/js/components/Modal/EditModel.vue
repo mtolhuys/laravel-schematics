@@ -95,7 +95,20 @@
                             </button>
                         </div>
                     </transition-group>
-                </draggable>
+               </draggable>
+
+               <div class="flex text-lg mt-3 mx-5 items-end outline-none" v-if="fields.length">
+                   <div class="md:flex md:items-center">
+                       <label class="block text-gray-500 font-bold">
+                           <input
+                            v-model="actions.hasColumnsMigration"
+                            class="mr-2 leading-tight" type="checkbox">
+                           <span class="text-sm w-2/3">
+                            Create migration
+                           </span>
+                        </label>
+                   </div>
+               </div>
 
                 <div v-if="fields.length" class="inline-block w-full relative bg-transparent pb-5 pl-5">
                     <span class="plus-minus">
@@ -165,6 +178,9 @@
                 changed: [],
                 fields: [],
                 deleted: [],
+                actions: {
+                    hasColumnsMigration: this.config('update.migration'),
+                }
             }
         },
 
@@ -284,10 +300,11 @@
 
                 $.post('schematics/models/edit', {
                     'model': this.model,
-                    'fields': this.fields.concat(this.created),
                     'changed': this.changed,
                     'created': this.created,
                     'deleted': this.deleted,
+                    'actions': this.actions,
+                    'fields': this.fields.concat(this.created),
                 }, () => {
                     location.reload();
                 }).fail((e) => {

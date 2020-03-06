@@ -125,6 +125,17 @@
                         </span>
                     </label>
                 </div>
+
+                <div class="md:flex md:items-center px-2">
+                    <label class="block text-gray-500 font-bold">
+                        <input
+                            v-model="actions.hasRelationMigration"
+                            class="mr-2 leading-tight" type="checkbox">
+                        <span class="text-sm w-2/3">
+                            Create migration
+                        </span>
+                    </label>
+                </div>
             </div>
 
             <div class="md:flex md:items-center border border-gray-400 rounded w-full flex py-3 mt-2">
@@ -180,8 +191,10 @@
                         localKey: '',
                     }
                 },
+                actions: {
+                    hasRelationMigration: this.config('create.migration'),
+                },
                 options: {
-                    hasMigration: true,
                     hasModelAsClass: false,
                 }
             }
@@ -233,6 +246,7 @@
                 }
 
                 this.relation.options = this.options;
+                this.relation.actions = this.actions;
 
                 EventBus.$emit('modal-close');
                 EventBus.$emit('loading', true);

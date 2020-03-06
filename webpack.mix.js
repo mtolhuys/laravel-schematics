@@ -6,7 +6,8 @@ const path = dev ? '../../public/vendor/schematics/' : 'dist/';
 
 if (dev && process.argv.includes('--sync')) {
     mix.browserSync({
-        proxy: 'localhost:8000/schematics'
+        proxy: 'localhost:8000/schematics',
+        notify: false
     });
 }
 
