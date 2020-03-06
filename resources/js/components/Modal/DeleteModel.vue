@@ -12,9 +12,23 @@
                 </svg>
             </div>
         </div>
+
         <span
             class="modal-content new-model w-full">
             <p>Are you sure you want to delete <span class="text-purple-900">'{{ model }}'</span>?</p>
+
+           <div class="flex text-lg mt-3 mx-5 items-end outline-none">
+                <div class="md:flex md:items-center">
+                    <label class="block text-gray-500 font-bold">
+                        <input
+                            v-model="actions.deletesMigration"
+                            class="mr-2 leading-tight" type="checkbox">
+                        <span class="text-sm w-2/3">
+                            Delete migration
+                        </span>
+                    </label>
+                </div>
+            </div>
 
             <div class="flex justify-end pt-2">
                 <button
@@ -51,7 +65,9 @@
 
         data() {
             return {
-                options: {}
+                actions: {
+                    deletesMigration: this.config('delete.migration'),
+                },
             }
         },
 
@@ -69,6 +85,7 @@
                 $.post('schematics/models/delete', {
                     name: model,
                     options: this.options,
+                    actions: this.actions,
                 }, function () {
                     EventBus.$emit('delayed-alert', `${model} deleted`, 'info', 7000);
 

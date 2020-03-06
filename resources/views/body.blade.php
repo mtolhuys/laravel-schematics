@@ -20,11 +20,11 @@
     <script>
         window.Schematics = {
             activeTab: parseInt(localStorage.getItem('schematics-active-tab') || 1),
-            namespace: {!! json_encode(config('schematics.model-namespace', 'App\\')) !!},
+            config: {!! json_encode(config('schematics', [])) !!},
+            exceptions: {!! json_encode($exceptions) !!},
             models: Object.values({!! json_encode($models) !!}),
             migrations: {!! json_encode($migrations) !!},
             relations: {!! json_encode($relations) !!},
-            exceptions: {!! json_encode($exceptions) !!},
             tables: {!! json_encode($tables) !!},
             refresh: function() {
                 $('body').css('cursor', 'progress');

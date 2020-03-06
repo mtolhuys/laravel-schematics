@@ -122,7 +122,7 @@
                 EventBus.$emit('loading', true);
 
                 Object.keys(localStorage).filter((key) => {
-                    return key.indexOf('schematics-settings') === 0;
+                    return key.indexOf('schematics-') === 0;
                 }).forEach(function (key) {
                     content += `localStorage.setItem(${JSON.stringify(key)}, '${localStorage.getItem(key)}');\n`
                 });

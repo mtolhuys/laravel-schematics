@@ -38,27 +38,16 @@ class SchematicsController extends Controller
     }
 
     /**
-     * @param $table
-     * @return array
-     */
-    public function details($table): array
-    {
-         $exists = Schema::hasTable($table);
-
-         return $exists ? DB::select(DB::raw("SHOW COLUMNS FROM {$table}")) : [];
-    }
-
-    /**
      * @return array
      */
     public function migrations(): array
     {
         $redundant = [];
         $ran = Migration::all();
-        $created = glob(base_path('database/migrations').'/*.php');
+        $created = glob(base_path('database/migrations') . '/*.php');
 
-        foreach($ran as $migration) {
-            if (! in_array(base_path("database/migrations/$migration->migration.php"), $created, true)) {
+        foreach ($ran as $migration) {
+            if (!in_array(base_path("database/migrations/$migration->migration.php"), $created, true)) {
                 $redundant[] = $migration;
             }
         }
