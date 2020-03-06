@@ -16,7 +16,7 @@ trait HasOptionalActions
      */
     public function optionalActions($request)
     {
-        if (! isset($request['actions'])) {
+        if (! is_array($request['actions'])) {
             return;
         }
 

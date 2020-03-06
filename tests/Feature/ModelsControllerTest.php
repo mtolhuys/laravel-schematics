@@ -57,6 +57,7 @@ class ModelsControllerTest extends TestCase
 
     /** @test
      * @throws ReflectionException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function it_successfully_creates_models_with_all_optional_actions()
     {
@@ -64,7 +65,8 @@ class ModelsControllerTest extends TestCase
             'name' => 'Wombat',
             'fields' => $this->fields,
             'actions' => [
-                'hasResource' => 'true',
+                'hasModelMigration' => 'true',
+                'hasResourceController' => 'true',
                 'hasFormRequest' => 'true',
             ],
         ]));
