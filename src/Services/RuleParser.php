@@ -4,6 +4,13 @@ namespace Mtolhuys\LaravelSchematics\Services;
 
 class RuleParser
 {
+    /**
+     * Possible migration methods
+     * WARNING: be aware of word length vs. word matching
+     * f.e. 'date' <-> 'dateTime'
+     *
+     * @var array
+     */
     public static $methods = [
         'bigIncrements',
         'bigInteger',
@@ -84,9 +91,7 @@ class RuleParser
     }
 
     /**
-     * Check if $rule contains any of the supported type
-     * WARNING: be aware of word length vs. word matching f.e. 'date' <-> 'dateTime'
-     * In that case the longest word should appear last in the array
+     * Check if $rule contains any of the possible methods
      *
      * @param $rule
      * @return mixed|string
