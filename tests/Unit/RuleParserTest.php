@@ -12,34 +12,78 @@ class RuleParserTest extends TestCase
     {
         $result = str_replace([' ', '\r', '\n'], '', RuleParser::fieldsToMigrationMethods([
             ['id' => 'increments'],
-            ['name' => 'string|max:10'],
-            ['surname' => 'renameColumn|from:name'],
-            ['email' => 'string|unique'],
-            ['daily_alarm' => 'time'],
-            ['daily_alarm' => 'dropColumn|required'],
-            ['last_login' => 'dateTime'],
-            ['profile_id' => 'unsigned|integer'],
-            ['profile_id' => 'unsigned|integer|required|change'],
-            ['active' => 'boolean|required'],
-            ['balance' => 'decimal'],
+            ['big_id' => 'bigIncrements'],
+            ['big_int' => 'bigInteger|required'],
+            ['bool' => 'boolean|required'],
+            ['date_time' => 'dateTime'],
+            ['date_time_tz' => 'dateTimeTz'],
+            ['date' => 'date'],
+            ['decimal' => 'decimal'],
+            ['enum' => 'enum'],
+            ['geometry' => 'geometry'],
+            ['increments' => 'increments'],
+            ['integer' => 'integer|max:50'],
+            ['integer' => 'unsigned|integer|required|change'],
             ['ip' => 'ipAddress'],
-            ['bio' => 'text'],
+            ['json' => 'json'],
+            ['jsonb' => 'jsonb'],
+            ['long_text' => 'longText'],
+            ['mac_address' => 'macAddress'],
+            ['medium_integer' => 'mediumInteger'],
+            ['medium_increments' => 'mediumIncrements'],
+            ['point' => 'point'],
+            ['polygon' => 'polygon'],
+            ['small_increments' => 'smallIncrements'],
+            ['small_integer' => 'smallInteger'],
+            ['string' => 'string'],
+            ['surname' => 'renameColumn|from:string'],
+            ['text' => 'text'],
+            ['timestamp' => 'timestamp'],
+            ['timestamp_tz' => 'timestampTz'],
+            ['tiny_increments' => 'tinyIncrements'],
+            ['tiny_integer' => 'tinyInteger'],
+            ['time' => 'time'],
+            ['unsigned_integer' => 'unsignedInteger'],
+            ['uuid' => 'uuid'],
+            ['year' => 'year'],
         ]));
 
         $expected = str_replace([' ', '\r', '\n'], '',
             '$table->increments(\'id\');
-            $table->string(\'name\',10)->nullable();
-            $table->renameColumn(\'name\',\'surname\')->nullable();
-            $table->string(\'email\')->unique();
-            $table->time(\'daily_alarm\')->nullable();
-            $table->dropColumn(\'daily_alarm\');
-            $table->dateTime(\'last_login\')->nullable();
-            $table->integer(\'profile_id\')->unsigned()->nullable();
-            $table->integer(\'profile_id\')->unsigned()->change();
-            $table->boolean(\'active\');
-            $table->decimal(\'balance\')->nullable();
+            $table->bigIncrements(\'big_id\');
+            $table->bigInteger(\'big_int\');
+            $table->boolean(\'bool\');
+            $table->dateTime(\'date_time\')->nullable();
+            $table->dateTimeTz(\'date_time_tz\')->nullable();
+            $table->date(\'date\')->nullable();
+            $table->decimal(\'decimal\')->nullable();
+            $table->enum(\'enum\')->nullable();
+            $table->geometry(\'geometry\')->nullable();
+            $table->increments(\'increments\');
+            $table->integer(\'integer\',50)->nullable();
+            $table->integer(\'integer\')->unsigned()->change();
             $table->ipAddress(\'ip\')->nullable();
-            $table->text(\'bio\')->nullable();
+            $table->json(\'json\')->nullable();
+            $table->jsonb(\'jsonb\')->nullable();
+            $table->longText(\'long_text\')->nullable();
+            $table->macAddress(\'mac_address\')->nullable();
+            $table->mediumInteger(\'medium_integer\')->nullable();
+            $table->mediumIncrements(\'medium_increments\');
+            $table->point(\'point\')->nullable();
+            $table->polygon(\'polygon\')->nullable();
+            $table->smallIncrements(\'small_increments\');
+            $table->smallInteger(\'small_integer\')->nullable();
+            $table->string(\'string\')->nullable();
+            $table->renameColumn(\'string\',\'surname\')->nullable();
+            $table->text(\'text\')->nullable();
+            $table->timestamp(\'timestamp\')->nullable();
+            $table->timestampTz(\'timestamp_tz\')->nullable();
+            $table->tinyIncrements(\'tiny_increments\');
+            $table->tinyInteger(\'tiny_integer\')->nullable();
+            $table->time(\'time\')->nullable();
+            $table->unsignedInteger(\'unsigned_integer\')->nullable();
+            $table->uuid(\'uuid\')->nullable();
+            $table->year(\'year\')->nullable();
         ');
 
         $this->assertEquals($expected, $result);

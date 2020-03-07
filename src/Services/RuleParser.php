@@ -4,21 +4,42 @@ namespace Mtolhuys\LaravelSchematics\Services;
 
 class RuleParser
 {
-    public static $types = [
-        'boolean',
-        'dateTime',
-        'date',
-        'decimal',
+    public static $methods = [
+        'bigIncrements',
+        'bigInteger',
         'dropColumn',
-        'integer',
-        'increments',
         'ipAddress',
+        'macAddress',
+        'mediumInteger',
+        'mediumIncrements',
         'renameColumn',
+        'smallIncrements',
+        'timestampTz',
+        'timestamp',
+        'smallInteger',
+        'tinyIncrements',
+        'tinyInteger',
+        'unsignedInteger',
+        'increments',
+        'dateTimeTz',
+        'dateTime',
+        'longText',
+        'integer',
+        'boolean',
+        'decimal',
+        'date',
+        'enum',
+        'geometry',
+        'jsonb',
+        'json',
+        'point',
+        'polygon',
         'string',
         'text',
-        'timestamp',
         'time',
         'unsigned',
+        'uuid',
+        'year',
     ];
 
     /**
@@ -35,12 +56,12 @@ class RuleParser
             $column = key($field);
             $rule = $field[$column];
             $max = self::getMax($rule);
-            $type = self::getType($rule);
+            $method = self::getMethod($rule);
             $oldName = self::getRenameFrom($rule);
             $additional = self::getAdditionalUpMethods($rule);
 
             $columns .=
-                "\$table->{$type}({$oldName}'$column'{$max}){$additional}" .
+                "\$table->{$method}({$oldName}'$column'{$max}){$additional}" .
                 PHP_EOL . str_repeat(' ', 12);
         }
 
@@ -55,7 +76,7 @@ class RuleParser
     {
         $methods = '';
         $methods .= self::isUnsigned($rule) ? '->unsigned()' : '';
-        $methods .= self::isRequired($rule) ? '' : '->nullable()';
+        $methods .= ! self::isRequired($rule) ? '->nullable()' : '';
         $methods .= self::isUnique($rule) ? '->unique()' : '';
         $methods .= self::hasChanged($rule) ? '->change()' : '';
 
@@ -70,11 +91,11 @@ class RuleParser
      * @param $rule
      * @return mixed|string
      */
-    public static function getType($rule)
+    public static function getMethod($rule)
     {
-        foreach (self::$types as $type) {
-            if (stripos($rule, strtolower($type)) !== false) {
-                return $type;
+        foreach (self::$methods as $method) {
+            if (stripos($rule, strtolower($method)) !== false) {
+                return $method;
             }
         }
 
@@ -162,8 +183,8 @@ class RuleParser
      */
     public static function isUnsigned($rule): bool
     {
-        return
-            self::contains($rule, 'unsigned');
+        return self::contains($rule, 'unsigned')
+            && ! self::contains($rule, 'unsignedInteger');
     }
 
 
