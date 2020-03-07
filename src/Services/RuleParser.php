@@ -2,53 +2,10 @@
 
 namespace Mtolhuys\LaravelSchematics\Services;
 
+use Mtolhuys\LaravelSchematics\Models\Migration;
+
 class RuleParser
 {
-    /**
-     * Possible migration methods
-     * WARNING: be aware of word length vs. word matching
-     * f.e. 'date' <-> 'dateTime'
-     *
-     * @var array
-     */
-    public static $methods = [
-        'bigIncrements',
-        'bigInteger',
-        'dropColumn',
-        'ipAddress',
-        'macAddress',
-        'mediumInteger',
-        'mediumIncrements',
-        'renameColumn',
-        'smallIncrements',
-        'timestampTz',
-        'timestamp',
-        'smallInteger',
-        'tinyIncrements',
-        'tinyInteger',
-        'unsignedInteger',
-        'increments',
-        'dateTimeTz',
-        'dateTime',
-        'longText',
-        'integer',
-        'boolean',
-        'decimal',
-        'date',
-        'enum',
-        'geometry',
-        'jsonb',
-        'json',
-        'point',
-        'polygon',
-        'string',
-        'text',
-        'time',
-        'unsigned',
-        'uuid',
-        'year',
-    ];
-
     /**
      * Parse the rules to column creation methods
      *
@@ -62,14 +19,20 @@ class RuleParser
         foreach ($fields as $field) {
             $column = key($field);
             $rule = $field[$column];
+            $break = PHP_EOL . str_repeat(' ', 12);
+
+            if (self::isMethodOnly($rule)) {
+                $columns .= "\$table->{$rule}();{$break}";
+
+                continue;
+            }
+
             $max = self::getMax($rule);
             $method = self::getMethod($rule);
             $oldName = self::getRenameFrom($rule);
             $additional = self::getAdditionalUpMethods($rule);
 
-            $columns .=
-                "\$table->{$method}({$oldName}'$column'{$max}){$additional}" .
-                PHP_EOL . str_repeat(' ', 12);
+            $columns .= "\$table->{$method}({$oldName}'$column'{$max}){$additional}{$break}";
         }
 
         return $columns;
@@ -83,11 +46,27 @@ class RuleParser
     {
         $methods = '';
         $methods .= self::isUnsigned($rule) ? '->unsigned()' : '';
-        $methods .= ! self::isRequired($rule) ? '->nullable()' : '';
+        $methods .= !self::isRequired($rule) ? '->nullable()' : '';
         $methods .= self::isUnique($rule) ? '->unique()' : '';
         $methods .= self::hasChanged($rule) ? '->change()' : '';
 
         return "$methods;";
+    }
+
+    /**
+     * Check if $rule should be handled as single method
+     *
+     * @param $rule
+     * @return mixed|string
+     */
+    public static function isMethodOnly($rule)
+    {
+
+        return self::ruleContains($rule, [
+            'softDeletes',
+            'rememberToken',
+            'softDeletesTz',
+        ]);
     }
 
     /**
@@ -98,7 +77,7 @@ class RuleParser
      */
     public static function getMethod($rule)
     {
-        foreach (self::$methods as $method) {
+        foreach (Migration::$methods as $method) {
             if (stripos($rule, strtolower($method)) !== false) {
                 return $method;
             }
@@ -132,8 +111,8 @@ class RuleParser
      */
     public static function getRenameFrom($rule): string
     {
-        foreach(explode('|', $rule) as $token) {
-            $hasRenameRule = self::contains($token, 'from:');
+        foreach (explode('|', $rule) as $token) {
+            $hasRenameRule = stripos($token, 'from:') !== false;
 
             if ($hasRenameRule) {
                 $from = substr($token, strpos($token, 'from:') + 5);
@@ -153,7 +132,7 @@ class RuleParser
      */
     public static function isRequired($rule): bool
     {
-        return self::contains($rule, 'required')
+        return self::ruleContains($rule, ['required'])
             || self::isIncrements($rule)
             || self::isUnique($rule);
     }
@@ -166,7 +145,13 @@ class RuleParser
      */
     public static function isIncrements($rule): bool
     {
-        return self::contains($rule, 'increments');
+        return self::ruleContains($rule, [
+            'increments',
+            'bigIncrements',
+            'mediumIncrements',
+            'smallIncrements',
+            'tinyIncrements',
+        ]);
     }
 
     /**
@@ -177,7 +162,7 @@ class RuleParser
      */
     public static function isUnique($rule): bool
     {
-        return self::contains($rule, 'unique');
+        return self::ruleContains($rule, ['unique']);
     }
 
     /**
@@ -188,8 +173,8 @@ class RuleParser
      */
     public static function isUnsigned($rule): bool
     {
-        return self::contains($rule, 'unsigned')
-            && ! self::contains($rule, 'unsignedInteger');
+        return self::ruleContains($rule, ['unsigned'])
+            && ! self::ruleContains($rule, ['unsignedInteger']);
     }
 
 
@@ -201,7 +186,7 @@ class RuleParser
      */
     public static function hasChanged($rule): bool
     {
-        return self::contains($rule, 'change');
+        return self::ruleContains($rule, ['change']);
     }
 
     /**
@@ -212,19 +197,23 @@ class RuleParser
      */
     public static function isForeign($rule): bool
     {
-        return self::contains($rule, 'foreign');
+        return self::ruleContains($rule, ['foreign']);
     }
 
     /**
      * For aesthetic reasons
      *
      * @param $rule
-     * @param $needle
+     * @param $needles
      * @return bool
      */
-    private static function contains($rule, $needle): bool
+    private static function ruleContains($rule, array $needles): bool
     {
-        return stripos($rule, $needle) !== false;
+        return !empty(array_filter(
+            array_map(static function ($rule) use ($needles) {
+                return in_array($rule, $needles, true);
+            }, explode('|', $rule))
+        ));
     }
 }
 

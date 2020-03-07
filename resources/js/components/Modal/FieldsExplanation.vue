@@ -27,18 +27,21 @@
                <li>geometry</li>
                <li>increments</li>
                <li>integer</li>
+           </ul>
+           <ul class="inline-block list-disc md:w-2/4">
                <li>ipAddress</li>
                <li>json</li>
                <li>jsonb</li>
                <li>longText</li>
-           </ul>
-           <ul class="inline-block list-disc md:w-2/4">
                <li>macAddress</li>
                <li>mediumInteger</li>
                <li>mediumIncrements</li>
                <li>point</li>
                <li>polygon</li>
+               <li>rememberToken</li>
                <li>smallIncrements</li>
+           </ul>
+          <ul class="inline-block list-disc md:w-2/4">
                <li>smallInteger</li>
                <li>string</li>
                <li>text</li>

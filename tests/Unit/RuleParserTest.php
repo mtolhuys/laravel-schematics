@@ -11,7 +11,10 @@ class RuleParserTest extends TestCase
     public function it_successfully_parses_fields_to_migration_methods(): void
     {
         $result = str_replace([' ', '\r', '\n'], '', RuleParser::fieldsToMigrationMethods([
-            ['id' => 'increments'],
+            ['id' => 'bigIncrements'],
+            ['soft_deletes' => 'softDeletes'],
+            ['soft_deletes_tz' => 'softDeletesTz'],
+            ['remember_token' => 'rememberToken'],
             ['big_id' => 'bigIncrements'],
             ['big_int' => 'bigInteger|required'],
             ['bool' => 'boolean|required'],
@@ -49,7 +52,10 @@ class RuleParserTest extends TestCase
         ]));
 
         $expected = str_replace([' ', '\r', '\n'], '',
-            '$table->increments(\'id\');
+            '$table->bigIncrements(\'id\');
+            $table->softDeletes();
+            $table->softDeletesTz();
+            $table->rememberToken();
             $table->bigIncrements(\'big_id\');
             $table->bigInteger(\'big_int\');
             $table->boolean(\'bool\');
