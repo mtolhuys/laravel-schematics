@@ -16,46 +16,43 @@
 
        <span class="supported-types items-center ml-5 pb-2 md:flex md:items-center">
            <ul class="inline-block list-disc md:w-2/4">
-               <li>
-                   increments
-               </li>
-               <li>
-                   integer
-               </li>
-               <li>
-                   boolean
-               </li>
-               <li>
-                   dateTime
-               </li>
-               <li>
-                   date
-               </li>
-               <li>
-                   decimal
-               </li>
+               <li>bigIncrements</li>
+               <li>bigInteger</li>
+               <li>boolean</li>
+               <li>dateTime</li>
+               <li>dateTimeTz</li>
+               <li>date</li>
+               <li>decimal</li>
+               <li>enum</li>
+               <li>geometry</li>
+               <li>increments</li>
+               <li>integer</li>
            </ul>
            <ul class="inline-block list-disc md:w-2/4">
-               <li>
-                   integer
-               </li>
-               <li>
-                   ipAddress
-               </li>
-               <li>
-                   string
-
-               </li>
-               <li>
-                   text
-
-               </li>
-               <li>
-                   timestamp
-               </li>
-               <li>
-                   time
-               </li>
+               <li>ipAddress</li>
+               <li>json</li>
+               <li>jsonb</li>
+               <li>longText</li>
+               <li>macAddress</li>
+               <li>mediumInteger</li>
+               <li>mediumIncrements</li>
+               <li>point</li>
+               <li>polygon</li>
+               <li>rememberToken</li>
+               <li>smallIncrements</li>
+           </ul>
+          <ul class="inline-block list-disc md:w-2/4">
+               <li>smallInteger</li>
+               <li>string</li>
+               <li>text</li>
+               <li>timestamp</li>
+               <li>timestampTz</li>
+               <li>tinyIncrements</li>
+               <li>tinyInteger</li>
+               <li>time</li>
+               <li>unsignedInteger</li>
+               <li>uuid</li>
+               <li>year</li>
            </ul>
        </span>
 
@@ -63,18 +60,10 @@
 
        <span class="supported-types items-center ml-5 pb-2 md:flex md:items-center">
             <ul class="inline-block list-disc md:w-2/4">
-                <li>
-                    max:{int}
-                </li>
-                <li>
-                    unsigned
-                </li>
-                <li>
-                    unique
-                </li>
-                <li>
-                    required
-                </li>
+                <li>max:{int}</li>
+                <li>unsigned</li>
+                <li>unique</li>
+                <li>required</li>
             </ul>
        </span>
 
