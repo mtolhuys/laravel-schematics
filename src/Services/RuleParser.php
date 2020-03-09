@@ -28,7 +28,6 @@ class RuleParser
             'dropColumn',
             'increments',
             'macAddress',
-            'ipAddress',
             'unsigned',
         ]);
 

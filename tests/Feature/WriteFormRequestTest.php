@@ -184,6 +184,7 @@ class WriteFormRequestTest extends TestCase
         $this->assertStringContainsString("'enum' => 'numeric',", $content);
         $this->assertStringContainsString("'geometry' => 'geometry',", $content);
         $this->assertStringContainsString("'integer' => 'numeric|max:50',", $content);
+        $this->assertStringContainsString("'ip' => 'ip',", $content);
         $this->assertStringContainsString("'json' => 'json',", $content);
         $this->assertStringContainsString("'jsonb' => 'json',", $content);
         $this->assertStringContainsString("'long_text' => 'string',", $content);
