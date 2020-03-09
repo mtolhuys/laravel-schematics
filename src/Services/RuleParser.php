@@ -7,6 +7,76 @@ use Mtolhuys\LaravelSchematics\Models\Migration;
 class RuleParser
 {
     /**
+     * @param $rule
+     * @return string|null
+     */
+    public static function parseRule($rule = null)
+    {
+        if (! $rule) {
+            return 'string|max:255';
+        }
+
+        $valid = array_diff(explode('|', $rule), [
+            'mediumIncrements',
+            'smallIncrements',
+            'tinyIncrements',
+            'rememberToken',
+            'softDeletesTz',
+            'bigIncrements',
+            'renameColumn',
+            'softDeletes',
+            'dropColumn',
+            'increments',
+            'macAddress',
+            'ipAddress',
+            'unsigned',
+        ]);
+
+        if (empty($valid)) {
+            return null;
+        }
+
+        return self::toRule(implode('|', $valid));
+    }
+
+    /**
+     * @param string $rawRules
+     * @return string
+     */
+    public static function toRule(string $rawRules): string
+    {
+        $translations = [
+            'unsignedInteger' => 'numeric',
+            'mediumInteger' => 'numeric',
+            'smallInteger' => 'numeric',
+            'tinyInteger' => 'numeric',
+            'bigInteger' => 'numeric',
+            'macAddress'  => 'string',
+            'integer' => 'numeric',
+            'decimal' => 'numeric',
+            'dateTimeTz' => 'date',
+            'dateTime' => 'date',
+            'timestampTz' => 'date',
+            'timestamp' => 'date',
+            'string' => 'string',
+            'ipAddress' => 'ip',
+            'enum' => 'numeric',
+            'point' => 'numeric',
+            'polygon' => 'numeric',
+            'longText' => 'string',
+            'text' => 'string',
+            'json' => 'json',
+            'jsonb' => 'json',
+            'time' => 'date_format:H:i',
+        ];
+
+        return str_replace(
+            array_keys($translations),
+            array_values($translations),
+            $rawRules
+        );
+    }
+    /**
      * Parse the rules to column creation methods
      *
      * @param $fields
