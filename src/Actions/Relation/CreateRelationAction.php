@@ -62,7 +62,7 @@ class CreateRelationAction
      */
     private function endOfClass($file)
     {
-        $lines = explode(PHP_EOL, file_get_contents($file));
+        $lines = preg_split('/\r\n|\r|\n/', file_get_contents($file));
         $lastOccurrence = null;
 
         foreach ($lines as $index => $line) {
