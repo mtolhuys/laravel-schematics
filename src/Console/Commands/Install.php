@@ -29,7 +29,13 @@ class Install extends Command
      */
     public function handle()
     {
-        Artisan::call('route:cache');
+        try {
+            Artisan::call('route:cache');
+        } catch (\LogicException $e) {
+            $this->warn('Routes couldn\'t be cached because of Closure.');
+            $this->error($e->getMessage());
+        }
+
         Artisan::call('vendor:publish', [
             '--provider' => 'Mtolhuys\LaravelSchematics\LaravelSchematicsServiceProvider',
             '--force' => true,

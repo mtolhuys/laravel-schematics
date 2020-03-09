@@ -2,6 +2,7 @@
 
 namespace Mtolhuys\LaravelSchematics\Actions\Resource;
 
+use Mtolhuys\LaravelSchematics\Services\RuleParser;
 use Mtolhuys\LaravelSchematics\Services\StubWriter;
 
 class CreateFormRequestAction
@@ -33,7 +34,7 @@ class CreateFormRequestAction
         $rules = '';
 
         foreach ($fields as $index => $field) {
-            $rule = $this->parseRule($field['type']);
+            $rule = RuleParser::parseRule($field['type']);
 
             if ($rule === null) {
                 continue;
@@ -47,53 +48,5 @@ class CreateFormRequestAction
         }
 
         return $rules;
-    }
-
-    /**
-     * @param $type
-     * @return string|null
-     */
-    private function parseRule($type = null): ?string
-    {
-        if (! $type) {
-            return 'string|max:255';
-        }
-
-        $valid = array_diff(explode('|', $type), [
-            'dropColumn',
-            'increments',
-            'renameColumn',
-            'unsigned',
-        ]);
-
-        if (empty($valid)) {
-            return null;
-        }
-
-        return $this->toRule(implode('|', $valid));
-    }
-
-    /**
-     * @param string $rawRules
-     * @return string
-     */
-    private function toRule(string $rawRules): string
-    {
-        $translations = [
-            'dateTime' => 'date',
-            'decimal' => 'numeric',
-            'integer' => 'numeric',
-            'ipAddress' => 'ip',
-            'string' => 'string',
-            'text' => 'string',
-            'timestamp' => 'date',
-            'time' => 'date',
-        ];
-
-        return str_replace(
-            array_keys($translations),
-            array_values($translations),
-            $rawRules
-        );
     }
 }
