@@ -3,8 +3,8 @@
 namespace Mtolhuys\LaravelSchematics\Services;
 
 use SplFileInfo;
-use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 use Illuminate\Database\Eloquent\Model;
 
 class ModelMapper extends ClassReader
@@ -19,16 +19,20 @@ class ModelMapper extends ClassReader
      */
     public static function map(): array
     {
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator(app_path()), RecursiveIteratorIterator::SELF_FIRST
-        );
+        $paths = config('schematics.model.paths', [app_path()]);
 
-        foreach ($files as $file) {
-            if (self::readablePhp($file)) {
-                $class = self::getClassName($file);
+        foreach ($paths as $path) {
+            $files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::SELF_FIRST
+            );
 
-                if (is_subclass_of($class, Model::class)) {
-                    self::$models[] = $class;
+            foreach ($files as $file) {
+                if (self::readablePhp($file)) {
+                    $class = self::getClassName($file);
+
+                    if (is_subclass_of($class, Model::class)) {
+                        self::$models[] = $class;
+                    }
                 }
             }
         }

@@ -18,7 +18,7 @@ class CreateResourceControllerAction
         Artisan::call('make:controller', [
             'name' => $name,
             '--resource' => true,
-            '--model' => config('schematics.model-namespace').$model,
+            '--model' => config('schematics.model.namespace').$model,
         ]);
 
         return Artisan::output();
