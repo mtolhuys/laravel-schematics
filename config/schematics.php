@@ -15,7 +15,12 @@ return [
 
     'controller-namespace' => null,
     'form-request-namespace' => 'App\\Http\\Requests',
-    'model-namespace' => 'App\\Models\\',
+    'model' => [
+        'namespace' => 'App\\',
+        'paths' => [
+            app_path(),
+        ],
+    ],
     'middleware' => null,
     'auto-migrate' => false,
 
