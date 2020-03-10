@@ -19,7 +19,7 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->modelNamespace = config('schematics.model-namespace');
+        $this->modelNamespace = config('schematics.model.namespace');
         $this->controllerNamespace = config('schematics.controller-namespace');
         $this->formRequestNamespace = config('schematics.form-request-namespace');
     }
@@ -41,7 +41,11 @@ class TestCase extends Orchestra
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('schematics.model-namespace', 'App\\');
+        $app['config']->set('schematics.model.namespace', 'App\\');
+        $app['config']->set('schematics.model.paths', [
+            base_path('app'),
+            base_path('src'),
+        ]);
         $app['config']->set('schematics.controller-namespace', null);
         $app['config']->set('schematics.form-request-namespace', 'App\\Http\\Requests');
     }
