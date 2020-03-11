@@ -49,7 +49,6 @@
 
                             <button
                                 @click="removeField(field)"
-                                @keydown.tab="tab"
                                 class="px-4 remove-field cursor-pointer text-gray-400 hover:text-purple-700">
                                 <i class="fas fa-trash-alt"/>
                             </button>
@@ -202,12 +201,6 @@
         methods: {
             close() {
                 EventBus.$emit('modal-close');
-            },
-
-            tab(e) {
-                if ($(e.target).is('.remove-field')) {
-                    this.addField();
-                }
             },
 
             toggleExplanation() {
