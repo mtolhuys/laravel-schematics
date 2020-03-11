@@ -123,6 +123,57 @@ composer test-coverage
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
+## Credits
+
+This package is possible because of the effort and time of these people! ✨
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+    <tr>
+        <td align="center">
+            <a href="https://github.com/mtolhuys">
+                <img src="https://avatars1.githubusercontent.com/u/10849136?s=400&v=4" width="100px;" alt=""/><br/>
+                <sub><b>Maarten Tolhuijs</b></sub>
+            </a>
+            <br/>
+                <a>Creator️</a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/Roboroads">
+                <img src="https://avatars3.githubusercontent.com/u/4398301?s=400&v=4" width="100px;" alt=""/><br/>
+                <sub><b>Robbin Schepers</b></sub>
+            </a>
+            <br/>
+            <a>Contributor</a>
+            <br/>
+        </td>
+        <td align="center">
+            <a href="https://github.com/bramvanrijswijk">
+                <img src="https://avatars1.githubusercontent.com/u/26224522?s=400&v=4" width="100px;" alt=""/><br/>
+                <sub><b>Bram van Rijswijk</b></sub>
+            </a>
+            <br/>
+            <a>Support</a>
+            <br/>
+        </td>
+        <td align="center">
+            <a href="https://github.com/elbojoloco">
+                <img src="https://avatars2.githubusercontent.com/u/7912315?s=400&v=4" width="100px;" alt=""/><br/>
+                <sub><b>Lucas Snel</b></sub>
+            </a>
+            <br/>
+            <a>Contributor</a>
+            <br/>
+        </td>
+    </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 ## Contributing
 
 Since I'm getting some questions about this I want these things to be perfectly clear:
@@ -136,11 +187,6 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for further details.
 ### Security
 
 If you discover any security related issues, please email mtolhuys@protonmail.com instead of using the issue tracker.
-
-## Credits
-
-- [Maarten Tolhuijs](https://github.com/mtolhuys)
-- [All Contributors](../../contributors)
 
 ## License
 
