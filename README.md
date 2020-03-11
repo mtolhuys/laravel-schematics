@@ -141,6 +141,15 @@ This package is possible because of the effort and time of these people! ✨
                 <a>Creator️</a>
         </td>
         <td align="center">
+            <a href="https://github.com/dtolhuijs">
+                <img src="https://avatars0.githubusercontent.com/u/16704769?s=400&v=4" width="100px;" alt=""/><br/>
+                <sub><b>Deisi Tolhuijs</b></sub>
+            </a>
+            <br/>
+            <a>Design</a>
+            <br/>
+        </td>
+        <td align="center">
             <a href="https://github.com/Roboroads">
                 <img src="https://avatars3.githubusercontent.com/u/4398301?s=400&v=4" width="100px;" alt=""/><br/>
                 <sub><b>Robbin Schepers</b></sub>
