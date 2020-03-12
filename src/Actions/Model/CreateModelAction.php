@@ -13,13 +13,12 @@ class CreateModelAction
     public function execute($request)
     {
         $name = $request['name'];
-        $namespace = config('schematics.model.namespace');
         $stub = __DIR__ . '/../../../resources/stubs/model.stub';
-        $file = app_path(str_replace(['App\\', '\\'], ['', '/'], $namespace) . "{$name}.php");
+        $file = config('schematics.model.path') . "/{$name}.php";
 
         (new StubWriter($file, $stub))->write([
             '$fillables$' => $this->getFillables($request['fields']),
-            '$namespace$' => rtrim($namespace, '\\'),
+            '$namespace$' => rtrim(config('schematics.model.namespace'), '\\'),
             '$model$' => $name,
         ]);
     }

@@ -42,8 +42,9 @@ class TestCase extends Orchestra
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('schematics.model.namespace', 'App\\');
+        $app['config']->set('schematics.model.path', app_path());
         $app['config']->set('schematics.model.paths', [
-            base_path('app'),
+            app_path(),
             base_path('src'),
         ]);
         $app['config']->set('schematics.controller-namespace', null);
