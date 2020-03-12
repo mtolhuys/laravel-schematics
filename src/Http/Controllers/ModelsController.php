@@ -71,6 +71,8 @@ class ModelsController extends Controller
     {
         (new EditModelAction())->execute($request);
 
+        $this->optionalActions($request);
+
         Cache::forget('schematics');
 
         return response('Model changed', 200);

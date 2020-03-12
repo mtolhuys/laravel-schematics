@@ -19,6 +19,7 @@ class CreateRelationAction
         $stub = __DIR__ . '/../../../resources/stubs/relation.stub';
         $file = (new ReflectionClass($source))->getFileName();
         $lines = file($file, FILE_IGNORE_NEW_LINES);
+
         $injectionLine = $this->endOfClass($file) - 1;
 
         $lines[$injectionLine] = PHP_EOL . $this->generateMethod($request, $stub) . '}';
@@ -62,7 +63,7 @@ class CreateRelationAction
      */
     private function endOfClass($file)
     {
-        $lines = explode(PHP_EOL, file_get_contents($file));
+        $lines = preg_split("/\r\n|\n|\r/", file_get_contents($file));
         $lastOccurrence = null;
 
         foreach ($lines as $index => $line) {

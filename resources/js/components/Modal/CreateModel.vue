@@ -20,7 +20,7 @@
                         <div v-for="field in fields" :key="field.id" class="md:flex md:items-center">
                             <div class="md:w-1/3">
                                 <input
-                                    @keydown.enter="save()"
+                                    @keydown.enter="addField()"
                                     v-model="field.name"
                                     placeholder="Field name"
                                     class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
@@ -39,7 +39,7 @@
                             <div class="md:w-2/3">
                                 <input
                                     v-model="field.type"
-                                    @keydown.enter="save()"
+                                    @keydown.enter="addField()"
                                     placeholder="Default: string|max:255"
                                     class="field bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4
                                     text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
@@ -49,7 +49,6 @@
 
                             <button
                                 @click="removeField(field)"
-                                @keydown.tab="tab"
                                 class="px-4 remove-field cursor-pointer text-gray-400 hover:text-purple-700">
                                 <i class="fas fa-trash-alt"/>
                             </button>
@@ -202,12 +201,6 @@
         methods: {
             close() {
                 EventBus.$emit('modal-close');
-            },
-
-            tab(e) {
-                if ($(e.target).is('.remove-field')) {
-                    this.addField();
-                }
             },
 
             toggleExplanation() {
