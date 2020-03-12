@@ -19,7 +19,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $description = 'Install\'s laravel-schematics package';
+    protected $description = 'Installs laravel-schematics package';
 
     /**
      * Execute the console command.
