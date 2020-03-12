@@ -17,7 +17,7 @@ return [
     'form-request-namespace' => 'App\\Http\\Requests',
     'model' => [
         'namespace' => 'App\\',
-        'path' => app_path('Models'),
+        'path' => app_path(),
         'paths' => [
             app_path(),
         ],
