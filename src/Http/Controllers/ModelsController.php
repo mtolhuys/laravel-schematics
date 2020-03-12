@@ -57,8 +57,9 @@ class ModelsController extends Controller
         $model = request('model');
         $model = new $model;
         $table = $model->getTable();
-
-        return \Schema::hasTable($table) ? \DB::select("describe $table") : [];
+        $safeTableName = \DB::getQueryGrammar()->wrap($table);
+        
+        return \Schema::hasTable($table) ? \DB::select("describe $safeTableName") : [];
     }
 
     /**
