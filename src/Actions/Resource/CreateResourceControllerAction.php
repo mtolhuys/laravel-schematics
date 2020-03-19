@@ -19,7 +19,7 @@ class CreateResourceControllerAction
             'name' => $name,
             '--resource' => true,
             '--model' => config('schematics.model.namespace').$model,
-            '-q',
+            '--quiet',
         ]);
 
         return Artisan::output();
