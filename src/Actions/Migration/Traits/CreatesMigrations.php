@@ -56,7 +56,26 @@ trait CreatesMigrations
                 )
             )
             : $request['method']['foreignKey'];
-    }
+	}
+	
+	protected function getSecondLocalKey($request): string
+    {
+        return empty($request['method']['secondLocalKey'])
+            ? 'id' : $request['method']['secondLocalKey'];
+	}
+
+    protected function getSecondForeignKey($request): string
+    {
+        return empty($request['method']['secondForeignKey'])
+            ? strtolower(
+                Str::snake(
+                    substr(strrchr($request['source'], "\\"), 1) . '_id'
+                )
+            )
+            : $request['method']['secondForeignKey'];
+	}
+	
+
 
     /**
      * @param $fields

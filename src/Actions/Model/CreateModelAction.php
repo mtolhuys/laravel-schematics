@@ -3,6 +3,8 @@
 namespace Mtolhuys\LaravelSchematics\Actions\Model;
 
 use Mtolhuys\LaravelSchematics\Services\StubWriter;
+use Illuminate\Support\Str;
+use Config;
 
 class CreateModelAction
 {
@@ -12,14 +14,18 @@ class CreateModelAction
      */
     public function execute($request)
     {
-        $name = $request['name'];
+		$name = $request['name'];
+		$singularTableName = Config::get('schematics.use-pivot') && $request['pivot']['isPivotModel'] == 'true';
         $stub = __DIR__ . '/../../../resources/stubs/model.stub';
         $file = config('schematics.model.path') . "/{$name}.php";
-
+		
         (new StubWriter($file, $stub))->write([
             '$fillables$' => $this->getFillables($request['fields']),
             '$namespace$' => rtrim(config('schematics.model.namespace'), '\\'),
-            '$model$' => $name,
+			'$model$' => $name,
+			'$tableAttributeLine$' => $singularTableName ? 
+				'protected $table = "' . Str::snake($name = $request['name']) . '";'
+				: '',
         ]);
     }
 

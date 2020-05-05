@@ -25,7 +25,7 @@ class $classname$ extends Migration
      */
     public function up()
     {
-        Schema::table('$source$', static function (Blueprint $table) {
+        Schema::table('$table$', static function (Blueprint $table) {
             $column$
         });
     }
@@ -37,7 +37,7 @@ class $classname$ extends Migration
      */
     public function down()
     {
-        Schema::table('$source$', static function (Blueprint $table) {
+        Schema::table('$table$', static function (Blueprint $table) {
             $table->dropForeign(['$foreignKey$']);
         });
     }

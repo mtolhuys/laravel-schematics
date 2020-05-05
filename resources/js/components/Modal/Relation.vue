@@ -99,19 +99,25 @@
             remove() {
                 EventBus.$emit('loading', true);
                 EventBus.$emit('modal-close');
-
-                this.relation.actions = this.actions;
-
+				this.relation.actions = this.actions;
                 $.post('schematics/relations/delete', this.relation, () => {
-                    Schematics.relations[this.relation.table]
-                        .splice(
-                            Schematics.relations[this.relation.table]
-                                .findIndex(r => r.method.name === this.relation.method.name)
-                            , 1);
+					if (this.config('use-pivot') && this.relation.type == 'belongsToMany'){
+						//When pivot relation is made, force refresh, because FE state is out of sync with BE
+						//TODO: Would be more consistent to fix in FE...
+						setTimeout(() => {
+							location.reload();
+						}, 1);
+					} else {
+						Schematics.relations[this.relation.table]
+							.splice(
+								Schematics.relations[this.relation.table]
+									.findIndex(r => r.method.name === this.relation.method.name)
+								, 1);
 
-                    EventBus.$emit('loading', false);
-                    EventBus.$emit('plumb');
-                    setTimeout(Schematics.refresh, 1);
+						EventBus.$emit('loading', false);
+						EventBus.$emit('plumb');
+						setTimeout(Schematics.refresh, 1);
+					}
                 }).fail((e) => {
                     console.error(e);
 

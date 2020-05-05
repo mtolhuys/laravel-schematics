@@ -91,7 +91,7 @@ export default {
                             $target = $(`#${relation.relation.table}:visible`);
 
                         if ($source.length && $target.length) {
-                            jsPlumb.connect({
+							jsPlumb.connect({
                                 source: $source,
                                 target: $target,
                                 newConnection: false,
@@ -105,7 +105,11 @@ export default {
                                     ['Arrow', {location: 0.2, width: 10, length: 10}],
                                     ['Label', {
                                         cssClass: `relation rel-${table}-${index}`,
-                                        label: `<i class='fas icon fa-link'></i> <b>${relation.method.name}():</b> ${relation.type}`,
+										label: `<i class='fas icon fa-link'></i> <b>
+											${relation.relation.pivotsFrom ? relation.relation.pivotsFrom  + " ::": ""}
+											${relation.method.name}():</b> ${relation.type}
+											${relation.relation.pivotsTo ? " (through pivot)" : ""}
+										`,
                                         location: 0.4
                                     }]
                                 ],
@@ -178,8 +182,13 @@ export default {
         },
 
         openRelationModal(relation) {
-            relation.model = `${relation.model}`.split('\\').slice(-1)[0];
-            relation.type = relation.type.charAt(0).toLowerCase() + relation.type.slice(1);
+			if (this.config('use-pivot') && relation.relation.pivotsFrom){
+            	relation.model = `${relation.relation.pivotsFrom}`.split('\\').slice(-1)[0];
+			} else {
+            	relation.model = `${relation.model}`.split('\\').slice(-1)[0];
+			}
+
+			relation.type = relation.type.charAt(0).toLowerCase() + relation.type.slice(1);
 
             EventBus.$emit(
                 'modal-open',

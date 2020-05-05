@@ -47,5 +47,7 @@ return [
 
     'delete' => [
         'migration' => false,
-    ],
+	],
+	
+	'use-pivot' => true,
 ];
