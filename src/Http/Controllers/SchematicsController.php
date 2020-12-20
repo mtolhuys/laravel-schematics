@@ -2,18 +2,16 @@
 
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
-use Mtolhuys\LaravelSchematics\Models\Migration;
-use Mtolhuys\LaravelSchematics\Services\RelationMapper;
-use Mtolhuys\LaravelSchematics\Services\ModelMapper;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
+use Mtolhuys\LaravelSchematics\Models\Migration;
+use Mtolhuys\LaravelSchematics\Services\ModelMapper;
+use Mtolhuys\LaravelSchematics\Services\RelationMapper;
 use ReflectionException;
+use Symfony\Component\HttpFoundation\Response;
 
 class SchematicsController extends Controller
 {
@@ -27,14 +25,27 @@ class SchematicsController extends Controller
     }
 
     /**
-     * @return ResponseFactory|\Illuminate\Http\Response|Response
+     * @param bool $cache
+     * @return array
+     * @throws ReflectionException
      */
-    public function clearCache()
+    public function schematics($cache = true): array
     {
-        Cache::forget('schematics');
-        Cache::forget('schematics-exception');
+        if ($cache && Cache::has('schematics')) {
+            return Cache::get('schematics');
+        }
 
-        return response('Cache cleared', 200);
+        $models = ModelMapper::map();
+
+        $data = [
+            'models' => $models,
+            'relations' => RelationMapper::map($models),
+            'migrations' => $this->migrations(),
+        ];
+
+        Cache::put('schematics', $data, 1440);
+
+        return $data;
     }
 
     /**
@@ -60,35 +71,22 @@ class SchematicsController extends Controller
     }
 
     /**
+     * @return ResponseFactory|\Illuminate\Http\Response|Response
+     */
+    public function clearCache()
+    {
+        Cache::forget('schematics');
+        Cache::forget('schematics-exception');
+
+        return response('Cache cleared', 200);
+    }
+
+    /**
      * @return array
      * @throws ReflectionException
      */
     public function refresh(): array
     {
         return $this->schematics(false);
-    }
-
-    /**
-     * @param bool $cache
-     * @return array
-     * @throws ReflectionException
-     */
-    public function schematics($cache = true): array
-    {
-        if ($cache && Cache::has('schematics')) {
-            return Cache::get('schematics');
-        }
-
-        $models = ModelMapper::map();
-
-        $data = [
-            'models' => $models,
-            'relations' => RelationMapper::map($models),
-            'migrations' => $this->migrations(),
-        ];
-
-        Cache::put('schematics', $data, 1440);
-
-        return $data;
     }
 }

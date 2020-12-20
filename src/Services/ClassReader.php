@@ -119,7 +119,7 @@ class ClassReader
                 })->flatten()
             )
             ->reject(static function (ReflectionMethod $method) use ($className) {
-                return $method->class !== $className || $method->getNumberOfParameters() > 0;
+                return $method->class !== config('schematics.model.namespace') . $className || $method->getNumberOfParameters() > 0;
             });
     }
 }

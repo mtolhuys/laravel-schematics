@@ -3,9 +3,8 @@
 namespace Mtolhuys\LaravelSchematics\Services;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
-
-use ReflectionException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 class RelationMapper extends ClassReader
@@ -48,7 +47,7 @@ class RelationMapper extends ClassReader
     protected static function getDetails(ReflectionMethod $method, string $model)
     {
         try {
-            $class = app($model);
+            $class = app(config('schematics.model.namespace') . $model);
             $invocation = $method->invoke($class);
 
             if ($invocation instanceof Relation) {
@@ -69,8 +68,7 @@ class RelationMapper extends ClassReader
                     ],
                 ];
             }
-        }
-        catch (\Throwable $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
