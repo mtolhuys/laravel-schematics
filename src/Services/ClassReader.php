@@ -3,9 +3,9 @@
 namespace Mtolhuys\LaravelSchematics\Services;
 
 use Illuminate\Support\Collection;
+use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use ReflectionClass;
 
 class ClassReader
 {
@@ -108,7 +108,7 @@ class ClassReader
      */
     public static function getMethods(string $className): Collection
     {
-        $class = new ReflectionClass($className);
+        $class = new ReflectionClass(config('schematics.model.namespace') . $className);
 
         return Collection::make($class->getMethods(ReflectionMethod::IS_PUBLIC))
             ->merge(Collection::make($class->getTraits())

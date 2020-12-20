@@ -2,10 +2,10 @@
 
 namespace Mtolhuys\LaravelSchematics\Services;
 
-use SplFileInfo;
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
 use Illuminate\Database\Eloquent\Model;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 class ModelMapper extends ClassReader
 {
@@ -30,7 +30,7 @@ class ModelMapper extends ClassReader
                 if (self::readablePhp($file)) {
                     $class = self::getClassName($file);
 
-                    if (is_subclass_of($class, Model::class)) {
+                    if (is_subclass_of(config('schematics.model.namespace') . $class, Model::class)) {
                         self::$models[] = $class;
                     }
                 }
