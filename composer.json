@@ -1,65 +1,65 @@
 {
-    "name": "mtolhuys/laravel-schematics",
-    "description": "A interface to help you build your models",
-    "keywords": [
-        "mtolhuys",
-        "laravel-schematics",
-        "eloquent",
-        "diagram",
-        "models",
-        "schema",
-        "schematics",
-        "laravel"
-    ],
-    "homepage": "https://github.com/mtolhuys/laravel-schematics",
-    "license": "MIT",
-    "type": "library",
-    "authors": [
-        {
-            "name": "Maarten Tolhuijs",
-            "email": "mtolhuys@hotmail.com",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": "^7.0"
-    },
-    "require-dev": {
-        "doctrine/dbal": "^2.0",
-        "orchestra/testbench": "^4.0",
-        "phpunit/phpunit": "^8.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Mtolhuys\\LaravelSchematics\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\": "vendor/orchestra/testbench-core/laravel/app",
-            "Src\\": "vendor/orchestra/testbench-core/laravel/src",
-            "Mtolhuys\\LaravelSchematics\\Tests\\": "tests"
-        }
-    },
-    "scripts": {
-        "prepare-test": "php -r \"exec('cp -r ./tests/resources/* ./vendor/orchestra/testbench-core/laravel');\"",
-        "test-coverage": [
-            "@prepare-test",
-            "vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover"
-        ],
-        "test": [
-            "@prepare-test",
-            "vendor/bin/phpunit"
-        ]
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Mtolhuys\\LaravelSchematics\\LaravelSchematicsServiceProvider"
-            ]
-        }
-    }
+  "name": "mtolhuys/laravel-schematics",
+  "description": "A interface to help you build your models",
+  "keywords": [
+	"mtolhuys",
+	"laravel-schematics",
+	"eloquent",
+	"diagram",
+	"models",
+	"schema",
+	"schematics",
+	"laravel"
+  ],
+  "homepage": "https://github.com/mtolhuys/laravel-schematics",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+	{
+	  "name": "Maarten Tolhuijs",
+	  "email": "mtolhuys@hotmail.com",
+	  "role": "Developer"
+	}
+  ],
+  "require": {
+	"php": "^8.0|^7.0"
+  },
+  "require-dev": {
+	"doctrine/dbal": "^2.0",
+	"orchestra/testbench": "^4.0",
+	"phpunit/phpunit": "^8.0"
+  },
+  "autoload": {
+	"psr-4": {
+	  "Mtolhuys\\LaravelSchematics\\": "src"
+	}
+  },
+  "autoload-dev": {
+	"psr-4": {
+	  "App\\": "vendor/orchestra/testbench-core/laravel/app",
+	  "Src\\": "vendor/orchestra/testbench-core/laravel/src",
+	  "Mtolhuys\\LaravelSchematics\\Tests\\": "tests"
+	}
+  },
+  "scripts": {
+	"prepare-test": "php -r \"exec('cp -r ./tests/resources/* ./vendor/orchestra/testbench-core/laravel');\"",
+	"test-coverage": [
+	  "@prepare-test",
+	  "vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover"
+	],
+	"test": [
+	  "@prepare-test",
+	  "vendor/bin/phpunit"
+	]
+  },
+  "config": {
+	"sort-packages": true
+  },
+  "extra": {
+	"laravel": {
+	  "providers": [
+		"Mtolhuys\\LaravelSchematics\\LaravelSchematicsServiceProvider"
+	  ]
+	}
+  }
 }
