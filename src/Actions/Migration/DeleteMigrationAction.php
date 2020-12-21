@@ -2,10 +2,10 @@
 
 namespace Mtolhuys\LaravelSchematics\Actions\Migration;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-use Mtolhuys\LaravelSchematics\Http\Requests\DeleteRelationRequest;
+use Illuminate\Support\Str;
 use Mtolhuys\LaravelSchematics\Actions\Migration\Traits\DeletesMigrations;
+use Mtolhuys\LaravelSchematics\Http\Requests\DeleteRelationRequest;
 
 class DeleteMigrationAction
 {
@@ -20,7 +20,7 @@ class DeleteMigrationAction
         $migrations = scandir($this->path);
 
         foreach ($migrations as $migration) {
-            if ($this->isRelatedMigration($migration, $request)) {
+            if ($migration != '.' && $migration != '..' && $this->isRelatedMigration($migration, $request)) {
                 if ($this->autoMigrate) {
                     $this->down($migration);
                 }
@@ -45,9 +45,7 @@ class DeleteMigrationAction
             return strpos($content, "laravel-schematics-{$request['table']}-relation") !== false;
         }
 
-        $table = Str::plural(Str::snake(
-            substr($request['name'], strrpos($request['name'], '\\') + 1)
-        ));
+        $table = Str::plural(Str::snake(substr($request['name'], strrpos($request['name'], '\\'))));
 
         return strpos($content, "laravel-schematics-$table-model") !== false
             || strpos($content, "laravel-schematics-$table-relation") !== false;

@@ -31,9 +31,9 @@ class SchematicsController extends Controller
      */
     public function schematics($cache = true): array
     {
-        if ($cache && Cache::has('schematics')) {
-            return Cache::get('schematics');
-        }
+//        if ($cache && Cache::has('schematics')) {
+//            return Cache::get('schematics');
+//        }
 
         $models = ModelMapper::map();
 

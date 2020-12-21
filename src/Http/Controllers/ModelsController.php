@@ -2,16 +2,16 @@
 
 namespace Mtolhuys\LaravelSchematics\Http\Controllers;
 
-use Mtolhuys\LaravelSchematics\Http\Controllers\Traits\HasOptionalActions;
-use Mtolhuys\LaravelSchematics\Http\Requests\EditModelRequest;
-use Mtolhuys\LaravelSchematics\Http\Requests\CreateModelRequest;
-use Mtolhuys\LaravelSchematics\Http\Requests\DeleteModelRequest;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 use Mtolhuys\LaravelSchematics\Actions\Model\CreateModelAction;
 use Mtolhuys\LaravelSchematics\Actions\Model\DeleteModelAction;
 use Mtolhuys\LaravelSchematics\Actions\Model\EditModelAction;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Routing\Controller;
-use Illuminate\Http\Response;
+use Mtolhuys\LaravelSchematics\Http\Controllers\Traits\HasOptionalActions;
+use Mtolhuys\LaravelSchematics\Http\Requests\CreateModelRequest;
+use Mtolhuys\LaravelSchematics\Http\Requests\DeleteModelRequest;
+use Mtolhuys\LaravelSchematics\Http\Requests\EditModelRequest;
 use ReflectionException;
 
 class ModelsController extends Controller
@@ -54,11 +54,12 @@ class ModelsController extends Controller
      */
     public function columns(): array
     {
-        $model = request('model');
+        $model = config('schematics.model.namespace') . request('model');
+
         $model = new $model;
         $table = $model->getTable();
         $safeTableName = \DB::getQueryGrammar()->wrap($table);
-        
+
         return \Schema::hasTable($table) ? \DB::select("describe $safeTableName") : [];
     }
 
