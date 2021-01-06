@@ -28,5 +28,11 @@ jobs:
         with:
           php-version: ${{ matrix.phpVersions }}
 
-      - name: Check PHP Version
-        run: php -v
+      - name: Update global composer version
+        run: composer self-update
+
+      - name: Update packages
+        run: composer update --no-interaction --prefer-source
+
+      - name: Run composer coverage tests
+        run: composer test-coverage
