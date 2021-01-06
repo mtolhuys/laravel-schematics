@@ -25,3 +25,6 @@ jobs:
 
       - name: Update global composer version
         run: composer self-update
+
+      - name: Update packages
+        run: composer update --no-interaction --prefer-source
