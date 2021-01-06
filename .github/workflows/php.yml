@@ -23,11 +23,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Update global composer version
-        run: composer self-update
-
-      - name: Update packages
-        run: composer update --no-interaction --prefer-source
-
-      - name: Run composer coverage tests
-        run: composer test-coverage
+      - name: Install PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.phpVersions }}
+          coverage: xdebug
