@@ -27,4 +27,6 @@ jobs:
         uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.phpVersions }}
-          coverage: xdebug
+
+      - name: Check PHP Version
+        run: php -v
