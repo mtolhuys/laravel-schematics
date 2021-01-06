@@ -150,6 +150,15 @@ This package is possible because of the effort and time of these people! ✨
             <br/>
         </td>
         <td align="center">
+            <a href="https://github.com/Dennis-Mwea">
+                <img src="https://avatars0.githubusercontent.com/u/22258295?s=400&v=4" width="100px;" alt=""/><br/>
+                <sub><b>Dennis Mwea</b></sub>
+            </a>
+            <br/>
+            <a>Contributor</a>
+            <br/>
+        </td>
+        <td align="center">
             <a href="https://github.com/Roboroads">
                 <img src="https://avatars3.githubusercontent.com/u/4398301?s=400&v=4" width="100px;" alt=""/><br/>
                 <sub><b>Robbin Schepers</b></sub>
