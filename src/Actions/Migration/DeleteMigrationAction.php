@@ -20,7 +20,7 @@ class DeleteMigrationAction
         $migrations = scandir($this->path);
 
         foreach ($migrations as $migration) {
-            if ($this->isRelatedMigration($migration, $request)) {
+            if (str_contains($migration, ".php") && $this->isRelatedMigration($migration, $request)) {
                 if ($this->autoMigrate) {
                     $this->down($migration);
                 }
@@ -51,5 +51,17 @@ class DeleteMigrationAction
 
         return strpos($content, "laravel-schematics-$table-model") !== false
             || strpos($content, "laravel-schematics-$table-relation") !== false;
+    }
+
+    /**
+     * @param SplFileInfo $file
+     * @return bool
+     */
+    private function readablePhp(SplFileInfo $file): bool
+    {
+        return
+            $file->isReadable()
+            && $file->isFile()
+            && mb_strtolower($file->getExtension()) === 'php';
     }
 }

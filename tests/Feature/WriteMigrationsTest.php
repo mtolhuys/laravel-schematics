@@ -118,8 +118,8 @@ class WriteMigrationsTest extends TestCase
             'name' => 'FooBar',
             'fields' => $this->fields,
             'options' => [
-                'hasTimestamps' => 'true'
-            ],
+                'hasTimestamps' => true
+            ]
         ]);
 
         $this->fields[1] = [
