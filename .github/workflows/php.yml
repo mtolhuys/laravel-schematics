@@ -17,3 +17,11 @@ jobs:
       matrix:
         phpVersions: [ '7.2', '7.3', '8.0' ]
       fail-fast: false
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Update global composer version
+        run: composer self-update
