@@ -38,9 +38,6 @@ php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchemat
 ```
 
 and visit `{your-app}/schematics`
-
-Make sure the routes are cached!
-
 ---
 
 ## Usage
