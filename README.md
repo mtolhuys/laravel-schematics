@@ -38,6 +38,7 @@ php artisan vendor:publish --provider="Mtolhuys\LaravelSchematics\LaravelSchemat
 ```
 
 and visit `{your-app}/schematics`
+
 ---
 
 ## Usage
