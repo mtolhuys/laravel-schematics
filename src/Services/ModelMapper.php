@@ -20,6 +20,7 @@ class ModelMapper extends ClassReader
     public static function map(): array
     {
         $paths = config('schematics.model.paths', [app_path()]);
+        $namespace = config('schematics.model.namespace', 'App\\');
 
         foreach ($paths as $path) {
             $files = new RecursiveIteratorIterator(
@@ -30,8 +31,8 @@ class ModelMapper extends ClassReader
                 if (self::readablePhp($file)) {
                     $class = self::getClassName($file);
 
-                    if (is_subclass_of($class, Model::class)) {
-                        self::$models[] = $class;
+                    if (is_subclass_of($namespace . $class, Model::class)) {
+                        self::$models[] = $namespace . $class;
                     }
                 }
             }
