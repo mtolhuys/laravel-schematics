@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class $model$ extends Model
 {
+
+    $tableAttributeLine$
     /**
      * The attributes that are mass assignable.
      *

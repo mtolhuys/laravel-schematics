@@ -8,6 +8,7 @@ use Mtolhuys\LaravelSchematics\Actions\Migration\CreateRelationMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\Migration\DeleteMigrationAction;
 use Mtolhuys\LaravelSchematics\Actions\Resource\CreateFormRequestAction;
 use Mtolhuys\LaravelSchematics\Actions\Resource\CreateResourceControllerAction;
+use Mtolhuys\LaravelSchematics\Actions\Relation\CreatePivotRelationsAction;
 
 trait HasOptionalActions
 {
@@ -39,7 +40,8 @@ trait HasOptionalActions
             'hasColumnsMigration' => new CreateColumnsMigrationAction,
             'hasModelMigration' => new CreateModelMigrationAction,
             'deletesMigration' => new DeleteMigrationAction,
-            'hasFormRequest' => new CreateFormRequestAction,
+			'hasFormRequest' => new CreateFormRequestAction,
+			'hasPivotRelations' => new CreatePivotRelationsAction,
         ][$option];
     }
 }

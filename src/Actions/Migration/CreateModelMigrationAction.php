@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Mtolhuys\LaravelSchematics\Services\RuleParser;
 use Mtolhuys\LaravelSchematics\Actions\Migration\Traits\CreatesMigrations;
 use Mtolhuys\LaravelSchematics\Services\StubWriter;
+use Config;
 
 class CreateModelMigrationAction
 {
@@ -17,15 +18,18 @@ class CreateModelMigrationAction
      */
     public function execute($request)
     {
-        $model = ucfirst($request['name']);
-        $table = Str::plural(Str::snake($model));
+		$model = ucfirst($request['name']);
+		
+		$singularTableName = $request['pivot']['isPivotModel'] == 'true'&& $request['pivot']['isPivotModel'] == 'true';
+		$table = $singularTableName ? Str::snake($model) : Str::plural(Str::snake($model));
+
         $stub = __DIR__ . '/../../../resources/stubs/migration/model.stub';
         $this->filename = 'database/migrations/'
             . date('Y_m_d_His')
             . "_create_{$table}_table.php";
 
         (new StubWriter(base_path($this->filename), $stub))->write([
-            '$classname$' => 'Create' . Str::plural($model) . 'Table',
+            '$classname$' => 'Create' . ($singularTableName ? $model : Str::plural($model)) . 'Table',
             '$columns$' => rtrim($this->getColumns($request)),
             '$table$' => $table,
         ]);

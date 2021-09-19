@@ -56,6 +56,113 @@
                     </transition-group>
                 </draggable>
 
+
+				<span v-if="pivot.isPivotModel && config('use-pivot')">	
+					<hr 
+					class="w-full my-4"
+					/>
+					<div class="md:flex md:items-center">
+						<div>
+							<input
+								v-model="pivot.source"
+								placeholder="Existing source model"
+								class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+									text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+
+								type="text"
+							>
+						</div>
+
+						<div>
+							<input
+								v-model="pivot.target"
+								placeholder="Existing target model"
+								class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+									text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+
+								type="text"
+							>
+						</div>
+					</div>
+						<div class="md:flex md:items-center">
+						<div>
+							<input
+								v-model="pivot.methods.first"
+								placeholder="Method"
+								class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+									text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+
+								type="text"
+							>
+						</div>
+
+						<div>
+							<input
+								v-model="pivot.methods.second"
+								placeholder="Method"
+								class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+									text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+
+								type="text"
+							>
+						</div>
+					</div>
+
+
+					<div class="md:flex md:items-center">
+						<div>
+							<input
+								v-model="pivot.foreignKeys.first"
+								placeholder="Foreign key"
+								class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+									text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+
+								type="text"
+							>
+						</div>
+
+						<div>
+							<input
+								v-model="pivot.foreignKeys.second"
+								placeholder="Foreign key"
+								class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+									text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+
+								type="text"
+							>
+						</div>
+					</div>
+					<div class="md:flex md:items-center">
+						
+						<div>
+							<input
+								v-model="pivot.localKeys.first"
+								placeholder="References"
+								class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+									text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+
+								type="text"
+							>
+						</div>
+
+						<div>
+							<input
+								v-model="pivot.localKeys.second"
+								placeholder="References"
+								class="field bg-white appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 mr-4
+									text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+
+								type="text"
+							>
+						</div>
+
+						
+
+						<i style="cursor:move"
+							class="fas fa-arrows-alt-v text-gray-200 mx-1"/>
+					</div>
+				</span>
+
                 <div class="flex text-lg mt-3 items-end outline-none">
                     <div class="inline-block w-full relative bg-transparent mx-5 mb-10 pt-2 pl-5">
                         <span class="plus-minus">
@@ -80,6 +187,7 @@
                             </button>
                         </span>
 
+
                         <div class="md:flex md:items-center">
                             <label class="block text-gray-500 font-bold">
                                 <input
@@ -101,7 +209,7 @@
                             </label>
                         </div>
 
-                        <div class="md:flex md:items-center">
+                        <div class="md:flex md:items-center" v-if="!pivot.isPivotModel">
                             <label class="block text-gray-500 font-bold">
                                 <input
                                     v-model="actions.hasResourceController"
@@ -112,13 +220,24 @@
                             </label>
                         </div>
 
-                        <div class="md:flex md:items-center">
+                        <div class="md:flex md:items-center" v-if="!pivot.isPivotModel">
                             <label class="block text-gray-500 font-bold">
                                 <input
                                     v-model="actions.hasFormRequest"
                                     class="mr-2 leading-tight" type="checkbox">
                                 <span class="text-sm w-2/3">
                                     Form Request
+                                </span>
+                            </label>
+                        </div>
+
+						<div vif="this.config('use-pivot')" class="md:flex md:items-center">
+                            <label class="block text-gray-500 font-bold">
+                                <input
+                                    v-model="pivot.isPivotModel"
+                                    class="mr-2 leading-tight" type="checkbox">
+                                <span class="text-sm w-2/3">
+                                    Pivot Model
                                 </span>
                             </label>
                         </div>
@@ -164,29 +283,53 @@
                 actions: {
                     hasModelMigration: this.config('create.migration'),
                     hasFormRequest: this.config('create.form-request'),
-                    hasResourceController: this.config('create.resource-controller'),
+					hasResourceController: this.config('create.resource-controller'),
+					hasPivotRelations : false,
                 },
                 options: {
-                    hasTimestamps: false,
+					hasTimestamps: false,
                 },
                 fields: [{
                     id: this.uuid(),
                     name: '',
                     type: '',
                     error: false
-                }]
+				}],
+				pivot: {
+					isPivotModel: false,
+					source : null,
+					target: null,
+					localKeys :{
+						first : null,
+						second: null,
+					},
+					foreignKeys :{
+						first : null,
+						second: null,
+					},
+					methods :{
+						first : null,
+						second: null,
+					}
+				}
             }
         },
 
         created() {
-            EventBus.$on('new-model', () => {
-                this.fields = [{
-                    id: this.uuid(),
-                    name: '',
-                    type: '',
-                    error: false
-                }];
-            });
+            EventBus.$on('new-model', data => {
+				this.pivot.isPivotModel = !! data && data.isPivotModel;
+				
+				if (!this.pivot.isPivotModel){
+					this.fields = [{
+						id: this.uuid(),
+						name: '',
+						type: '',
+						error: false
+					}];
+				} else {
+					this.fields = [];
+				}
+			});
         },
 
         mounted() {
@@ -217,7 +360,7 @@
             },
 
             removeField(field = null) {
-                if (this.fields.length > 1) {
+				if (this.fields.length > 1) {
                     this.fields.splice(field ? this.fields.indexOf(field) : -1, 1);
                 }
             },
@@ -231,7 +374,7 @@
                 fieldErrors.forEach(field => field.error = true);
 
                 return !fieldErrors.length;
-            },
+			},
 
             validName(name) {
                 return /^[A-Za-z]+$/.test(name)
@@ -248,17 +391,18 @@
                     .toggleClass('focus:border-red-500 border-red-500', !this.validName(name));
 
                 if (!this.validName(name) || !this.validFields()) return;
-
-                EventBus.$emit('modal-close');
+				
+				EventBus.$emit('modal-close');
                 EventBus.$emit('loading', true);
-
-                $.post('schematics/models/create', {
+				
+				$.post('schematics/models/create', {
                     'name': name,
-                    'fields': this.fields,
-                    'actions': this.actions,
-                    'options': this.options,
+                    'fields': this.fields.length ? this.fields : [''], 
+					'pivot' : this.pivot,
+					'actions': this.actions,
+					'options': this.options,
                 }, () => {
-                    location.reload();
+					location.reload();
                 }).fail((e) => {
                     console.error(e);
 
@@ -275,7 +419,12 @@
                         this.options.hasTimestamps = false;
                     }
                 }
-            }
+            },
+			'pivot.isPivotModel' :{
+				handler(newValue, oldValue){
+					this.actions.hasPivotRelations = newValue;
+				}
+			}
         }
     }
 </script>

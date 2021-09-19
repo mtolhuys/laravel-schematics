@@ -14,6 +14,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use ReflectionException;
+use Config;
 
 class SchematicsController extends Controller
 {
@@ -84,8 +85,8 @@ class SchematicsController extends Controller
         $data = [
             'models' => $models,
             'relations' => RelationMapper::map($models),
-            'migrations' => $this->migrations(),
-        ];
+			'migrations' => $this->migrations(),
+		];
 
         Cache::put('schematics', $data, 1440);
 

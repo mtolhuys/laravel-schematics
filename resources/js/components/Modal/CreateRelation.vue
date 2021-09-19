@@ -61,15 +61,15 @@
                     <input
                         value="method"
                         v-model="relation.method.localKey"
-                        :placeholder="relation.type === 'BelongsTo' ? 'ownerKey' : 'localKey'"
+                        :placeholder="relation.type === 'BelongsTo' ? 'ownerKey' : relation.type === 'BelongsToMany' ?  'references':'localKey'"
                         @keydown.enter="save()"
                         class="bg-gray-100 appearance-none border-2 border-gray-200 rounded w-full
                         py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         type="text"
                     />
-                </span>
-            </div>
-
+				</span>
+				
+			</div>
 
             <div class="md:flex md:items-center flex">
                   <div class="md:w-1/3">
@@ -96,7 +96,34 @@
                   </div>
             </div>
 
-            <div class="md:flex md:items-center flex">
+            <div  v-if="showPivotInput" class="md:flex md:items-center flex my-4">
+                <div class="md:w-1/3">
+                    <label
+                        for="pivot"
+                        class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                        Pivot model
+                    </label>
+                </div>
+                <input 
+                    id="pivot"
+                    v-model="relation.pivot"
+                    :placeholder="this.config('model.namespace') + 'Existing model'" 
+					class="bg-gray-100 appearance-none border-2 border-gray-200 rounded w-full
+                    py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white"
+                    type="text"
+                />
+            </div>
+
+            <!-- <div  v-if="showPivotInput" class="md:flex md:items-center flex">
+				<button 
+					@click="openCreatePivotModal"
+					class="modal-action px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2 w-10/12"
+				>
+					Create new pivot model
+				</button>
+            </div> -->
+
+			<div class="md:flex md:items-center flex">
                 <div class="md:w-1/3">
                     <label
                         for="target"
@@ -113,6 +140,41 @@
                     disabled
                 />
             </div>
+
+			<div v-if="showPivotInput" 
+				class="md:flex md:items-center flex"
+			>
+                <div class="md:w-1/3">
+                    <label
+                        for="secondKeys"
+                        class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-5">
+						Keys
+                    </label>
+                </div>
+				<span 
+                    id="secondKeys"
+                    class="appearance-none leading-tight w-full"
+                >
+					<input
+						v-model="relation.method.secondForeignKey"
+						placeholder="foreignKey"
+						@keydown.enter="save()"
+						class="bg-gray-100 appearance-none border-2 border-gray-200 rounded w-full
+						py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+						type="text"
+					/>
+					<input
+						value="method"
+						v-model="relation.method.secondLocalKey"
+						placeholder="references"
+						@keydown.enter="save()"
+						class="bg-gray-100 appearance-none border-2 border-gray-200 rounded w-full
+						py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+						type="text"
+					/>
+				</span>
+			</div>
+
 
             <div class="flex text-lg mt-3 mx-5 items-end outline-none">
                 <div class="md:flex md:items-center px-2">
@@ -144,7 +206,7 @@
                     class="appearance-none w-full py-2 px-4 text-gray-700 leading-tight">
                     -><b class="text-purple-900">{{ relation.method.name }}():</b>
                         <b class="text-black">{{ relation.type }}(</b>
-                            <i class="text-gray-800">{{ target }}{{ relation.keys }}</i>
+                            <i class="text-gray-800">{{ target }}{{ params }}</i>
                         <b>)
                     </b>;
                 </span>
@@ -204,7 +266,7 @@
             EventBus.$on('new-relation', (models) => {
                 this.relation.source = models.source;
                 this.relation.target = models.target;
-                this.relation.sourceTable = models.target;
+                this.relation.sourceTable = models.source;
                 this.relation.targetTable = models.target;
                 this.relation.keys = '';
                 this.relation.method = {
@@ -236,7 +298,24 @@
                 }
 
                 Schematics.relations[this.models.sourceTable].push(relation);
-            },
+			},
+
+			openCreatePivotModal(){
+				EventBus.$emit(
+                    'modal-open',
+                    '<span class="focus:outline-none border-b-2 py-2 px-4">' +
+                        this.config('model.namespace') + '<input ' +
+                        'class="new-model-name" ' +
+                        'placeholder="New model"' +
+                    '/></span>',
+                    'new-model'
+                );
+                setTimeout(() => {
+					const r = new RegExp("^" +  this.config('model.namespace') + "\\" , "g");
+                    EventBus.$emit('new-model', {isPivotModel: true});
+                    $('.new-model-name').val(this.relation.pivot.replace(r, "")).focus();
+                }, 1);
+			},
 
             save() {
                 if (this.methodNameError) {
@@ -249,14 +328,21 @@
                 this.relation.actions = this.actions;
 
                 EventBus.$emit('modal-close');
-                EventBus.$emit('loading', true);
-
+				EventBus.$emit('loading', true);
+				
                 $.post('schematics/relations/create', this.relation, (relation) => {
-                    this.addRelation(relation);
-
-                    EventBus.$emit('loading', false);
-                    EventBus.$emit('plumb');
-                    setTimeout(Schematics.refresh, 1);
+					if (this.config('use-pivot') && this.relation.type == 'BelongsToMany'){
+						//When pivot relation is made, force refresh, because FE state is out of sync with BE
+						//TODO: Would be more consistent to fix in FE...									
+						setTimeout(() => {
+							location.reload();
+						}, 1);
+					} else {
+						this.addRelation(relation);
+						EventBus.$emit('loading', false);
+                    	EventBus.$emit('plumb');
+						setTimeout(Schematics.refresh, 1);
+					}
                 }).fail((e) => {
                     console.error(e);
 
@@ -271,7 +357,23 @@
                 return this.options.hasModelAsClass ?
                     `${this.relation.target}::class`.replace("'", '')
                     : `'${this.relation.target}'`;
-            }
+			},
+			showPivotInput(){
+				return this.config('use-pivot') && this.relation.type == "BelongsToMany";
+			},
+			params(){
+				var params;
+				if (this.showPivotInput){
+					//Kinda inconsistent to not use this.relation.key like all other relations..?
+					params = " , <pivot_table_name>" 
+					+ (this.relation.method.foreignKey ? " , " + this.relation.method.foreignKey : "")
+					+ (this.relation.method.foreignKey && this.relation.method.secondForeignKey ? " , " + this.relation.method.secondForeignKey : "")
+
+				} else {
+					params = this.relation.keys;
+				}
+				return params;
+			}
         },
 
         watch: {
@@ -294,7 +396,7 @@
                         this.relation.keys = '';
                     }
                 }
-            },
+			},
 
             'relation.method.localKey': {
                 handler(key) {
@@ -308,7 +410,7 @@
                         this.relation.keys = '';
                     }
                 }
-            }
+			},
         }
     }
 </script>

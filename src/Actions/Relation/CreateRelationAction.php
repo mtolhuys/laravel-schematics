@@ -5,6 +5,8 @@ namespace Mtolhuys\LaravelSchematics\Actions\Relation;
 use Illuminate\Support\Facades\File;
 use ReflectionException;
 use ReflectionClass;
+use Config;
+use App;
 
 class CreateRelationAction
 {
@@ -21,7 +23,6 @@ class CreateRelationAction
         $lines = file($file, FILE_IGNORE_NEW_LINES);
 
         $injectionLine = $this->endOfClass($file) - 1;
-
         $lines[$injectionLine] = PHP_EOL . $this->generateMethod($request, $stub) . '}';
 
         file_put_contents($file, implode("\n", $lines));
@@ -38,30 +39,39 @@ class CreateRelationAction
      * @return string|string[]
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    private function generateMethod($request, string $stub)
+    protected function generateMethod($request, string $stub)
     {
-        $modelAsClass = json_decode($request['options']['hasModelAsClass'], false);
+        $modelAsClass = isset($request['options']['hasModelAsClass']) ? json_decode($request['options']['hasModelAsClass'], false) : false;
 
-        $replace = [
-            '$target$' => $modelAsClass ? "\\{$request['target']}::class" : "'{$request['target']}'",
+		$params = $modelAsClass ? "\\{$request['target']}::class" : "'{$request['target']}'";
+		
+		if (Config::get('schematics.use-pivot') && $request['type'] == 'BelongsToMany'){
+			$tags	= '@schematics-pivot	'.$request['pivot'];
+			$params.= ", '" . App($request['pivot'])->getTable() . "'";
+		} 
+		$params .= $request['keys'];
+
+		$replace = [
             '$method$' => $request['method']['name'],
             '$type$' => lcfirst($request['type']),
-            '$keys$' => $request['keys'] ?? '',
-            '$class$' => $request['type'],
-        ];
-
-        return str_replace(
+			'$params$' => $params,
+			'$class$' => $request['type'],
+			'$tags$' => $tags ?? '',
+		];
+		
+        $res = str_replace(
             array_keys($replace),
             array_values($replace),
             File::get($stub)
-        );
+		);
+		return $res;
     }
 
     /**
      * @param $file
      * @return int|string|null
      */
-    private function endOfClass($file)
+    protected function endOfClass($file)
     {
         $lines = preg_split("/\r\n|\n|\r/", file_get_contents($file));
         $lastOccurrence = null;
