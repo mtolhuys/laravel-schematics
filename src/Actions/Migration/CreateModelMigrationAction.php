@@ -2,6 +2,7 @@
 
 namespace Mtolhuys\LaravelSchematics\Actions\Migration;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Mtolhuys\LaravelSchematics\Services\RuleParser;
@@ -41,8 +42,14 @@ class CreateModelMigrationAction
             $this->getFields($request['fields'])
         );
 
-        if (json_decode($request['options']['hasTimestamps'], false)) {
+        if ($request instanceof Request
+            && $request->has('options')
+            && $request->get('options')['hasTimestamps']) {
             $columns .= '$table->timestamps();';
+        } else {
+            if (isset($request['options']['hasTimestamps']) && (bool)$request['options']['hasTimestamps']) {
+                $columns .= '$table->timestamps();';
+            }
         }
 
         return $columns;

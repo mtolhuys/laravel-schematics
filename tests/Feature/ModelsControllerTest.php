@@ -69,6 +69,9 @@ class ModelsControllerTest extends TestCase
                 'hasResourceController' => 'true',
                 'hasFormRequest' => 'true',
             ],
+            'options' => [
+                'hasTimestamps' => true
+            ]
         ]));
 
         $controller = app_path('Http/Controllers/WombatController.php');
