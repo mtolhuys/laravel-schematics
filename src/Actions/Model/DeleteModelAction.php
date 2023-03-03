@@ -14,8 +14,7 @@ class DeleteModelAction
      */
     public function execute($request)
     {
-        File::delete(
-            (new ReflectionClass(app($request['name'])))->getFileName()
-        );
+        $className = config('schematics.model.namespace') . $request['name'];
+        File::delete((new ReflectionClass(app($className)))->getFileName());
     }
 }

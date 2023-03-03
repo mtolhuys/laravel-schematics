@@ -3,8 +3,8 @@
 namespace Mtolhuys\LaravelSchematics\Actions\Relation;
 
 use Illuminate\Support\Facades\File;
-use ReflectionException;
 use ReflectionClass;
+use ReflectionException;
 
 class CreateRelationAction
 {
@@ -17,7 +17,7 @@ class CreateRelationAction
     {
         $source = $request['source'];
         $stub = __DIR__ . '/../../../resources/stubs/relation.stub';
-        $file = (new ReflectionClass($source))->getFileName();
+        $file = (new ReflectionClass(config('schematics.model.namespace') . $source))->getFileName();
         $lines = file($file, FILE_IGNORE_NEW_LINES);
 
         $injectionLine = $this->endOfClass($file) - 1;
@@ -30,6 +30,24 @@ class CreateRelationAction
             'file' => $file,
             'line' => ($injectionLine + count(file($stub)) - 2),
         ];
+    }
+
+    /**
+     * @param $file
+     * @return int|string|null
+     */
+    private function endOfClass($file)
+    {
+        $lines = preg_split("/\r\n|\n|\r/", file_get_contents($file));
+        $lastOccurrence = null;
+
+        foreach ($lines as $index => $line) {
+            if (strpos(trim($line), '}') !== false) {
+                $lastOccurrence = $index + 1;
+            }
+        }
+
+        return $lastOccurrence;
     }
 
     /**
@@ -55,23 +73,5 @@ class CreateRelationAction
             array_values($replace),
             File::get($stub)
         );
-    }
-
-    /**
-     * @param $file
-     * @return int|string|null
-     */
-    private function endOfClass($file)
-    {
-        $lines = preg_split("/\r\n|\n|\r/", file_get_contents($file));
-        $lastOccurrence = null;
-
-        foreach ($lines as $index => $line) {
-            if (strpos(trim($line), '}') !== false) {
-                $lastOccurrence = $index + 1;
-            }
-        }
-
-        return $lastOccurrence;
     }
 }
