@@ -3,6 +3,13 @@
     Laravel Schematics
 </h1>
 
+> [!WARNING]
+> **This project is no longer maintained.**
+>
+> Laravel Schematics is preserved as a historical open-source project. Compatibility with current Laravel versions is not maintained, and no support, security updates, or new releases are planned. You are welcome to fork the project under the terms of the MIT license.
+>
+> The project received more than 1,400 GitHub stars and was [featured by Laravel News](https://laravel-news.com/design-models-interactively-with-laravel-schematics).
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
 [![Build Status](https://img.shields.io/travis/mtolhuys/laravel-schematics/master.svg?style=flat-square)](https://travis-ci.org/mtolhuys/laravel-schematics)
 [![Quality Score](https://img.shields.io/scrutinizer/g/mtolhuys/laravel-schematics.svg?style=flat-square)](https://scrutinizer-ci.com/g/mtolhuys/laravel-schematics)
@@ -190,19 +197,11 @@ This package is possible because of the effort and time of these people! ✨
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-## Contributing
+## Project status
 
-Since I'm getting some questions about this I want these things to be perfectly clear:
+This repository is kept available for reference and for existing users who may need to inspect its source. It no longer accepts support requests, bug fixes, feature requests, or security reports.
 
-- This is a **safe** haven for contributions, every (positive) contributon matters!
-- You are free (and encouraged) to use **anything** of this package for your own ideas.
-- You can **always** ask for help or email me directly for any questions.
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for further details.
-
-### Security
-
-If you discover any security related issues, please email mtolhuys@protonmail.com instead of using the issue tracker.
+Do not use this package for new production projects. If you want to continue its development, please create a fork.
 
 ## License
 
