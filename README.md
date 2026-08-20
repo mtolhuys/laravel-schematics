@@ -7,8 +7,6 @@
 > **This project is no longer maintained.**
 >
 > Laravel Schematics is preserved as a historical open-source project. Compatibility with current Laravel versions is not maintained, and no support, security updates, or new releases are planned. You are welcome to fork the project under the terms of the MIT license.
->
-> The project received more than 1,400 GitHub stars and was [featured by Laravel News](https://laravel-news.com/design-models-interactively-with-laravel-schematics).
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mtolhuys/laravel-schematics.svg?style=flat-square)](https://packagist.org/packages/mtolhuys/laravel-schematics)
 [![Build Status](https://img.shields.io/travis/mtolhuys/laravel-schematics/master.svg?style=flat-square)](https://travis-ci.org/mtolhuys/laravel-schematics)
